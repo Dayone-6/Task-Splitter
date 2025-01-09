@@ -21,4 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Tasks Splitter"
 include(":app")
- 
+include(":features")
+include(":common")
+include(":features:start")
+include(":features:login")
+include(":features:main")

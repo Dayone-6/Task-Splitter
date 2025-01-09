@@ -7,11 +7,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import ru.dayone.taskssplitter.ui.theme.TasksSplitterTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import ru.dayone.login.presentation.LoginScreen
+import ru.dayone.main.presentation.MainScreen
+import ru.dayone.tasksplitter.common.navigation.LoginNavRoute
+import ru.dayone.tasksplitter.common.navigation.MainNavRoute
+import ru.dayone.tasksplitter.common.navigation.StartNavRoute
+import ru.dayone.tasksplitter.common.theme.TasksSplitterTheme
+import ru.dayone.tasksplitter.features.start.presentation.StartScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TasksSplitterTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    Content(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -31,17 +37,30 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun Content(
+    modifier: Modifier
+){
+    val navController = rememberNavController()
+    NavHost(
+        navController,
+        startDestination = StartNavRoute
+    ){
+        composable<StartNavRoute>{
+            StartScreen(
+                navController
+            )
+        }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TasksSplitterTheme {
-        Greeting("Android")
+        composable<LoginNavRoute> {
+            LoginScreen(
+                navController
+            )
+        }
+
+        composable<MainNavRoute> {
+            MainScreen(
+                navController
+            )
+        }
     }
 }
