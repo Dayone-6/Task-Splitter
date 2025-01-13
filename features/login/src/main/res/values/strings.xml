@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Login</string>
+    <string name="app_name" translatable="false">Tasks Splitter</string>
+    <string name="title_sign_in_or_sign_up">Sign In or Sign Up</string>
+    <string name="text_continue">Continue</string>
 </resources>

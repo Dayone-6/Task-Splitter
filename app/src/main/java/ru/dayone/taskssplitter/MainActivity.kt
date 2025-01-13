@@ -4,15 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ru.dayone.login.presentation.LoginScreen
+import ru.dayone.login.presentation.SignInScreen
 import ru.dayone.main.presentation.MainScreen
 import ru.dayone.tasksplitter.common.navigation.LoginNavRoute
 import ru.dayone.tasksplitter.common.navigation.MainNavRoute
@@ -26,6 +28,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TasksSplitterTheme {
+                if(isSystemInDarkTheme()){
+                    WindowCompat.getInsetsController(window, window.decorView)
+                        .isAppearanceLightStatusBars = true
+                }
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Content(
                         modifier = Modifier.padding(innerPadding)
@@ -52,7 +58,7 @@ fun Content(
         }
 
         composable<LoginNavRoute> {
-            LoginScreen(
+            SignInScreen(
                 navController
             )
         }

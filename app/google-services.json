@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "369508414485",
+    "project_id": "tasks-splitter",
+    "storage_bucket": "tasks-splitter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:369508414485:android:b6b38b9355163dfeb0ca1c",
+        "android_client_info": {
+          "package_name": "ru.dayone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhdF0nhRjLK7ieGwM45xxN2mLBy9CnyT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

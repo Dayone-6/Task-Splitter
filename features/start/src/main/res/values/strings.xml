@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Start Feature</string>
+    <string name="app_name" translatable="false">Tasks Splitter</string>
+    <string name="text_about_app">Have you ever had to split some tasks between group members (family, team on work)? Tasks Splitter will help you with this problem.</string>
+    <string name="text_about_app_slide1">Login to account</string>
+    <string name="text_about_app_slide2">Create group</string>
+    <string name="text_about_app_slide3">Create task</string>
+    <string name="text_about_app_slide4">Make your bit on task</string>
+    <string name="text_about_app_slide5">The person who made the lowest bit will make this task</string>
+    <string name="text_to_login">To Login</string>
+
 </resources>

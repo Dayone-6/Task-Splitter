@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_about_app">Вам когда-нибудь приходилось распределять задачи между участниками группы (семья, команда на работе)? Tasks Splitter поможет вам в решении этой проблемы!</string>
+    <string name="text_about_app_slide1">Войдите в аккаунт</string>
+    <string name="text_about_app_slide2">Создайте группу</string>
+    <string name="text_about_app_slide3">Создайте таску</string>
+    <string name="text_about_app_slide4">Сделайте ставку на эту таску</string>
+    <string name="text_about_app_slide5">Человек, поставивший меньше всего, будет выполнять эту таску</string>
+    <string name="text_to_login">К Входу</string>
+</resources>

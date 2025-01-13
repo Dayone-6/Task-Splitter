@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -53,4 +55,10 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(project(":common"))
+
+    implementation(libs.firebase.bom)
+    implementation(libs.google.firebase.analytics)
+
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 }
