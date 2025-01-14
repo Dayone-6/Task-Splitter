@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.dayone.login"
+    namespace = "ru.dayone.auth"
     compileSdk = 35
 
     defaultConfig {
@@ -56,7 +56,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(project(":common"))
 
-    implementation(libs.firebase.bom)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.google.firebase.analytics)
 
     implementation(libs.dagger)

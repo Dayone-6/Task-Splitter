@@ -64,11 +64,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(project(":common"))
-    implementation(project(":features:login"))
+    implementation(project(":features:auth"))
     implementation(project(":features:start"))
     implementation(project(":features:main"))
 
-    implementation(libs.firebase.bom)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
 
     implementation(libs.dagger)

@@ -14,7 +14,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ru.dayone.login.presentation.SignInScreen
+import ru.dayone.auth.presentation.SignInScreen
 import ru.dayone.main.presentation.MainScreen
 import ru.dayone.tasksplitter.common.navigation.LoginNavRoute
 import ru.dayone.tasksplitter.common.navigation.MainNavRoute

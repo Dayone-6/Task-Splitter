@@ -1,4 +1,4 @@
-package ru.dayone.login
+package ru.dayone.auth
 
 import org.junit.Test
 

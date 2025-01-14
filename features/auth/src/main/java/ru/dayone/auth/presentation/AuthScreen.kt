@@ -1,4 +1,4 @@
-package ru.dayone.login.presentation
+package ru.dayone.auth.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import ru.dayone.login.R
+import ru.dayone.auth.R
 import ru.dayone.tasksplitter.common.theme.Typography
 
 @Composable

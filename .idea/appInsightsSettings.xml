@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="ru.dayone.taskssplitter" />
+                  <option name="mobileSdkAppId" value="1:369508414485:android:be31392584821f92b0ca1c" />
+                  <option name="projectId" value="tasks-splitter" />
+                  <option name="projectNumber" value="369508414485" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
