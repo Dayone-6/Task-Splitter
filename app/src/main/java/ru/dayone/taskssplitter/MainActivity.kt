@@ -14,7 +14,8 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ru.dayone.auth.presentation.SignInScreen
+import com.google.firebase.FirebaseApp
+import ru.dayone.auth.presentation.AuthScreen
 import ru.dayone.main.presentation.MainScreen
 import ru.dayone.tasksplitter.common.navigation.LoginNavRoute
 import ru.dayone.tasksplitter.common.navigation.MainNavRoute
@@ -25,9 +26,14 @@ import ru.dayone.tasksplitter.features.start.presentation.StartScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseApp.initializeApp(this)
+
         enableEdgeToEdge()
         setContent {
-            TasksSplitterTheme {
+            TasksSplitterTheme(
+                dynamicColor = false
+            ) {
                 if(isSystemInDarkTheme()){
                     WindowCompat.getInsetsController(window, window.decorView)
                         .isAppearanceLightStatusBars = true
@@ -58,7 +64,7 @@ fun Content(
         }
 
         composable<LoginNavRoute> {
-            SignInScreen(
+            AuthScreen(
                 navController
             )
         }

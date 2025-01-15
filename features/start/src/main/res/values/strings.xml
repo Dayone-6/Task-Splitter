@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Tasks Splitter</string>
-    <string name="text_about_app">Have you ever had to split some tasks between group members (family, team on work)? Tasks Splitter will help you with this problem.</string>
+    <string name="text_about_app">Have you ever had to split some tasks between group members (family, team on work)?\nTasks Splitter will help you with this problem.</string>
     <string name="text_about_app_slide1">Login to account</string>
     <string name="text_about_app_slide2">Create group</string>
     <string name="text_about_app_slide3">Create task</string>

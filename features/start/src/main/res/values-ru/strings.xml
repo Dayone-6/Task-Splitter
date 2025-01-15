@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="text_about_app">Вам когда-нибудь приходилось распределять задачи между участниками группы (семья, команда на работе)? Tasks Splitter поможет вам в решении этой проблемы!</string>
+    <string name="text_about_app">Вам когда-нибудь приходилось распределять задачи между участниками группы (семья, команда на работе)?\nTasks Splitter поможет вам в решении этой проблемы!</string>
     <string name="text_about_app_slide1">Войдите в аккаунт</string>
     <string name="text_about_app_slide2">Создайте группу</string>
     <string name="text_about_app_slide3">Создайте таску</string>

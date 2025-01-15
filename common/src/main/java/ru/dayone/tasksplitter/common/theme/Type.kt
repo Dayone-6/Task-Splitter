@@ -35,3 +35,5 @@ val Typography = Typography(
     headlineLarge = defaultTypography.headlineLarge.copy(fontFamily = fontFamily),
     headlineMedium = defaultTypography.headlineMedium.copy(fontFamily = fontFamily)
 )
+
+val buttonTextStyle = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold)

@@ -2,4 +2,10 @@
     <string name="app_name" translatable="false">Tasks Splitter</string>
     <string name="title_sign_in_or_sign_up">Sign In or Sign Up</string>
     <string name="text_continue">Continue</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirmation_code">Confirmation Code</string>
+    <string name="text_swipe_form_to_change_registration_type">You can swipe the form to change type from email and password to phone !</string>
+    <string name="error_incorrect_email">Incorrect Email</string>
 </resources>
