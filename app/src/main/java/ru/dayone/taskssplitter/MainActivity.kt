@@ -1,11 +1,13 @@
 package ru.dayone.taskssplitter
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -30,6 +32,7 @@ class MainActivity : ComponentActivity() {
         FirebaseApp.initializeApp(this)
 
         enableEdgeToEdge()
+
         setContent {
             TasksSplitterTheme(
                 dynamicColor = false
@@ -38,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     WindowCompat.getInsetsController(window, window.decorView)
                         .isAppearanceLightStatusBars = true
                 }
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize().imePadding()) { innerPadding ->
                     Content(
                         modifier = Modifier.padding(innerPadding)
                     )

@@ -96,7 +96,7 @@ fun EmailPasswordAuthScreen(
                 .fillMaxWidth(.8f)
                 .padding(10.dp),
             onClick = {
-                if (isEmailValid) {
+                if (isEmailValid && email.isNotBlank()) {
                     onAuth.invoke(email, password)
                 } else {
                     scope.launch {
