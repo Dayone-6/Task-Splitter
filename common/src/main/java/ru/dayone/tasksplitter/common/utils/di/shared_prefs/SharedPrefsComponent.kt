@@ -4,10 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import dagger.BindsInstance
 import dagger.Subcomponent
+import javax.inject.Singleton
 
 
 @Subcomponent(modules = [SharedPrefsModule::class])
-@SharedPrefsScope
+@Singleton
 interface SharedPrefsComponent {
     @Subcomponent.Factory
     interface Factory{

@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.navOptions
 import ru.dayone.start.R
-import ru.dayone.tasksplitter.common.navigation.LoginNavRoute
+import ru.dayone.tasksplitter.common.navigation.AuthNavRoute
 import ru.dayone.tasksplitter.common.theme.Typography
 import ru.dayone.tasksplitter.common.theme.buttonTextStyle
 import ru.dayone.tasksplitter.features.start.data.utils.aboutAppImages
@@ -127,8 +127,8 @@ fun StartScreen(
 
             Button(
                 onClick = {
-                    navController.navigate(route = LoginNavRoute, navOptions = navOptions {
-                        popUpTo<LoginNavRoute>()
+                    navController.navigate(route = AuthNavRoute, navOptions = navOptions {
+                        popUpTo<AuthNavRoute>()
                     })
                 },
                 modifier = Modifier

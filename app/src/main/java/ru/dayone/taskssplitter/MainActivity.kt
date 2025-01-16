@@ -1,7 +1,6 @@
 package ru.dayone.taskssplitter
 
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,7 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
 import ru.dayone.auth.presentation.AuthScreen
 import ru.dayone.main.presentation.MainScreen
-import ru.dayone.tasksplitter.common.navigation.LoginNavRoute
+import ru.dayone.tasksplitter.common.navigation.AuthNavRoute
 import ru.dayone.tasksplitter.common.navigation.MainNavRoute
 import ru.dayone.tasksplitter.common.navigation.StartNavRoute
 import ru.dayone.tasksplitter.common.theme.TasksSplitterTheme
@@ -56,6 +56,11 @@ fun Content(
     modifier: Modifier
 ){
     val navController = rememberNavController()
+
+    val application = LocalContext.current.applicationContext as TaskSplitterApplication
+
+    val authComponent = application.provideAuthComponent()
+
     NavHost(
         navController,
         startDestination = StartNavRoute
@@ -66,9 +71,10 @@ fun Content(
             )
         }
 
-        composable<LoginNavRoute> {
+        composable<AuthNavRoute> {
             AuthScreen(
-                navController
+                navController,
+                authComponent.getAuthViewModel()
             )
         }
 

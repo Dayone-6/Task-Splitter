@@ -1,8 +1,8 @@
 package ru.dayone.taskssplitter
 
 import android.app.Application
-import ru.dayone.auth.data.di.components.AuthComponent
-import ru.dayone.auth.data.di.components.AuthComponentProvider
+import ru.dayone.auth.data.di.AuthComponent
+import ru.dayone.auth.data.di.AuthComponentProvider
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsComponent
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsComponentProvider
 import ru.dayone.taskssplitter.di.AppComponent
@@ -18,8 +18,8 @@ class TaskSplitterApplication : Application(), AuthComponentProvider, SharedPref
         _appComponent = DaggerAppComponent.factory().create()
     }
 
-    override fun provideSignInComponent() : AuthComponent {
-        return appComponent.authComponentFactory().create()
+    override fun provideAuthComponent() : AuthComponent {
+        return appComponent.authComponentFactory().create(applicationContext)
     }
 
     override fun provideSharedPrefsComponent(): SharedPrefsComponent {

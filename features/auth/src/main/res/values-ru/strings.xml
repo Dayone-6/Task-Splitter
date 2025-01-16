@@ -8,5 +8,5 @@
     <string name="hint_confirmation_code">Код подтверждения</string>
     <string name="text_swipe_form_to_change_registration_type">Вы можете свайпнуть форму влево, чтобы сменить тип входа с почты и пароля на телефон !</string>
     <string name="error_incorrect_email">Некорректный Email</string>
-    <string name="text_sign_in_with_google">Войти с помощью</string>
+    <string name="text_sign_in_with">Войти с помощью</string>
 </resources>

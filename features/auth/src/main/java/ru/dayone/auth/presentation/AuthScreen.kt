@@ -2,13 +2,11 @@ package ru.dayone.auth.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -33,7 +31,8 @@ import ru.dayone.tasksplitter.common.theme.buttonTextStyle
 
 @Composable
 fun AuthScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: AuthViewModel
 ) {
     val context = LocalContext.current
 
@@ -105,7 +104,7 @@ fun AuthScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = context.getString(R.string.text_sign_in_with_google),
+                        text = context.getString(R.string.text_sign_in_with),
                         style = buttonTextStyle.copy(),
                         modifier = Modifier.padding(5.dp)
                     )

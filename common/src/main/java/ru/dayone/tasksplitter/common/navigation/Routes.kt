@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 object StartNavRoute
 
 @Serializable
-object LoginNavRoute
+object AuthNavRoute
 
 @Serializable
 object MainNavRoute

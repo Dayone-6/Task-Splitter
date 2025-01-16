@@ -12,12 +12,15 @@ kotlinxSerializationJson = "1.7.3"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.12.01"
+security = "1.0.0"
 material = "1.7.6"
 navigationCompose = "2.8.5"
 appcompat = "1.7.0"
 materialVersion = "1.12.0"
 flowredux = "1.2.2"
 retrofit = "2.11.0"
+firebaseAuthKtx = "23.1.0"
+securityCryptoKtx = "1.0.0"
 
 
 [libraries]
@@ -48,6 +51,8 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 flow-redux = { group = "com.freeletics.flowredux", name = "flowredux-jvm", version.ref = "flowredux" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+androidx-security = { group = "androidx.security", name = "security-crypto", version.ref = "security" }
 
 
 [plugins]

@@ -8,5 +8,5 @@
     <string name="hint_confirmation_code">Confirmation Code</string>
     <string name="text_swipe_form_to_change_registration_type">You can swipe the form to change type from email and password to phone !</string>
     <string name="error_incorrect_email">Incorrect Email</string>
-    <string name="text_sign_in_with_google">Sign In with</string>
+    <string name="text_sign_in_with">Sign In with</string>
 </resources>
