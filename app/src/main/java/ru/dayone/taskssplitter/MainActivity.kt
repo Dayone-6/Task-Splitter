@@ -17,10 +17,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
-import ru.dayone.auth.presentation.AuthScreen
+import ru.dayone.auth.presentation.sign_in.AuthScreen
+import ru.dayone.auth.presentation.sign_up.SignUpScreen
 import ru.dayone.main.presentation.MainScreen
 import ru.dayone.tasksplitter.common.navigation.AuthNavRoute
 import ru.dayone.tasksplitter.common.navigation.MainNavRoute
+import ru.dayone.tasksplitter.common.navigation.SignUpNavRoute
 import ru.dayone.tasksplitter.common.navigation.StartNavRoute
 import ru.dayone.tasksplitter.common.theme.TasksSplitterTheme
 import ru.dayone.tasksplitter.features.start.presentation.StartScreen
@@ -75,6 +77,12 @@ fun Content(
             AuthScreen(
                 navController,
                 authComponent.getAuthViewModel()
+            )
+        }
+
+        composable<SignUpNavRoute>{
+            SignUpScreen(
+                navController
             )
         }
 

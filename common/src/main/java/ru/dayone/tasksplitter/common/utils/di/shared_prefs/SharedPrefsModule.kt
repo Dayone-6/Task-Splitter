@@ -13,8 +13,9 @@ import javax.inject.Singleton
 class SharedPrefsModule{
 
     @Provides
+    @EncryptedSharedPrefsQualifier
     @Singleton
-    fun provideSharedPrefs(context: Context): SharedPreferences{
+    fun provideEncryptedSharedPrefs(context: Context): SharedPreferences{
         val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
         return EncryptedSharedPreferences.create(
             ENCRYPTED_SHARED_PREFS_NAME,

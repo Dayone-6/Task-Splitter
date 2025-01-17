@@ -10,3 +10,6 @@ object AuthNavRoute
 
 @Serializable
 object MainNavRoute
+
+@Serializable
+object SignUpNavRoute

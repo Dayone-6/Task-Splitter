@@ -9,4 +9,8 @@
     <string name="text_swipe_form_to_change_registration_type">Вы можете свайпнуть форму влево, чтобы сменить тип входа с почты и пароля на телефон !</string>
     <string name="error_incorrect_email">Некорректный Email</string>
     <string name="text_sign_in_with">Войти с помощью</string>
+    <string name="error_this_type_isnt_working">Этот способ схода не работает</string>
+    <string name="error_request_canceled">Запрос прерван</string>
+    <string name="error_something_went_wrong">Что-то пошло не так!</string>
+    <string name="error_password_too_short">Минимальная длина пароля 6 символов</string>
 </resources>

@@ -3,7 +3,7 @@ package ru.dayone.auth.data.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Subcomponent
-import ru.dayone.auth.presentation.AuthViewModel
+import ru.dayone.auth.presentation.sign_in.AuthViewModel
 import javax.inject.Singleton
 
 @Singleton

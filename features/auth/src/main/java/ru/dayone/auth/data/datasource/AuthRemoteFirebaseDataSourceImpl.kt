@@ -5,7 +5,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import ru.dayone.auth.data.exception.NoSuchAuthTypeException
-import ru.dayone.auth.data.exception.NoSuchUserException
 import ru.dayone.auth.data.exception.RequestCanceledException
 import ru.dayone.auth.domain.AuthType
 import ru.dayone.auth.domain.datasource.AuthRemoteDataSource
@@ -53,7 +52,7 @@ class AuthRemoteFirebaseDataSourceImpl(
                 }.addOnCanceledListener {
                     throw RequestCanceledException()
                 }.await()
-            result = getUserInformation(resultUser!!)
+            result = getUserInformation(resultUser!!) ?: User(resultUser!!.uid, null, null)
         } catch (e: Exception) {
             return Result.Error(e)
         }
@@ -68,21 +67,16 @@ class AuthRemoteFirebaseDataSourceImpl(
         return Result.Error(NoSuchAuthTypeException())
     }
 
-    private suspend fun getUserInformation(user: FirebaseUser): User {
+    private suspend fun getUserInformation(user: FirebaseUser): User? {
         var result: User? = null
         db.collection("users").document(user.uid).get()
             .addOnSuccessListener {
-                val firebaseUser = it.toObject(User::class.java)
-                if (firebaseUser == null) {
-                    throw NoSuchUserException()
-                } else {
-                    result = firebaseUser
-                }
+                result = it.toObject(User::class.java)
             }.addOnFailureListener {
                 throw it
             }.addOnCanceledListener {
                 throw RequestCanceledException()
             }.await()
-        return result!!
+        return result
     }
 }

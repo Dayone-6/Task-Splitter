@@ -15,5 +15,6 @@ interface SharedPrefsComponent {
         fun create(@BindsInstance context: Context) : SharedPrefsComponent
     }
 
-    fun getSharedPrefs() : SharedPreferences
+    @EncryptedSharedPrefsQualifier
+    fun getEncryptedSharedPrefs() : SharedPreferences
 }

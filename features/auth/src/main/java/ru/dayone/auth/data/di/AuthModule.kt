@@ -9,13 +9,14 @@ import dagger.Provides
 import ru.dayone.auth.data.datasource.AuthLocalDataSourceImpl
 import ru.dayone.auth.data.datasource.AuthRemoteFirebaseDataSourceImpl
 import ru.dayone.auth.data.repository.AuthRepositoryImpl
+import ru.dayone.auth.data.usecase.validate_password.ValidatePasswordUseCase
 import ru.dayone.auth.domain.datasource.AuthLocalDataSource
 import ru.dayone.auth.domain.datasource.AuthRemoteDataSource
 import ru.dayone.auth.domain.repository.AuthRepository
-import ru.dayone.auth.presentation.AuthViewModel
-import ru.dayone.auth.presentation.state_hosting.AuthStateMachine
+import ru.dayone.auth.presentation.sign_in.AuthViewModel
+import ru.dayone.auth.presentation.sign_in.state_hosting.AuthStateMachine
+import ru.dayone.tasksplitter.common.utils.di.shared_prefs.EncryptedSharedPrefsQualifier
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsModule
-import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsScope
 import javax.inject.Singleton
 
 @Module(includes = [SharedPrefsModule::class])
@@ -29,8 +30,13 @@ class AuthModule {
     @Singleton
     @Provides
     fun provideAuthStateMachine(
-        authRepository: AuthRepository
-    ): AuthStateMachine = AuthStateMachine(authRepository)
+        authRepository: AuthRepository,
+        validatePasswordUseCase: ValidatePasswordUseCase
+    ): AuthStateMachine = AuthStateMachine(authRepository, validatePasswordUseCase)
+
+    @Singleton
+    @Provides
+    fun provideValidatePasswordUseCase(): ValidatePasswordUseCase = ValidatePasswordUseCase()
 
     @Singleton
     @Provides
@@ -41,8 +47,9 @@ class AuthModule {
 
     @Singleton
     @Provides
-    fun provideAuthLocalDataSource(prefs: SharedPreferences): AuthLocalDataSource =
-        AuthLocalDataSourceImpl(prefs)
+    fun provideAuthLocalDataSource(
+        @EncryptedSharedPrefsQualifier prefs: SharedPreferences
+    ): AuthLocalDataSource = AuthLocalDataSourceImpl(prefs)
 
     @Singleton
     @Provides

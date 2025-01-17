@@ -1,4 +1,4 @@
-package ru.dayone.auth.presentation.state_hosting
+package ru.dayone.auth.presentation.sign_in.state_hosting
 
 sealed class AuthEffect {
     class Loading: AuthEffect()

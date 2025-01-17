@@ -1,4 +1,4 @@
-package ru.dayone.auth.presentation
+package ru.dayone.auth.presentation.sign_in
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

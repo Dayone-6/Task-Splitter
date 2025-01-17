@@ -1,4 +1,4 @@
-package ru.dayone.auth.presentation
+package ru.dayone.auth.presentation.sign_in
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
