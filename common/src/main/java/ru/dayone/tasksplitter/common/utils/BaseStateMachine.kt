@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 open class BaseStateMachine<E : Any, S : Any, A : Any>(initialState: S) :
     FlowReduxStateMachine<S, A>(initialState) {
     private val _effect: MutableSharedFlow<E> = MutableSharedFlow()
-    private val effect: SharedFlow<E> = _effect.asSharedFlow()
+    val effect: SharedFlow<E> = _effect.asSharedFlow()
 
     protected suspend fun updateEffect(newEffect: E){
         _effect.emit(newEffect)

@@ -12,14 +12,19 @@ class AuthRepositoryImpl(
     private val remoteDataSource: AuthRemoteDataSource
 ) : AuthRepository {
     override suspend fun signIn(type: AuthType): Result<User> {
-        return when(val result = remoteDataSource.signIn(type)){
-            is Result.Success -> {
-                localDataSource.saveCurrentUser(result.result)
-                Result.Success(result.result)
+        return try {
+            when (val result = remoteDataSource.signIn(type)) {
+                is Result.Success -> {
+                    localDataSource.saveCurrentUser(result.result)
+                    Result.Success(result.result)
+                }
+
+                is Result.Error -> {
+                    Result.Error(result.exception)
+                }
             }
-            is Result.Error -> {
-                Result.Error(result.exception)
-            }
+        }catch (e: Exception){
+            Result.Error(e)
         }
     }
 

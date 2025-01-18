@@ -29,7 +29,7 @@ import ru.dayone.tasksplitter.common.utils.components.PhoneNumberField
 @Composable
 fun PhoneAuthScreen(
     onSendCode: (phone: String) -> Unit,
-    onConfirmCode: (code: String) -> Unit
+    onConfirmCode: (phone: String, code: String) -> Unit
 ) {
     var phoneNumber by remember {
         mutableStateOf("")
@@ -77,7 +77,7 @@ fun PhoneAuthScreen(
                     confirmationCodeFieldIsVisible = true
                     onSendCode.invoke(phoneNumber)
                 }else{
-                    onConfirmCode.invoke(confirmationCode)
+                    onConfirmCode.invoke(phoneNumber, confirmationCode)
                 }
             }
         ) {

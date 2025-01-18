@@ -11,20 +11,19 @@ import ru.dayone.auth.domain.repository.AuthRepository
 import ru.dayone.tasksplitter.common.utils.BaseStateMachine
 import ru.dayone.tasksplitter.common.utils.Result
 import ru.dayone.tasksplitter.common.utils.UIText
-import ru.dayone.tasksplitter.common.utils.di.shared_prefs.EncryptedSharedPrefsQualifier
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AuthStateMachine @Inject constructor(
     private val authRepository: AuthRepository,
     private val validatePasswordUseCase: ValidatePasswordUseCase
-) : BaseStateMachine<AuthEffect, AuthState, AuthIntent>(
+) : BaseStateMachine<AuthEffect, AuthState, AuthAction>(
     initialState = AuthState.Content()
 ) {
     init {
         spec {
             inState<AuthState.Content> {
-                on<AuthIntent.OnPasswordChanged>{action, state ->
+                on<AuthAction.OnPasswordChanged>{ action, state ->
                     if(validatePasswordUseCase(action.password) is PasswordValidationResult.TooShort){
                         return@on state.mutate {
                             state.snapshot.copy(
@@ -38,21 +37,21 @@ class AuthStateMachine @Inject constructor(
                         )
                     }
                 }
-                on<AuthIntent.SignInUser>{ action, state ->
+
+                on<AuthAction.SignInUser>{ action, state ->
                     if(state.snapshot.error != null){
                         return@on state.noChange()
                     }
-                    updateEffect(AuthEffect.Loading())
-                    val result = authRepository.signIn(action.authType)
-                    when(result){
+                    updateEffect(AuthEffect.StartLoading)
+                    when(val result = authRepository.signIn(action.authType)){
                         is Result.Success -> {
                             Log.d("AuthStateMachine", result.result.toString())
                             when(result.result.nickname){
                                 null -> {
-                                    updateEffect(AuthEffect.ToSignUp())
+                                    updateEffect(AuthEffect.ToSignUp)
                                 }
                                 else -> {
-                                    updateEffect(AuthEffect.ToMain())
+                                    updateEffect(AuthEffect.ToMain)
                                 }
                             }
                             return@on state.override {
@@ -64,6 +63,7 @@ class AuthStateMachine @Inject constructor(
                         }
                         is Result.Error -> {
                             Log.e("AuthStateMachine", "Error", result.exception)
+                            updateEffect(AuthEffect.StopLoading)
                             val error = when(result.exception){
                                 is NoSuchAuthTypeException -> {
                                     UIText.StringResource(

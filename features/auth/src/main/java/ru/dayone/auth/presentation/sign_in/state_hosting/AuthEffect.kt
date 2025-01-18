@@ -1,9 +1,11 @@
 package ru.dayone.auth.presentation.sign_in.state_hosting
 
 sealed class AuthEffect {
-    class Loading: AuthEffect()
+    data object StartLoading : AuthEffect()
 
-    class ToMain: AuthEffect()
+    data object StopLoading : AuthEffect()
 
-    class ToSignUp: AuthEffect()
+    data object ToMain : AuthEffect()
+
+    data object ToSignUp : AuthEffect()
 }

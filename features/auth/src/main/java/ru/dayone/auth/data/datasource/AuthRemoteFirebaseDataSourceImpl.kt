@@ -1,15 +1,24 @@
 package ru.dayone.auth.data.datasource
 
+import android.util.Log
+import androidx.compose.ui.platform.LocalGraphicsContext
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.asDeferred
 import kotlinx.coroutines.tasks.await
+import ru.dayone.auth.data.exception.InvalidCredentialsException
 import ru.dayone.auth.data.exception.NoSuchAuthTypeException
 import ru.dayone.auth.data.exception.RequestCanceledException
 import ru.dayone.auth.domain.AuthType
 import ru.dayone.auth.domain.datasource.AuthRemoteDataSource
 import ru.dayone.auth.domain.model.User
 import ru.dayone.tasksplitter.common.utils.Result
+import kotlin.math.sin
 
 class AuthRemoteFirebaseDataSourceImpl(
     private val auth: FirebaseAuth,
@@ -41,22 +50,43 @@ class AuthRemoteFirebaseDataSourceImpl(
     }
 
     private suspend fun signInWithEmailAndPassword(credentials: AuthType.EmailAndPassword): Result<User> {
-        val result: User?
-        try {
-            var resultUser: FirebaseUser? = null
-            auth.signInWithEmailAndPassword(credentials.email, credentials.password)
-                .addOnSuccessListener {
-                    resultUser = it.user ?: throw NullPointerException()
-                }.addOnFailureListener {
-                    throw it
-                }.addOnCanceledListener {
-                    throw RequestCanceledException()
-                }.await()
-            result = getUserInformation(resultUser!!) ?: User(resultUser!!.uid, null, null)
-        } catch (e: Exception) {
-            return Result.Error(e)
+        val result: Result<User> = try {
+            val signInTask = auth.signInWithEmailAndPassword(credentials.email, credentials.password)
+            val signInResult = signInTask.await()
+            if(signInTask.isSuccessful){
+                val registeredUser = getUserInformation(signInResult.user!!)
+                Result.Success(registeredUser ?: User(signInResult.user!!.uid))
+            }else{
+                Result.Error(RequestCanceledException())
+            }
+        }catch (e: Exception){
+            if(e is FirebaseAuthInvalidCredentialsException){
+                val createUserResult = createFirebaseUserByEmailAndPassword(credentials)
+                if(createUserResult is Result.Success){
+                    Result.Success(createUserResult.result)
+                }else{
+                    Result.Error(e)
+                }
+            }else{
+                Result.Error(e)
+            }
         }
-        return Result.Success(result)
+        return result
+    }
+
+    private suspend fun createFirebaseUserByEmailAndPassword(credentials: AuthType.EmailAndPassword): Result<User> {
+        val result: Result<User> = try {
+            val signUpTask = auth.createUserWithEmailAndPassword(credentials.email, credentials.password)
+            val signUpResult = signUpTask.await()
+            if(signUpTask.isSuccessful){
+                Result.Success(User(signUpResult.user!!.uid))
+            }else{
+                Result.Error(RequestCanceledException())
+            }
+        }catch (e: Exception){
+            Result.Error(e)
+        }
+        return result
     }
 
     private fun signInWithPhone(credentials: AuthType.Phone): Result<User> {

@@ -35,7 +35,8 @@ import ru.dayone.tasksplitter.common.utils.components.EmailField
 @Composable
 fun EmailPasswordAuthScreen(
     snackBarHost: SnackbarHostState,
-    onAuth: (email: String, password: String) -> Unit
+    onAuth: (email: String, password: String) -> Unit,
+    onPasswordChanged: (password: String) -> Unit
 ) {
     var email by remember {
         mutableStateOf("")
@@ -71,7 +72,10 @@ fun EmailPasswordAuthScreen(
             text = password,
             hint = context.getString(R.string.hint_password),
             textStyle = Typography.titleLarge,
-            onTextChanged = { password = it },
+            onTextChanged = {
+                password = it
+                onPasswordChanged.invoke(password)
+            },
             visualTransformation = if (isPasswordHidden) {
                 PasswordVisualTransformation()
             } else {
@@ -118,5 +122,5 @@ fun EmailPasswordAuthScreen(
 @Preview
 @Composable
 fun EmailPasswordAuthScreenPreview() {
-    EmailPasswordAuthScreen(SnackbarHostState(), onAuth = { _, _ -> })
+    EmailPasswordAuthScreen(SnackbarHostState(), onAuth = { _, _ -> }, onPasswordChanged = {})
 }
