@@ -29,12 +29,14 @@ import kotlinx.coroutines.launch
 import ru.dayone.auth.R
 import ru.dayone.tasksplitter.common.theme.Typography
 import ru.dayone.tasksplitter.common.theme.buttonTextStyle
+import ru.dayone.tasksplitter.common.utils.UIText
 import ru.dayone.tasksplitter.common.utils.components.CustomTextField
 import ru.dayone.tasksplitter.common.utils.components.EmailField
 
 @Composable
 fun EmailPasswordAuthScreen(
     snackBarHost: SnackbarHostState,
+    passwordError: String? = null,
     onAuth: (email: String, password: String) -> Unit,
     onPasswordChanged: (password: String) -> Unit
 ) {
@@ -91,7 +93,9 @@ fun EmailPasswordAuthScreen(
                 IconButton(onClick = { isPasswordHidden = !isPasswordHidden }) {
                     Icon(imageVector = image, description)
                 }
-            }
+            },
+            isError = { passwordError != null },
+            supportingText = passwordError
         )
 
         Button(

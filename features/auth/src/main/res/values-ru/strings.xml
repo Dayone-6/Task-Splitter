@@ -14,4 +14,6 @@
     <string name="error_something_went_wrong">Что-то пошло не так!</string>
     <string name="error_password_too_short">Минимальная длина пароля 6 символов</string>
     <string name="text_error">Ошибка</string>
+    <string name="error_invalid_credentials">Проверьте правильность заполнения полей</string>
+    <string name="error_too_many_requests">Слишком много запросов. Попробуйте позже</string>
 </resources>

@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.asDeferred
 import kotlinx.coroutines.tasks.await
-import ru.dayone.auth.data.exception.InvalidCredentialsException
 import ru.dayone.auth.data.exception.NoSuchAuthTypeException
 import ru.dayone.auth.data.exception.RequestCanceledException
 import ru.dayone.auth.domain.AuthType

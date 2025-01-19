@@ -14,4 +14,6 @@
     <string name="error_something_went_wrong">Something went wrong!</string>
     <string name="error_password_too_short">Password Must be at least 6 symbols length</string>
     <string name="text_error">Error</string>
+    <string name="error_invalid_credentials">Check if fields are filled by valid data</string>
+    <string name="error_too_many_requests">Too many requests. Try again later</string>
 </resources>

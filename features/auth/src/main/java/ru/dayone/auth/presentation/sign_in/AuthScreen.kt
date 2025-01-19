@@ -21,8 +21,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -106,25 +108,23 @@ fun AuthScreen(
         }
     }
 
-    LaunchedEffect(
-        key1 = "snackBar"
-    ) {
-        if ((state as AuthState.Content).error != null) {
-            scope.launch {
-                snackBarHostState.showSnackbar(
-                    message = (state as AuthState.Content).error!!.getValue(context),
-                    actionLabel = context.getString(R.string.text_error)
-                )
-            }
-        }
-
-    }
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
         }
     ) { innerPadding ->
+
+        if((state as AuthState.Content).error != null){
+            Log.d("AuthScreen", state.toString())
+            LaunchedEffect(state) {
+                scope.launch {
+                    snackBarHostState.showSnackbar(
+                        message = (state as AuthState.Content).error!!.getValue(context)
+                    )
+                }
+            }
+        }
+
         if (isLoading) {
             Dialog(
                 onDismissRequest = { isLoading = false },
@@ -184,6 +184,11 @@ fun AuthScreen(
                     if (it == 0) {
                         EmailPasswordAuthScreen(
                             snackBarHostState,
+                            passwordError = if((state as AuthState.Content).passwordError != null){
+                                (state as AuthState.Content).passwordError!!.getValue(context)
+                            }else{
+                                null
+                            },
                             onAuth = { email, password ->
                                 viewModel.handleAction(
                                     AuthAction.SignInUser(

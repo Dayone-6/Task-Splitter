@@ -6,6 +6,7 @@ import ru.dayone.tasksplitter.common.utils.UIText
 sealed class AuthState {
     data class Content(
         var user: User? = null,
-        var error: UIText? = null
+        var error: UIText? = null,
+        var passwordError: UIText? = null
     ) : AuthState()
 }

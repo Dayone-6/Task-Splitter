@@ -1,6 +1,8 @@
 package ru.dayone.auth.presentation.sign_in.state_hosting
 
 import android.util.Log
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.dayone.auth.R
 import ru.dayone.auth.data.exception.NoSuchAuthTypeException
@@ -27,19 +29,19 @@ class AuthStateMachine @Inject constructor(
                     if(validatePasswordUseCase(action.password) is PasswordValidationResult.TooShort){
                         return@on state.mutate {
                             state.snapshot.copy(
-                                error = UIText.StringResource(R.string.error_password_too_short)
+                                passwordError = UIText.StringResource(R.string.error_password_too_short)
                             )
                         }
                     }
                     return@on state.mutate {
                         state.snapshot.copy(
-                            error = null
+                            passwordError = null
                         )
                     }
                 }
 
                 on<AuthAction.SignInUser>{ action, state ->
-                    if(state.snapshot.error != null){
+                    if(state.snapshot.passwordError != null){
                         return@on state.noChange()
                     }
                     updateEffect(AuthEffect.StartLoading)
@@ -73,6 +75,16 @@ class AuthStateMachine @Inject constructor(
                                 is RequestCanceledException -> {
                                     UIText.StringResource(
                                         R.string.error_request_canceled
+                                    )
+                                }
+                                is FirebaseAuthInvalidCredentialsException -> {
+                                    UIText.StringResource(
+                                        R.string.error_invalid_credentials
+                                    )
+                                }
+                                is FirebaseTooManyRequestsException -> {
+                                    UIText.StringResource(
+                                        R.string.error_too_many_requests
                                     )
                                 }
 

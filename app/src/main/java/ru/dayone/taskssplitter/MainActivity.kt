@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                     WindowCompat.getInsetsController(window, window.decorView)
                         .isAppearanceLightStatusBars = true
                 }
-                Scaffold(modifier = Modifier.fillMaxSize().imePadding()) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Content(
                         modifier = Modifier.padding(innerPadding)
                     )

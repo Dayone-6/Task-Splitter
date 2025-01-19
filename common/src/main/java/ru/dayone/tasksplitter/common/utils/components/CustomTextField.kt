@@ -52,7 +52,7 @@ fun CustomTextField(
             null
         },
         supportingText = if (!supportingText.isNullOrBlank()) {
-            { Text(text = supportingText, style = textStyle) }
+            { Text(text = supportingText, style = textStyle.copy(fontSize = textStyle.fontSize / 1.5)) }
         } else {
             null
         },
