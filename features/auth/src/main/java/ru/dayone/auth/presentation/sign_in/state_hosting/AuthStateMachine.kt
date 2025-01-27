@@ -9,6 +9,7 @@ import ru.dayone.auth.data.exception.NoSuchAuthTypeException
 import ru.dayone.auth.data.exception.RequestCanceledException
 import ru.dayone.auth.data.usecase.validate_password.PasswordValidationResult
 import ru.dayone.auth.data.usecase.validate_password.ValidatePasswordUseCase
+import ru.dayone.auth.domain.AuthType
 import ru.dayone.auth.domain.repository.AuthRepository
 import ru.dayone.tasksplitter.common.utils.BaseStateMachine
 import ru.dayone.tasksplitter.common.utils.Result
@@ -66,6 +67,7 @@ class AuthStateMachine @Inject constructor(
                         is Result.Error -> {
                             Log.e("AuthStateMachine", "Error", result.exception)
                             updateEffect(AuthEffect.StopLoading)
+                            var isVerificationCodeError = state.snapshot.isVerificationCodeError
                             val error = when(result.exception){
                                 is NoSuchAuthTypeException -> {
                                     UIText.StringResource(
@@ -79,7 +81,12 @@ class AuthStateMachine @Inject constructor(
                                 }
                                 is FirebaseAuthInvalidCredentialsException -> {
                                     UIText.StringResource(
-                                        R.string.error_invalid_credentials
+                                        if(action.authType is AuthType.Phone) {
+                                            isVerificationCodeError = true
+                                            R.string.error_invalid_verification_code
+                                        }else{
+                                            R.string.error_invalid_credentials
+                                        }
                                     )
                                 }
                                 is FirebaseTooManyRequestsException -> {
@@ -96,7 +103,8 @@ class AuthStateMachine @Inject constructor(
                             }
                             return@on state.mutate {
                                 state.snapshot.copy(
-                                    error = error
+                                    error = error,
+                                    isVerificationCodeError = isVerificationCodeError
                                 )
                             }
                         }

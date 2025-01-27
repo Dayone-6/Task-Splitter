@@ -29,7 +29,8 @@ import ru.dayone.tasksplitter.common.utils.components.PhoneNumberField
 @Composable
 fun PhoneAuthScreen(
     onSendCode: (phone: String) -> Unit,
-    onConfirmCode: (phone: String, code: String) -> Unit
+    onConfirmCode: (phone: String, code: String) -> Unit,
+    isVerificationCodeError: Boolean
 ) {
     var phoneNumber by remember {
         mutableStateOf("")
@@ -51,7 +52,6 @@ fun PhoneAuthScreen(
         PhoneNumberField(
             phone = phoneNumber,
             textStyle = Typography.titleLarge,
-
         ) {
             phoneNumber = it
         }
@@ -66,7 +66,8 @@ fun PhoneAuthScreen(
                 text = confirmationCode,
                 onTextChanged = { confirmationCode = it },
                 hint = context.getString(R.string.hint_confirmation_code),
-                textStyle = Typography.titleLarge
+                textStyle = Typography.titleLarge,
+                isError = { isVerificationCodeError }
             )
         }
 

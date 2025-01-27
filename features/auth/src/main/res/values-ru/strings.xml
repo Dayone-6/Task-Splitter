@@ -16,4 +16,5 @@
     <string name="text_error">Ошибка</string>
     <string name="error_invalid_credentials">Проверьте правильность заполнения полей</string>
     <string name="error_too_many_requests">Слишком много запросов. Попробуйте позже</string>
+    <string name="error_invalid_verification_code">Неправильный проверочный код</string>
 </resources>

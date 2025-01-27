@@ -1,5 +1,7 @@
 package ru.dayone.auth.domain
 
+import com.google.firebase.auth.PhoneAuthCredential
+
 sealed class AuthType {
     data class EmailAndPassword(
         val email: String,
@@ -7,8 +9,7 @@ sealed class AuthType {
     ) : AuthType()
 
     data class Phone(
-        val phoneNumber: String,
-        val confirmationCode: String?
+        val credential: PhoneAuthCredential
     ) : AuthType()
 
     class Google() : AuthType()

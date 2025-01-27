@@ -88,8 +88,21 @@ class AuthRemoteFirebaseDataSourceImpl(
         return result
     }
 
-    private fun signInWithPhone(credentials: AuthType.Phone): Result<User> {
-        return Result.Error(NoSuchAuthTypeException())
+    private suspend fun signInWithPhone(credentials: AuthType.Phone): Result<User> {
+        val result: Result<User> = try {
+            val authTask = auth.signInWithCredential(credentials.credential)
+            val authResult = authTask.await()
+            if(authTask.isSuccessful){
+                val userData = getUserInformation(authResult.user!!)
+                Result.Success(userData ?: User(authResult.user!!.uid))
+            }else{
+                Result.Error(RequestCanceledException())
+            }
+        }catch (e: Exception){
+            Result.Error(e)
+        }
+
+        return result
     }
 
     private fun signInWithGoogle(credentials: AuthType.Google): Result<User> {
@@ -97,15 +110,17 @@ class AuthRemoteFirebaseDataSourceImpl(
     }
 
     private suspend fun getUserInformation(user: FirebaseUser): User? {
-        var result: User? = null
-        db.collection("users").document(user.uid).get()
-            .addOnSuccessListener {
-                result = it.toObject(User::class.java)
-            }.addOnFailureListener {
-                throw it
-            }.addOnCanceledListener {
-                throw RequestCanceledException()
-            }.await()
+        val task = db.collection("users").document(user.uid).get()
+        val result = try {
+            val res = task.await()
+            if(task.isSuccessful){
+                res.toObject(User::class.java)
+            }else{
+                null
+            }
+        }catch (e: Exception){
+            null
+        }
         return result
     }
 }

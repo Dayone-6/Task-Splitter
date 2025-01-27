@@ -16,4 +16,5 @@
     <string name="text_error">Error</string>
     <string name="error_invalid_credentials">Check if fields are filled by valid data</string>
     <string name="error_too_many_requests">Too many requests. Try again later</string>
+    <string name="error_invalid_verification_code">Invalid verification code</string>
 </resources>

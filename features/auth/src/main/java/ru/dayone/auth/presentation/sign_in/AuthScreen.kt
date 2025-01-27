@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import kotlinx.coroutines.launch
 import ru.dayone.auth.R
 import ru.dayone.auth.domain.AuthType
@@ -53,6 +55,7 @@ import ru.dayone.tasksplitter.common.theme.Typography
 import ru.dayone.tasksplitter.common.theme.backgroundDark
 import ru.dayone.tasksplitter.common.theme.backgroundLight
 import ru.dayone.tasksplitter.common.theme.buttonTextStyle
+import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
 
 @Composable
 fun AuthScreen(
@@ -61,9 +64,6 @@ fun AuthScreen(
 ) {
     val context = LocalContext.current
 
-    val pagerState = rememberPagerState(
-        pageCount = { 2 }
-    )
     val snackBarHostState = remember {
         SnackbarHostState()
     }
@@ -114,7 +114,7 @@ fun AuthScreen(
         }
     ) { innerPadding ->
 
-        if((state as AuthState.Content).error != null){
+        if ((state as AuthState.Content).error != null) {
             Log.d("AuthScreen", state.toString())
             LaunchedEffect(state) {
                 scope.launch {
@@ -126,30 +126,9 @@ fun AuthScreen(
         }
 
         if (isLoading) {
-            Dialog(
-                onDismissRequest = { isLoading = false },
-                properties = DialogProperties(
-                    dismissOnClickOutside = false,
-                    dismissOnBackPress = false
-                )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .background(
-                            shape = RoundedCornerShape(10.dp),
-                            color = if (isSystemInDarkTheme()) {
-                                backgroundDark
-                            } else {
-                                backgroundLight
-                            }
-                        ),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
+            LoadingDialog()
         }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -170,91 +149,9 @@ fun AuthScreen(
                 textAlign = TextAlign.Center
             )
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-            ) {
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier.fillMaxWidth(),
-                    beyondViewportPageCount = 2
-                ) {
-                    if (it == 0) {
-                        EmailPasswordAuthScreen(
-                            snackBarHostState,
-                            passwordError = if((state as AuthState.Content).passwordError != null){
-                                (state as AuthState.Content).passwordError!!.getValue(context)
-                            }else{
-                                null
-                            },
-                            onAuth = { email, password ->
-                                viewModel.handleAction(
-                                    AuthAction.SignInUser(
-                                        AuthType.EmailAndPassword(
-                                            email,
-                                            password
-                                        )
-                                    )
-                                )
-                            },
-                            onPasswordChanged = {
-                                viewModel.handleAction(AuthAction.OnPasswordChanged(it))
-                            }
-                        )
-                    } else {
-                        PhoneAuthScreen(
-                            onSendCode = { phone ->
-                                viewModel.handleAction(
-                                    AuthAction.SignInUser(
-                                        AuthType.Phone(
-                                            phone,
-                                            null
-                                        )
-                                    )
-                                )
-                            },
-                            onConfirmCode = { phone, confirmationCode ->
-                                viewModel.handleAction(
-                                    AuthAction.SignInUser(
-                                        AuthType.Phone(
-                                            phone,
-                                            confirmationCode
-                                        )
-                                    )
-                                )
-                            }
-                        )
-                    }
-                }
-            }
-
-            OutlinedButton(
-                onClick = {
-
-                },
-                modifier = Modifier
-                    .fillMaxWidth(.8f)
-                    .padding(10.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = context.getString(R.string.text_sign_in_with),
-                        style = buttonTextStyle.copy(),
-                        modifier = Modifier.padding(5.dp)
-                    )
-
-                    Icon(
-                        painter = painterResource(R.drawable.ic_google),
-                        contentDescription = "Google Icon",
-                        modifier = Modifier.size(32.dp),
-                        tint = Color.Unspecified
-                    )
-                }
-            }
+            AuthMainContent(viewModel, state, snackBarHostState)
         }
     }
 }
+
+

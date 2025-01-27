@@ -35,9 +35,19 @@ abstract class StatefulViewModel<S : Any, E : Any, A : Any>(
         }
     }
 
-    fun handleAction(action: A) {
+    open fun handleAction(action: A) {
         viewModelScope.launch {
             stateMachine.dispatch(action)
+        }
+    }
+
+    fun changeState(state: S){
+        _state.value = state
+    }
+
+    fun changeEffect(effect: E){
+        viewModelScope.launch {
+            _effect.emit(effect)
         }
     }
 }
