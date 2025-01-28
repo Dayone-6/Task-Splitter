@@ -9,7 +9,7 @@ import ru.dayone.auth.data.exception.NoSuchAuthTypeException
 import ru.dayone.auth.data.exception.RequestCanceledException
 import ru.dayone.auth.data.usecase.validate_password.PasswordValidationResult
 import ru.dayone.auth.data.usecase.validate_password.ValidatePasswordUseCase
-import ru.dayone.auth.domain.AuthType
+import ru.dayone.auth.data.AuthType
 import ru.dayone.auth.domain.repository.AuthRepository
 import ru.dayone.tasksplitter.common.utils.BaseStateMachine
 import ru.dayone.tasksplitter.common.utils.Result

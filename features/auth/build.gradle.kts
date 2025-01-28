@@ -74,6 +74,12 @@ dependencies {
     // Google Auth
     implementation(libs.play.services.auth)
 
+    implementation(libs.google.googleid)
+
+    // Credentials
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+
     // Dagger 2
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)

@@ -1,6 +1,6 @@
 package ru.dayone.auth.data.repository
 
-import ru.dayone.auth.domain.AuthType
+import ru.dayone.auth.data.AuthType
 import ru.dayone.auth.domain.datasource.AuthLocalDataSource
 import ru.dayone.auth.domain.datasource.AuthRemoteDataSource
 import ru.dayone.auth.domain.model.User

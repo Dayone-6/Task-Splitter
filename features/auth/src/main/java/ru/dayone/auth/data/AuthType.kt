@@ -1,5 +1,6 @@
-package ru.dayone.auth.domain
+package ru.dayone.auth.data
 
+import android.content.Context
 import com.google.firebase.auth.PhoneAuthCredential
 
 sealed class AuthType {
@@ -12,5 +13,7 @@ sealed class AuthType {
         val credential: PhoneAuthCredential
     ) : AuthType()
 
-    class Google() : AuthType()
+    data class Google(
+        val context: Context
+    ) : AuthType()
 }

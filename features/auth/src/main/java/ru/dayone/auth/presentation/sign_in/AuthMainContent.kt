@@ -31,7 +31,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import ru.dayone.auth.R
-import ru.dayone.auth.domain.AuthType
+import ru.dayone.auth.data.AuthType
 import ru.dayone.auth.presentation.sign_in.state_hosting.AuthAction
 import ru.dayone.auth.presentation.sign_in.state_hosting.AuthEffect
 import ru.dayone.auth.presentation.sign_in.state_hosting.AuthState
@@ -169,7 +169,13 @@ fun AuthMainContent(
 
     OutlinedButton(
         onClick = {
-
+            viewModel.handleAction(
+                AuthAction.SignInUser(
+                    AuthType.Google(
+                        context
+                    )
+                )
+            )
         },
         modifier = Modifier
             .fillMaxWidth(.8f)
