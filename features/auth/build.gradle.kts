@@ -12,8 +12,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 35
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,35 +35,52 @@ android {
 
 dependencies {
 
+    // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
+
+    // Material
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
+
+    // Junit
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Espresso
+    implementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    // Tooling
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.material.icons.extended)
-    implementation(libs.androidx.espresso.core)
-    implementation(libs.firebase.auth.ktx)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Compose
     implementation(libs.androidx.navigation.compose)
-    implementation(project(":common"))
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
 
+    // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.google.firebase.analytics)
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore)
 
+    // Google Auth
+    implementation(libs.play.services.auth)
+
+    // Dagger 2
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
+    // Flow Redux
     implementation(libs.flow.redux)
+
+    // Multi Module
+    implementation(project(":common"))
 }

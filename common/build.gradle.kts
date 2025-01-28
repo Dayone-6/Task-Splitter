@@ -11,7 +11,6 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        targetSdk = 35
         minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,27 +35,43 @@ android {
 
 dependencies {
 
+    // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Compose
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    // UI Tooling
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.security)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Material3
+    implementation(libs.androidx.material3)
+
+    // Security
+    implementation(libs.androidx.security)
+
+    // Junit
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Espresso
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    // Ktx Serialization
     implementation(libs.kotlinx.serialization.json)
 
+    // Dagger 2
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
+    // FLow Redux
     implementation(libs.flow.redux)
 }
