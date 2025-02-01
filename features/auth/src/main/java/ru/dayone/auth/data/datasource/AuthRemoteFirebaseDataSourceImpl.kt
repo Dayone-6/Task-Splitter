@@ -15,12 +15,14 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import ru.dayone.auth.data.AuthType
+import ru.dayone.auth.data.exception.NicknameIsAlreadyInUseException
 import ru.dayone.auth.data.exception.NoSuchAuthTypeException
 import ru.dayone.auth.data.exception.RequestCanceledException
 import ru.dayone.auth.domain.datasource.AuthRemoteDataSource
 import ru.dayone.auth.domain.model.User
 import ru.dayone.tasksplitter.common.utils.GOOGLE_AUTH_CLIENT_ID
 import ru.dayone.tasksplitter.common.utils.Result
+import ru.dayone.tasksplitter.common.utils.USERS_FIRESTORE_COLLECTION
 
 class AuthRemoteFirebaseDataSourceImpl(
     private val auth: FirebaseAuth,
@@ -48,7 +50,27 @@ class AuthRemoteFirebaseDataSourceImpl(
     }
 
     override suspend fun signUp(user: User): Result<User> {
-        return Result.Error(Exception())
+        return try {
+            val findNicknameTask = db.collection(USERS_FIRESTORE_COLLECTION).whereEqualTo("nickname", user.nickname).get()
+            val findNicknameResult = findNicknameTask.await()
+            if(findNicknameTask.isSuccessful){
+                if(!findNicknameResult.isEmpty){
+                    Result.Error(NicknameIsAlreadyInUseException())
+                }else{
+                    val signUpTask = db.collection(USERS_FIRESTORE_COLLECTION).document(user.id).set(user)
+                    val signUpResult = signUpTask.await()
+                    if(signUpTask.isSuccessful){
+                        Result.Success(user)
+                    }else{
+                        Result.Error(RequestCanceledException())
+                    }
+                }
+            }else{
+                Result.Error(findNicknameTask.exception ?: Exception())
+            }
+        }catch (e: Exception){
+            Result.Error(e)
+        }
     }
 
     private suspend fun signInWithEmailAndPassword(credentials: AuthType.EmailAndPassword): Result<User> {
@@ -163,15 +185,17 @@ class AuthRemoteFirebaseDataSourceImpl(
     }
 
     private suspend fun getUserInformation(user: FirebaseUser): User? {
-        val task = db.collection("users").document(user.uid).get()
+        val task = db.collection(USERS_FIRESTORE_COLLECTION).document(user.uid).get()
         val result = try {
             val res = task.await()
+            Log.d("AuthRemoteFirebaseDataSourceImpl", res.data.toString())
             if (task.isSuccessful) {
                 res.toObject(User::class.java)
             } else {
                 null
             }
         } catch (e: Exception) {
+            e.printStackTrace()
             null
         }
         return result

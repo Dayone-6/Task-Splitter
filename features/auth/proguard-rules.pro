@@ -24,3 +24,7 @@
 -keep class androidx.credentials.playservices.** {
   *;
 }
+
+-keep class ru.dayone.auth.domain.model.** {
+    *;
+}

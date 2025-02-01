@@ -37,3 +37,5 @@ val Typography = Typography(
 )
 
 val buttonTextStyle = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+
+val titleTextStyle = Typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 25.sp)

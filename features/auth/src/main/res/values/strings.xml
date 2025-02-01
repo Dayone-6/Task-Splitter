@@ -17,4 +17,11 @@
     <string name="error_invalid_credentials">Check if fields are filled by valid data</string>
     <string name="error_too_many_requests">Too many requests. Try again later</string>
     <string name="error_invalid_verification_code">Invalid verification code</string>
+    <string name="error_nickname_too_short">Nickname is too short</string>
+    <string name="title_sign_up">Sign Up</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_nickname">Unique nickname</string>
+    <string name="text_create_account">Create Account</string>
+    <string name="error_nickname_is_already_in_use">Nickname is already in use</string>
+
 </resources>

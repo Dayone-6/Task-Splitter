@@ -15,7 +15,7 @@ class AuthRepositoryImpl(
         return try {
             when (val result = remoteDataSource.signIn(type)) {
                 is Result.Success -> {
-                    localDataSource.saveCurrentUser(result.result)
+                    saveCurrentUser(result.result)
                     Result.Success(result.result)
                 }
 
@@ -28,11 +28,16 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun signUp(user: User): Result<User> {
-        return when(val signUpResult = remoteDataSource.signUp(user)){
+    override suspend fun signUp(name: String, nickname: String): Result<User> {
+        val currentUserResult = localDataSource.loadCurrentUser()
+        if(currentUserResult is Result.Error){
+            return currentUserResult
+        }
+        val currentUserId = (currentUserResult as Result.Success).result.id
+        return when(val signUpResult = remoteDataSource.signUp(User(currentUserId, name, nickname))){
             is Result.Success -> {
-                saveCurrentUser(user)
-                Result.Success(user)
+                saveCurrentUser(signUpResult.result)
+                Result.Success(signUpResult.result)
             }
 
             is Result.Error -> {

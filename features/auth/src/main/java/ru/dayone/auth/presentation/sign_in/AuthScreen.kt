@@ -28,9 +28,11 @@ import kotlinx.coroutines.launch
 import ru.dayone.auth.R
 import ru.dayone.auth.presentation.sign_in.state_hosting.AuthEffect
 import ru.dayone.auth.presentation.sign_in.state_hosting.AuthState
+import ru.dayone.tasksplitter.common.navigation.AuthNavRoute
 import ru.dayone.tasksplitter.common.navigation.MainNavRoute
 import ru.dayone.tasksplitter.common.navigation.SignUpNavRoute
 import ru.dayone.tasksplitter.common.theme.Typography
+import ru.dayone.tasksplitter.common.theme.titleTextStyle
 import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
 
 @Composable
@@ -67,17 +69,13 @@ fun AuthScreen(
 
                 is AuthEffect.ToMain -> {
                     navController.navigate(MainNavRoute) {
-                        popUpTo<MainNavRoute> {
-                            inclusive = true
-                        }
+                        popUpTo(0)
                     }
                 }
 
                 is AuthEffect.ToSignUp -> {
                     navController.navigate(SignUpNavRoute) {
-                        popUpTo<SignUpNavRoute> {
-                            inclusive = true
-                        }
+                        popUpTo(0)
                     }
                 }
             }
@@ -113,7 +111,7 @@ fun AuthScreen(
         ) {
             Text(
                 text = context.getString(R.string.title_sign_in_or_sign_up),
-                style = Typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 25.sp),
+                style = titleTextStyle,
                 modifier = Modifier.padding(20.dp),
                 textAlign = TextAlign.Center
             )

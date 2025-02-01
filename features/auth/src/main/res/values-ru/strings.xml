@@ -17,4 +17,10 @@
     <string name="error_invalid_credentials">Проверьте правильность заполнения полей</string>
     <string name="error_too_many_requests">Слишком много запросов. Попробуйте позже</string>
     <string name="error_invalid_verification_code">Неправильный проверочный код</string>
+    <string name="error_nickname_too_short">Слишком короткий никнейм</string>
+    <string name="title_sign_up">Регистрация</string>
+    <string name="hint_name">Имя</string>
+    <string name="hint_nickname">Уникальный никнейм</string>
+    <string name="text_create_account">Создать аккаунт</string>
+    <string name="error_nickname_is_already_in_use">Никнейм уже используется</string>
 </resources>
