@@ -13,3 +13,13 @@ object MainNavRoute
 
 @Serializable
 object SignUpNavRoute
+
+@Serializable
+object MyTasksNavRoute
+
+@Serializable
+object MyGroupsNavRoute
+
+@Serializable
+object AccountNavRoute
+

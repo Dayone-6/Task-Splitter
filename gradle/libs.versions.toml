@@ -13,11 +13,11 @@ espressoCore = "3.6.1"
 kotlinxSerializationJson = "1.7.3"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.0"
-composeBom = "2025.01.00"
+composeBom = "2025.02.00"
 playServicesAuth = "21.3.0"
 security = "1.0.0"
-material = "1.7.6"
-navigationCompose = "2.8.5"
+material = "1.7.8"
+navigationCompose = "2.8.7"
 flowredux = "1.2.2"
 retrofit = "2.11.0"
 firebaseAuthKtx = "23.1.0"
@@ -27,7 +27,6 @@ firebaseAuthKtx = "23.1.0"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
-androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
@@ -52,7 +51,6 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 flow-redux = { group = "com.freeletics.flowredux", name = "flowredux-jvm", version.ref = "flowredux" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 androidx-security = { group = "androidx.security", name = "security-crypto", version.ref = "security" }

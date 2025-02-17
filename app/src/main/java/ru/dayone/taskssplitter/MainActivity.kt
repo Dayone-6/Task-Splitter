@@ -18,8 +18,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
-import com.google.firebase.app
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import ru.dayone.auth.presentation.sign_in.AuthScreen
 import ru.dayone.auth.presentation.sign_up.SignUpScreen

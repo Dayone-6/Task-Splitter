@@ -17,7 +17,6 @@ import ru.dayone.auth.domain.repository.AuthRepository
 import ru.dayone.auth.presentation.sign_in.AuthViewModel
 import ru.dayone.auth.presentation.sign_in.state_hosting.AuthStateMachine
 import ru.dayone.auth.presentation.sign_up.SignUpViewModel
-import ru.dayone.auth.presentation.sign_up.state_hosting.SignUpState
 import ru.dayone.auth.presentation.sign_up.state_hosting.SignUpStateMachine
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.EncryptedSharedPrefsQualifier
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsModule

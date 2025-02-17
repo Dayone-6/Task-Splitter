@@ -29,6 +29,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
@@ -63,4 +66,7 @@ dependencies {
     
     // Multi Module
     implementation(project(":common"))
+    implementation(project(":features:main:account"))
+    implementation(project(":features:main:my_groups"))
+    implementation(project(":features:main:my_tasks"))
 }

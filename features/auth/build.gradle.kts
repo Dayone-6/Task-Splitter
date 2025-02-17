@@ -1,3 +1,5 @@
+import com.google.gms.googleservices.GoogleServicesPlugin
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -31,6 +33,18 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+    googleServices {
+        // Disables checking of Google Play Services dependencies compatibility
+        // Default: false
+
+        disableVersionCheck = true
+
+        // Choose the behavior when google-services.json is missing:
+        // Default: MissingGoogleServicesStrategy.ERROR
+        // Possible options: IGNORE, WARN, ERROR
+
+        missingGoogleServicesStrategy = GoogleServicesPlugin.MissingGoogleServicesStrategy.IGNORE
     }
 }
 

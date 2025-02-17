@@ -1,3 +1,5 @@
+import com.google.gms.googleservices.GoogleServicesPlugin
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -39,6 +41,7 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
@@ -62,7 +65,6 @@ dependencies {
 
     // Material
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.material)
 
     // Junit
     testImplementation(libs.junit)
@@ -88,3 +90,5 @@ dependencies {
     kapt(libs.dagger.compiler)
 
 }
+
+apply(plugin= "com.google.gms.google-services")
