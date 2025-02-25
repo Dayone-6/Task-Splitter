@@ -21,7 +21,11 @@ class SignUpStateMachine @Inject constructor(
             inState<SignUpState> {
                 on<SignUpAction.SignUp> { action, state ->
                     updateEffect(SignUpEffect.StartLoading())
-                    val result = authRepository.signUp(action.name, action.nickname)
+                    val result = authRepository.signUp(
+                        action.registrationUser.name,
+                        action.registrationUser.nickname,
+                        action.registrationUser.color
+                    )
                     return@on when (result) {
                         is Result.Success -> {
                             updateEffect(SignUpEffect.ToMain())

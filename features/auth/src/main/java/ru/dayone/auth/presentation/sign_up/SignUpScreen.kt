@@ -18,12 +18,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.dayone.auth.R
+import ru.dayone.auth.domain.model.RegistrationUser
 import ru.dayone.auth.domain.model.User
 import ru.dayone.auth.presentation.sign_in.state_hosting.AuthState
 import ru.dayone.auth.presentation.sign_up.state_hosting.SignUpAction
@@ -34,6 +37,7 @@ import ru.dayone.tasksplitter.common.theme.buttonTextStyle
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
 import ru.dayone.tasksplitter.common.utils.components.CustomTextField
 import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
+import kotlin.random.Random
 
 @Composable
 fun SignUpScreen(
@@ -69,7 +73,7 @@ fun SignUpScreen(
         viewModel.effect.collect {
             when (it) {
                 is SignUpEffect.ToMain -> {
-                    navController.navigate(MainNavRoute){
+                    navController.navigate(MainNavRoute) {
                         popUpTo(0)
                     }
                 }
@@ -93,7 +97,7 @@ fun SignUpScreen(
         if (isLoading) {
             LoadingDialog()
         }
-        if(state.error != null) {
+        if (state.error != null) {
             LaunchedEffect(state) {
                 scope.launch {
                     snackBarHostState.showSnackbar(
@@ -103,7 +107,9 @@ fun SignUpScreen(
             }
         }
         Column(
-            modifier = Modifier.padding(innerPadding).fillMaxWidth(),
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -141,7 +147,15 @@ fun SignUpScreen(
                 onClick = {
                     viewModel.handleAction(
                         SignUpAction.SignUp(
-                            name, nickname
+                            RegistrationUser(
+                                name,
+                                nickname,
+                                Color(
+                                    Random.nextInt(0, 256),
+                                    Random.nextInt(0, 256),
+                                    Random.nextInt(0, 256)
+                                ).toArgb()
+                            )
                         )
                     )
                 }
