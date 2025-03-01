@@ -5,6 +5,7 @@ const val ENCRYPTED_SHARED_PREFS_NAME = "prefs"
 const val USER_NAME_KEY = "user_name"
 const val USER_ID_KEY = "user_id"
 const val USER_NICKNAME_KEY = "user_nickname"
+const val USER_COLOR_KEY = "user_color"
 
 const val USERS_FIRESTORE_COLLECTION = "users"
 

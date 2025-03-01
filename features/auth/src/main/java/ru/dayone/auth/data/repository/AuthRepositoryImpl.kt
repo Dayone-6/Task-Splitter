@@ -3,7 +3,7 @@ package ru.dayone.auth.data.repository
 import ru.dayone.auth.data.AuthType
 import ru.dayone.auth.domain.datasource.AuthLocalDataSource
 import ru.dayone.auth.domain.datasource.AuthRemoteDataSource
-import ru.dayone.auth.domain.model.User
+import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.auth.domain.repository.AuthRepository
 import ru.dayone.tasksplitter.common.utils.Result
 

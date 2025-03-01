@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
 }
 
 android {
@@ -69,4 +70,8 @@ dependencies {
     implementation(project(":features:main:account"))
     implementation(project(":features:main:my_groups"))
     implementation(project(":features:main:my_tasks"))
+
+    // Dagger 2
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 }

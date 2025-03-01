@@ -19,7 +19,7 @@ import ru.dayone.auth.data.exception.NicknameIsAlreadyInUseException
 import ru.dayone.auth.data.exception.NoSuchAuthTypeException
 import ru.dayone.auth.data.exception.RequestCanceledException
 import ru.dayone.auth.domain.datasource.AuthRemoteDataSource
-import ru.dayone.auth.domain.model.User
+import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.GOOGLE_AUTH_CLIENT_ID
 import ru.dayone.tasksplitter.common.utils.Result
 import ru.dayone.tasksplitter.common.utils.USERS_FIRESTORE_COLLECTION

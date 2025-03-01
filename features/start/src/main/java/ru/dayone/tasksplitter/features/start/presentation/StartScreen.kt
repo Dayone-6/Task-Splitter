@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.navOptions
 import ru.dayone.start.R
-import ru.dayone.tasksplitter.common.navigation.AuthNavRoute
+import ru.dayone.tasksplitter.common.navigation.AuthNavRoutes
 import ru.dayone.tasksplitter.common.theme.Typography
 import ru.dayone.tasksplitter.common.theme.buttonTextStyle
 import ru.dayone.tasksplitter.features.start.data.utils.aboutAppImages
@@ -75,7 +75,10 @@ fun StartScreen(
                 )
                 Text(
                     text = context.getString(R.string.app_name),
-                    style = Typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 25.sp),
+                    style = Typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp
+                    ),
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )
             }
@@ -127,8 +130,8 @@ fun StartScreen(
 
             Button(
                 onClick = {
-                    navController.navigate(route = AuthNavRoute, navOptions = navOptions {
-                        popUpTo<AuthNavRoute>()
+                    navController.navigate(route = AuthNavRoutes.SignIn, navOptions = navOptions {
+                        popUpTo(AuthNavRoutes.SignIn)
                     })
                 },
                 modifier = Modifier

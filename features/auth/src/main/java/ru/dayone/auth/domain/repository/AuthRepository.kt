@@ -1,7 +1,7 @@
 package ru.dayone.auth.domain.repository
 
 import ru.dayone.auth.data.AuthType
-import ru.dayone.auth.domain.model.User
+import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
 
 interface AuthRepository {

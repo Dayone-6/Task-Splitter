@@ -23,15 +23,12 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.dayone.auth.R
 import ru.dayone.auth.domain.model.RegistrationUser
-import ru.dayone.auth.domain.model.User
-import ru.dayone.auth.presentation.sign_in.state_hosting.AuthState
 import ru.dayone.auth.presentation.sign_up.state_hosting.SignUpAction
 import ru.dayone.auth.presentation.sign_up.state_hosting.SignUpEffect
-import ru.dayone.tasksplitter.common.navigation.MainNavRoute
+import ru.dayone.tasksplitter.common.navigation.MainNavRoutes
 import ru.dayone.tasksplitter.common.theme.Typography
 import ru.dayone.tasksplitter.common.theme.buttonTextStyle
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
@@ -73,7 +70,7 @@ fun SignUpScreen(
         viewModel.effect.collect {
             when (it) {
                 is SignUpEffect.ToMain -> {
-                    navController.navigate(MainNavRoute) {
+                    navController.navigate(MainNavRoutes.Main) {
                         popUpTo(0)
                     }
                 }

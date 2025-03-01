@@ -3,23 +3,37 @@ package ru.dayone.tasksplitter.common.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object StartNavRoute
+data object StartNavRoutes{
+    const val Start = "start"
+}
 
 @Serializable
-object AuthNavRoute
+data object AuthNavRoutes{
+    const val SignIn = "signIn"
+    const val SignUp = "signUp"
+}
 
 @Serializable
-object MainNavRoute
+data object MainNavRoutes{
+    const val Main = "main"
+}
 
 @Serializable
-object SignUpNavRoute
+data object MyTasksNavRoutes{
+    const val Route = "myTasksNavRoute"
+    const val MyTasks = "myTasks"
+}
 
 @Serializable
-object MyTasksNavRoute
+data object MyGroupsNavRoutes{
+    const val Route = "myGroupsNavRoute"
+    const val MyGroups = "myGroups"
+}
 
 @Serializable
-object MyGroupsNavRoute
-
-@Serializable
-object AccountNavRoute
+data object AccountNavRoutes{
+    const val Route = "accountNavRoute"
+    const val Account = "myAccount"
+    const val Friends = "friends"
+}
 

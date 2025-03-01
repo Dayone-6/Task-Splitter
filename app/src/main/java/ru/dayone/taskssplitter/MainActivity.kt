@@ -22,10 +22,9 @@ import com.google.firebase.auth.auth
 import ru.dayone.auth.presentation.sign_in.AuthScreen
 import ru.dayone.auth.presentation.sign_up.SignUpScreen
 import ru.dayone.main.presentation.MainScreen
-import ru.dayone.tasksplitter.common.navigation.AuthNavRoute
-import ru.dayone.tasksplitter.common.navigation.MainNavRoute
-import ru.dayone.tasksplitter.common.navigation.SignUpNavRoute
-import ru.dayone.tasksplitter.common.navigation.StartNavRoute
+import ru.dayone.tasksplitter.common.navigation.AuthNavRoutes
+import ru.dayone.tasksplitter.common.navigation.MainNavRoutes
+import ru.dayone.tasksplitter.common.navigation.StartNavRoutes
 import ru.dayone.tasksplitter.common.theme.TasksSplitterTheme
 import ru.dayone.tasksplitter.common.utils.USER_ID_KEY
 import ru.dayone.tasksplitter.common.utils.USER_NICKNAME_KEY
@@ -70,17 +69,19 @@ fun Content(
     val encryptedSharedPrefs =
         remember { application.provideSharedPrefsComponent().getEncryptedSharedPrefs() }
 
+    val mainComponent = remember { application.provideMainComponent() }
+
     val userId = remember { encryptedSharedPrefs.getString(USER_ID_KEY, null) }
 
     val userNickname = remember { encryptedSharedPrefs.getString(USER_NICKNAME_KEY, null) }
 
     val firstNavRoute = remember {
         if (Firebase.auth.currentUser == null) {
-            StartNavRoute
+            StartNavRoutes.Start
         } else if (userNickname == null) {
-            SignUpNavRoute
+            AuthNavRoutes.SignUp
         } else {
-            MainNavRoute
+            MainNavRoutes.Main
         }
     }
 
@@ -88,29 +89,30 @@ fun Content(
         navController,
         startDestination = firstNavRoute
     ) {
-        composable<StartNavRoute> {
+        composable(StartNavRoutes.Start){
             StartScreen(
                 navController
             )
         }
 
-        composable<AuthNavRoute> {
+        composable(AuthNavRoutes.SignIn) {
             AuthScreen(
                 navController,
                 authComponent.getAuthViewModel()
             )
         }
 
-        composable<SignUpNavRoute> {
+        composable(AuthNavRoutes.SignUp) {
             SignUpScreen(
                 navController,
                 authComponent.getSignUpViewModel()
             )
         }
 
-        composable<MainNavRoute> {
+        composable(MainNavRoutes.Main) {
             MainScreen(
-                navController
+                navController,
+                mainComponent
             )
         }
     }

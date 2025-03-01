@@ -79,6 +79,7 @@ dependencies {
     implementation(project(":features:auth"))
     implementation(project(":features:start"))
     implementation(project(":features:main"))
+    implementation(project(":features:main:account"))
 
     // Firebase
     implementation(platform(libs.firebase.bom))

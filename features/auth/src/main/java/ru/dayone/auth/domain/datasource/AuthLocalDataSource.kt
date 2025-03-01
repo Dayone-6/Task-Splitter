@@ -1,6 +1,6 @@
 package ru.dayone.auth.domain.datasource
 
-import ru.dayone.auth.domain.model.User
+import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
 
 interface AuthLocalDataSource {

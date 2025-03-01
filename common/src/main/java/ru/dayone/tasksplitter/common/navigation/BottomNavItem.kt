@@ -2,8 +2,8 @@ package ru.dayone.tasksplitter.common.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
-data class BottomNavItem<T: Any>(
+data class BottomNavItem(
     val title: String,
-    val navRoute: T,
+    val navRoute: String,
     val icon: ImageVector
 )

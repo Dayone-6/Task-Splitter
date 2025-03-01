@@ -244,6 +244,9 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
 )
 
+val currentDarkScheme = darkScheme
+val currentLightScheme = lightScheme
+
 @Immutable
 data class ColorFamily(
     val color: Color,
@@ -269,8 +272,8 @@ fun TasksSplitterTheme(
           if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
       }
       
-      darkTheme -> darkScheme
-      else -> lightScheme
+      darkTheme -> currentDarkScheme
+      else -> currentLightScheme
   }
   val view = LocalView.current
   if (!view.isInEditMode) {

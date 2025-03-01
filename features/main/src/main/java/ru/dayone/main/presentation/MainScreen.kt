@@ -21,39 +21,42 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import ru.dayone.main.R
 import ru.dayone.main.account.presentation.AccountScreen
+import ru.dayone.main.data.di.MainComponent
 import ru.dayone.main.my_groups.presentation.MyGroupsScreen
 import ru.dayone.main.my_tasks.presentation.MyTasksScreen
-import ru.dayone.tasksplitter.common.navigation.AccountNavRoute
+import ru.dayone.tasksplitter.common.navigation.AccountNavRoutes
 import ru.dayone.tasksplitter.common.navigation.BottomNavItem
-import ru.dayone.tasksplitter.common.navigation.MyGroupsNavRoute
-import ru.dayone.tasksplitter.common.navigation.MyTasksNavRoute
+import ru.dayone.tasksplitter.common.navigation.MyGroupsNavRoutes
+import ru.dayone.tasksplitter.common.navigation.MyTasksNavRoutes
 
 @Composable
 fun MainScreen(
-    outerNavController: NavHostController
-){
+    outerNavController: NavHostController,
+    mainComponent: MainComponent
+) {
     val innerNavController = rememberNavController()
 
     val context = LocalContext.current
 
-    val navItems = remember{
+    val navItems = remember {
         arrayOf(
             BottomNavItem(
                 context.getString(R.string.title_account),
-                AccountNavRoute,
+                AccountNavRoutes.Route,
                 Icons.Outlined.AccountCircle
             ),
             BottomNavItem(
                 context.getString(R.string.title_my_groups),
-                MyGroupsNavRoute,
+                MyGroupsNavRoutes.Route,
                 Icons.Outlined.Face
             ),
             BottomNavItem(
                 context.getString(R.string.title_my_tasks),
-                MyTasksNavRoute,
+                MyTasksNavRoutes.Route,
                 Icons.AutoMirrored.Outlined.List
             )
         )
@@ -66,11 +69,16 @@ fun MainScreen(
                 val currentDestination = navBackStackEntry?.destination
                 navItems.forEach { navItem ->
                     NavigationBarItem(
-                        icon = { androidx.compose.material3.Icon(navItem.icon, contentDescription = navItem.title) },
+                        icon = {
+                            androidx.compose.material3.Icon(
+                                navItem.icon,
+                                contentDescription = navItem.title
+                            )
+                        },
                         label = { Text(navItem.title) },
-                        selected = currentDestination?.hierarchy?.any { it.hasRoute(
-                            navItem.navRoute::class
-                        ) } == true,
+                        selected = currentDestination?.hierarchy?.any {
+                            it.route == navItem.navRoute
+                        } == true,
                         onClick = {
                             innerNavController.navigate(navItem.navRoute) {
                                 popUpTo(innerNavController.graph.findStartDestination().id) {
@@ -87,19 +95,38 @@ fun MainScreen(
     ) { innerPadding ->
         NavHost(
             innerNavController,
-            startDestination = MyGroupsNavRoute,
+            startDestination = MyGroupsNavRoutes.Route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable<MyGroupsNavRoute> {
-                MyGroupsScreen()
+            navigation(
+                route = MyGroupsNavRoutes.Route,
+                startDestination = MyGroupsNavRoutes.MyGroups
+            ) {
+                composable(MyGroupsNavRoutes.MyGroups) {
+                    MyGroupsScreen()
+                }
             }
 
-            composable<MyTasksNavRoute> {
-                MyTasksScreen()
+            navigation(
+                route = MyTasksNavRoutes.Route,
+                startDestination = MyTasksNavRoutes.MyTasks
+            ) {
+                composable(MyTasksNavRoutes.MyTasks) {
+                    MyTasksScreen()
+                }
             }
 
-            composable<AccountNavRoute> {
-                AccountScreen()
+            navigation(
+                route = AccountNavRoutes.Route,
+                startDestination = AccountNavRoutes.Account
+            ) {
+                composable(AccountNavRoutes.Account) {
+                    AccountScreen(
+                        innerNavController,
+                        mainComponent.getEncryptedSharedPreferences(),
+                        mainComponent.getAccountViewModel()
+                    )
+                }
             }
         }
     }

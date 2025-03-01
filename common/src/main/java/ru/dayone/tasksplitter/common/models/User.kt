@@ -1,4 +1,4 @@
-package ru.dayone.auth.domain.model
+package ru.dayone.tasksplitter.common.models
 
 data class User(
     val id: String = "",
