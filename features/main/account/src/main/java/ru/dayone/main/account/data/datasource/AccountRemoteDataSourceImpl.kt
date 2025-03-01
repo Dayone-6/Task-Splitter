@@ -9,7 +9,12 @@ class AccountRemoteDataSourceImpl(
     val auth: FirebaseAuth
 ) : AccountRemoteDataSource {
     override suspend fun signOut(): Result<Unit> {
-        return Result.Error(Exception())
+        return try {
+            auth.signOut()
+            Result.Success(Unit)
+        }catch (e: Exception){
+            Result.Error(e)
+        }
     }
 
     override suspend fun getFriends(id: String): Result<List<User>> {

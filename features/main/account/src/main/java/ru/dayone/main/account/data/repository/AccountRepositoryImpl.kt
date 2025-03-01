@@ -13,7 +13,15 @@ class AccountRepositoryImpl @Inject constructor(
     val remoteDataSource: AccountRemoteDataSource
 ) : AccountRepository{
     override suspend fun signOut(): Result<Unit> {
-        return Result.Error(Exception())
+        return when(val remoteResult = remoteDataSource.signOut()){
+            is Result.Success -> {
+                val localResult = localDataSource.deleteUser()
+                localResult
+            }
+            is Result.Error -> {
+                remoteResult
+            }
+        }
     }
 
     override suspend fun getPoints(): Result<Int> {

@@ -8,6 +8,8 @@ import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -62,7 +64,14 @@ fun MainScreen(
         )
     }
 
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState)
+        },
         bottomBar = {
             NavigationBar {
                 val navBackStackEntry by innerNavController.currentBackStackEntryAsState()
@@ -122,9 +131,11 @@ fun MainScreen(
             ) {
                 composable(AccountNavRoutes.Account) {
                     AccountScreen(
+                        outerNavController,
                         innerNavController,
                         mainComponent.getEncryptedSharedPreferences(),
-                        mainComponent.getAccountViewModel()
+                        mainComponent.getAccountViewModel(),
+                        snackbarHostState
                     )
                 }
             }

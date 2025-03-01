@@ -18,10 +18,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.TaskAlt
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,35 +39,90 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
+import kotlinx.coroutines.flow.collect
 import ru.dayone.main.account.R
 import ru.dayone.main.account.presentation.components.AccountMenuItem
 import ru.dayone.main.account.presentation.components.AccountMenuItemUiModel
+import ru.dayone.main.account.presentation.state_hosting.AccountAction
+import ru.dayone.main.account.presentation.state_hosting.AccountEffect
 import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.navigation.AccountNavRoutes
+import ru.dayone.tasksplitter.common.navigation.AuthNavRoutes
 import ru.dayone.tasksplitter.common.theme.Typography
+import ru.dayone.tasksplitter.common.theme.backgroundDark
+import ru.dayone.tasksplitter.common.theme.backgroundLight
 import ru.dayone.tasksplitter.common.theme.currentDarkScheme
 import ru.dayone.tasksplitter.common.theme.currentLightScheme
 import ru.dayone.tasksplitter.common.theme.errorDark
 import ru.dayone.tasksplitter.common.theme.errorLight
+import ru.dayone.tasksplitter.common.theme.surfaceBrightDark
+import ru.dayone.tasksplitter.common.theme.surfaceBrightLight
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
+import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
 import ru.dayone.tasksplitter.common.utils.getUser
 
 @Composable
 fun AccountScreen(
+    outerNavController: NavController,
     navController: NavController,
     sharedPreferences: SharedPreferences,
-    viewModel: AccountViewModel
+    viewModel: AccountViewModel,
+    snackbarHostState: SnackbarHostState
 ) {
     val user = remember {
         sharedPreferences.getUser()
     }
+
+    val context = LocalContext.current
+
+    val state by viewModel.state.collectAsState()
+
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(
+        state.hashCode()
+    ) {
+        if (state.error != null) {
+            snackbarHostState.showSnackbar(state.error!!.getValue(context))
+        }
+    }
+
+    LaunchedEffect(
+        key1 = "effect"
+    ) {
+        viewModel.effect.collect {
+            when (it) {
+                is AccountEffect.NavigateToSignIn -> {
+                    outerNavController.navigate(AuthNavRoutes.SignIn) {
+                        popUpTo(0)
+                    }
+                }
+
+                is AccountEffect.StartLoading -> {
+                    isLoading = true
+                }
+
+                is AccountEffect.StopLoading -> {
+                    isLoading = false
+                }
+            }
+        }
+    }
+
     Box(
         contentAlignment = Alignment.BottomCenter,
         modifier = Modifier
             .background(color = Color(user!!.color!!))
             .fillMaxSize()
     ) {
+        if (isLoading) {
+            LoadingDialog()
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -71,14 +136,15 @@ fun AccountScreen(
                 )
                 .padding(20.dp)
         ) {
-            MainContent(navController, user)
+            MainContent(navController, user, viewModel)
         }
     }
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContent(navController: NavController, user: User) {
+fun MainContent(navController: NavController, user: User, viewModel: AccountViewModel) {
     val context = LocalContext.current
 
     val menuItems = arrayOf(
@@ -93,6 +159,46 @@ fun MainContent(navController: NavController, user: User) {
             AccountNavRoutes.Friends
         )
     )
+
+    var showConfirmationDialog by remember {
+        mutableStateOf(false)
+    }
+
+    if (showConfirmationDialog) {
+        Dialog(
+            onDismissRequest = { showConfirmationDialog = false }
+        ) {
+            Column(
+                modifier = Modifier.background(
+                    color = if(isSystemInDarkTheme()){
+                        surfaceBrightDark
+                    }else{
+                        surfaceBrightLight
+                    },
+                    shape = RoundedCornerShape(20)
+                ).padding(40.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = context.getString(R.string.text_are_you_sure),
+                    style = titleTextStyle
+                )
+                Button(
+                    onClick = {
+                        viewModel.handleAction(AccountAction.SignOut())
+                        showConfirmationDialog = false
+                    },
+                    modifier = Modifier.padding(5.dp)
+                ) {
+                    Text(
+                        text = context.getString(R.string.text_yes),
+                        style = Typography.bodyLarge
+                    )
+                }
+            }
+        }
+    }
 
     Row {
         Text(
@@ -134,11 +240,13 @@ fun MainContent(navController: NavController, user: User) {
     }
     Box(
         contentAlignment = Alignment.BottomCenter,
-        modifier = Modifier.fillMaxSize().padding(10.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
     ) {
         OutlinedButton(
             onClick = {
-
+                showConfirmationDialog = true
             },
             border = BorderStroke(
                 2.dp,

@@ -8,6 +8,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -42,11 +44,19 @@ class MainActivity : ComponentActivity() {
             TasksSplitterTheme(
                 dynamicColor = false
             ) {
+                val snackBarHostState = remember {
+                    SnackbarHostState()
+                }
                 if (isSystemInDarkTheme()) {
                     WindowCompat.getInsetsController(window, window.decorView)
                         .isAppearanceLightStatusBars = true
                 }
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    snackbarHost = {
+                        SnackbarHost(snackBarHostState)
+                    }
+                ) { innerPadding ->
                     Content(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -112,7 +122,8 @@ fun Content(
         composable(MainNavRoutes.Main) {
             MainScreen(
                 navController,
-                mainComponent
+                mainComponent,
+
             )
         }
     }

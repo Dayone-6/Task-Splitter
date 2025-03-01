@@ -4,4 +4,7 @@
     <string name="text_done_tasks">Выполненные задания</string>
     <string name="text_earned_for_all_time_points">Заработанные за все время баллы</string>
     <string name="text_sign_out">Выйти из аккаунта</string>
+    <string name="error_something_went_wrong">Что-то пошло не так</string>
+    <string name="text_are_you_sure">Вы уверены?</string>
+    <string name="text_yes">Да</string>
 </resources>
