@@ -1,5 +1,6 @@
 package ru.dayone.auth.data.datasource
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import ru.dayone.auth.domain.datasource.AuthLocalDataSource
 import ru.dayone.tasksplitter.common.models.User
@@ -9,12 +10,14 @@ import ru.dayone.tasksplitter.common.utils.USER_ID_KEY
 import ru.dayone.tasksplitter.common.utils.USER_NAME_KEY
 import ru.dayone.tasksplitter.common.utils.USER_NICKNAME_KEY
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.EncryptedSharedPrefsQualifier
+import ru.dayone.tasksplitter.common.utils.getUser
 import javax.inject.Inject
 
 class AuthLocalDataSourceImpl @Inject constructor(
     @EncryptedSharedPrefsQualifier private val sharedPrefs: SharedPreferences
 ) : AuthLocalDataSource {
 
+    @SuppressLint("ApplySharedPref")
     override suspend fun saveCurrentUser(user: User) {
         sharedPrefs.edit()
             .putString(USER_ID_KEY, user.id)
@@ -26,15 +29,9 @@ class AuthLocalDataSourceImpl @Inject constructor(
 
     override suspend fun loadCurrentUser(): Result<User> {
         return try {
-            Result.Success(
-                User(
-                sharedPrefs.getString(USER_ID_KEY, null)!!,
-                sharedPrefs.getString(USER_NAME_KEY, "")!!,
-                sharedPrefs.getString(USER_NICKNAME_KEY, "")!!,
-                sharedPrefs.getInt(USER_COLOR_KEY, 0)
-            )
-            )
-        }catch (e: Exception){
+            val user = sharedPrefs.getUser() ?: throw NullPointerException()
+            Result.Success(user)
+        } catch (e: Exception) {
             Result.Error(e)
         }
     }

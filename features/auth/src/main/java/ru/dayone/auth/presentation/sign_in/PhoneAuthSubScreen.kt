@@ -72,12 +72,14 @@ fun PhoneAuthScreen(
         }
 
         Button(
-            modifier = Modifier.fillMaxWidth(.8f).padding(10.dp),
+            modifier = Modifier
+                .fillMaxWidth(.8f)
+                .padding(10.dp),
             onClick = {
-                if(!confirmationCodeFieldIsVisible){
+                if (!confirmationCodeFieldIsVisible) {
                     confirmationCodeFieldIsVisible = true
                     onSendCode.invoke(phoneNumber)
-                }else{
+                } else {
                     onConfirmCode.invoke(phoneNumber, confirmationCode)
                 }
             }

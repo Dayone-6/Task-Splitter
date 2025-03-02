@@ -3,8 +3,8 @@ package ru.dayone.auth.data.repository
 import ru.dayone.auth.data.AuthType
 import ru.dayone.auth.domain.datasource.AuthLocalDataSource
 import ru.dayone.auth.domain.datasource.AuthRemoteDataSource
-import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.auth.domain.repository.AuthRepository
+import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
 
 class AuthRepositoryImpl(
@@ -23,18 +23,19 @@ class AuthRepositoryImpl(
                     Result.Error(result.exception)
                 }
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.Error(e)
         }
     }
 
     override suspend fun signUp(name: String, nickname: String, color: Int): Result<User> {
         val currentUserResult = localDataSource.loadCurrentUser()
-        if(currentUserResult is Result.Error){
+        if (currentUserResult is Result.Error) {
             return currentUserResult
         }
         val currentUserId = (currentUserResult as Result.Success).result.id
-        return when(val signUpResult = remoteDataSource.signUp(User(currentUserId, name, nickname, color))){
+        return when (val signUpResult =
+            remoteDataSource.signUp(User(currentUserId, name, nickname, color))) {
             is Result.Success -> {
                 saveCurrentUser(signUpResult.result)
                 Result.Success(signUpResult.result)

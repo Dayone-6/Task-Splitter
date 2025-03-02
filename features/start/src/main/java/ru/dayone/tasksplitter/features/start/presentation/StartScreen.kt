@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.navOptions
 import ru.dayone.start.R
 import ru.dayone.tasksplitter.common.navigation.AuthNavRoutes
 import ru.dayone.tasksplitter.common.theme.Typography
@@ -123,16 +122,16 @@ fun StartScreen(
                             .padding(4.dp)
                             .clip(CircleShape)
                             .background(color)
-                            .size(7.dp)
+                            .size(10.dp)
                     )
                 }
             }
 
             Button(
                 onClick = {
-                    navController.navigate(route = AuthNavRoutes.SignIn, navOptions = navOptions {
-                        popUpTo(AuthNavRoutes.SignIn)
-                    })
+                    navController.navigate(AuthNavRoutes.SignIn) {
+                        popUpTo(0)
+                    }
                 },
                 modifier = Modifier
                     .padding(10.dp)

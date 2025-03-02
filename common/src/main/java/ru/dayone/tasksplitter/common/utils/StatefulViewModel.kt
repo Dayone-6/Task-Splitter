@@ -20,13 +20,13 @@ abstract class StatefulViewModel<S : Any, E : Any, A : Any>(
 
     init {
         viewModelScope.launch {
-            stateMachine.effect.collect{
+            stateMachine.effect.collect {
                 _effect.emit(it)
             }
         }
 
         viewModelScope.launch {
-            stateMachine.state.collect{
+            stateMachine.state.collect {
                 _state.value = it
             }
         }
@@ -38,11 +38,11 @@ abstract class StatefulViewModel<S : Any, E : Any, A : Any>(
         }
     }
 
-    fun changeState(state: S){
+    fun changeState(state: S) {
         _state.value = state
     }
 
-    fun changeEffect(effect: E){
+    fun changeEffect(effect: E) {
         viewModelScope.launch {
             _effect.emit(effect)
         }

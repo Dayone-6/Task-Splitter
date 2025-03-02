@@ -6,15 +6,19 @@ import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
 
 class AccountRemoteDataSourceImpl(
-    val auth: FirebaseAuth
+    private val auth: FirebaseAuth
 ) : AccountRemoteDataSource {
     override suspend fun signOut(): Result<Unit> {
         return try {
             auth.signOut()
             Result.Success(Unit)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.Error(e)
         }
+    }
+
+    override suspend fun getPoints(id: String): Result<Int> {
+        return Result.Success(0)
     }
 
     override suspend fun getFriends(id: String): Result<List<User>> {

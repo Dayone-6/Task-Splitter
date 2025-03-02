@@ -2,16 +2,11 @@ package ru.dayone.main.account.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,12 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.dayone.main.account.R
 import ru.dayone.tasksplitter.common.theme.Typography
-import ru.dayone.tasksplitter.common.theme.onSurfaceDark
 import ru.dayone.tasksplitter.common.theme.surfaceBrightDark
 import ru.dayone.tasksplitter.common.theme.surfaceBrightLight
-import ru.dayone.tasksplitter.common.theme.surfaceDark
+import ru.dayone.tasksplitter.common.utils.or
 
 data class AccountMenuItemUiModel(
     val text: String,
@@ -51,16 +44,28 @@ fun AccountMenuItem(
                 onClick.invoke(accountMenuUiItem.navigateTo)
             }
             .background(
-                color = if (isSystemInDarkTheme()) {
-                    surfaceBrightDark
-                } else {
-                    surfaceBrightLight
-                },
+                color = surfaceBrightDark.or(surfaceBrightLight),
                 shape = RoundedCornerShape(
-                    if (isFirst) { roundedCornersMaxSize } else { roundedCornersMinSize },
-                    if (isFirst) { roundedCornersMaxSize } else { roundedCornersMinSize },
-                    if (isLast) { roundedCornersMaxSize } else { roundedCornersMinSize },
-                    if (isLast) { roundedCornersMaxSize } else { roundedCornersMinSize }
+                    if (isFirst) {
+                        roundedCornersMaxSize
+                    } else {
+                        roundedCornersMinSize
+                    },
+                    if (isFirst) {
+                        roundedCornersMaxSize
+                    } else {
+                        roundedCornersMinSize
+                    },
+                    if (isLast) {
+                        roundedCornersMaxSize
+                    } else {
+                        roundedCornersMinSize
+                    },
+                    if (isLast) {
+                        roundedCornersMaxSize
+                    } else {
+                        roundedCornersMinSize
+                    }
                 )
             ),
     ) {

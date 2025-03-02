@@ -21,7 +21,7 @@ fun EmailField(
     isCustomModifier: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
     onEmailChanged: (String, Boolean) -> Unit
-){
+) {
     var isEmailValid by remember {
         mutableStateOf(true)
     }

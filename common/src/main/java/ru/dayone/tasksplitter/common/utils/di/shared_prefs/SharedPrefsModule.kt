@@ -10,12 +10,12 @@ import ru.dayone.tasksplitter.common.utils.ENCRYPTED_SHARED_PREFS_NAME
 import javax.inject.Singleton
 
 @Module
-class SharedPrefsModule{
+class SharedPrefsModule {
 
     @Provides
     @EncryptedSharedPrefsQualifier
     @Singleton
-    fun provideEncryptedSharedPrefs(context: Context): SharedPreferences{
+    fun provideEncryptedSharedPrefs(context: Context): SharedPreferences {
         val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
         return EncryptedSharedPreferences.create(
             ENCRYPTED_SHARED_PREFS_NAME,

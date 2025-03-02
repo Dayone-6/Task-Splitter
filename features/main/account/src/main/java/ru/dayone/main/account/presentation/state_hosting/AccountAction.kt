@@ -1,6 +1,7 @@
 package ru.dayone.main.account.presentation.state_hosting
 
-sealed class AccountAction{
+sealed class AccountAction {
     class SignOut : AccountAction()
-    class RequestPoints(val userId: String) : AccountAction()
+    data class RequestPoints(val userId: String) : AccountAction()
+    class GetUser : AccountAction()
 }

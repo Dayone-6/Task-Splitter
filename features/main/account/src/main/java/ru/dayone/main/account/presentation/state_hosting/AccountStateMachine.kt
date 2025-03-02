@@ -10,28 +10,51 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AccountStateMachine @Inject constructor(
-    val repository: AccountRepository
-)
-    : BaseStateMachine<AccountEffect, AccountState, AccountAction>(initialState = AccountState()) {
+    private val repository: AccountRepository
+) : BaseStateMachine<AccountEffect, AccountState, AccountAction>(initialState = AccountState()) {
     init {
         spec {
             inState<AccountState> {
-                on<AccountAction.SignOut> { action, state ->
+                on<AccountAction.SignOut> { _, state ->
                     updateEffect(AccountEffect.StartLoading())
                     val result = repository.signOut()
-                    when(result){
+                    updateEffect(AccountEffect.StopLoading())
+                    when (result) {
                         is Result.Success -> {
                             updateEffect(AccountEffect.NavigateToSignIn())
                             return@on state.noChange()
                         }
 
                         is Result.Error -> {
-                            updateEffect(AccountEffect.StopLoading())
-                            return@on state.mutate {
+                            return@on state.override {
                                 state.snapshot.copy(error = UIText.StringResource(R.string.error_something_went_wrong))
                             }
                         }
                     }
+                }
+
+                on<AccountAction.RequestPoints> { action, state ->
+                    updateEffect(AccountEffect.StartLoading())
+                    val result = repository.getPoints(action.userId)
+                    updateEffect(AccountEffect.StopLoading())
+                    when (result) {
+                        is Result.Success -> {
+                            return@on state.override {
+                                state.snapshot.copy(points = result.result)
+                            }
+                        }
+
+                        is Result.Error -> {
+                            return@on state.override {
+                                state.snapshot.copy(error = UIText.StringResource(R.string.error_something_went_wrong))
+                            }
+                        }
+                    }
+                }
+
+                on<AccountAction.GetUser> { _, state ->
+                    val result = repository.getUser()
+                    return@on state.mutate { state.snapshot.copy(user = result) }
                 }
             }
         }

@@ -1,4 +1,5 @@
 package ru.dayone.tasksplitter.common.theme
+
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF34618E)
@@ -216,10 +217,3 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF191C20)
 val surfaceContainerDarkHighContrast = Color(0xFF1D2024)
 val surfaceContainerHighDarkHighContrast = Color(0xFF272A2F)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF32353A)
-
-
-
-
-
-
-

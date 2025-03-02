@@ -5,7 +5,7 @@ import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
 
 interface AuthRemoteDataSource {
-    suspend fun signIn(type: AuthType) : Result<User>
+    suspend fun signIn(type: AuthType): Result<User>
 
-    suspend fun signUp(user: User) : Result<User>
+    suspend fun signUp(user: User): Result<User>
 }

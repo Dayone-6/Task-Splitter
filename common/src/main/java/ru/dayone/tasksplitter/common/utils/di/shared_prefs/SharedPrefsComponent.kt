@@ -11,10 +11,10 @@ import javax.inject.Singleton
 @Singleton
 interface SharedPrefsComponent {
     @Subcomponent.Factory
-    interface Factory{
-        fun create(@BindsInstance context: Context) : SharedPrefsComponent
+    interface Factory {
+        fun create(@BindsInstance context: Context): SharedPrefsComponent
     }
 
     @EncryptedSharedPrefsQualifier
-    fun getEncryptedSharedPrefs() : SharedPreferences
+    fun getEncryptedSharedPrefs(): SharedPreferences
 }

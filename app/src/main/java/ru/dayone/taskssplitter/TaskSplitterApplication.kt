@@ -11,7 +11,8 @@ import ru.dayone.taskssplitter.di.AppComponent
 import ru.dayone.taskssplitter.di.DaggerAppComponent
 
 
-class TaskSplitterApplication : Application(), AuthComponentProvider, SharedPrefsComponentProvider, MainComponentProvider {
+class TaskSplitterApplication : Application(), AuthComponentProvider, SharedPrefsComponentProvider,
+    MainComponentProvider {
     private var _appComponent: AppComponent? = null
     private val appComponent get() = _appComponent!!
 
@@ -20,7 +21,7 @@ class TaskSplitterApplication : Application(), AuthComponentProvider, SharedPref
         _appComponent = DaggerAppComponent.factory().create()
     }
 
-    override fun provideAuthComponent() : AuthComponent {
+    override fun provideAuthComponent(): AuthComponent {
         return appComponent.authComponentFactory().create(applicationContext)
     }
 

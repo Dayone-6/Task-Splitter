@@ -29,7 +29,6 @@ import kotlinx.coroutines.launch
 import ru.dayone.auth.R
 import ru.dayone.tasksplitter.common.theme.Typography
 import ru.dayone.tasksplitter.common.theme.buttonTextStyle
-import ru.dayone.tasksplitter.common.utils.UIText
 import ru.dayone.tasksplitter.common.utils.components.CustomTextField
 import ru.dayone.tasksplitter.common.utils.components.EmailField
 

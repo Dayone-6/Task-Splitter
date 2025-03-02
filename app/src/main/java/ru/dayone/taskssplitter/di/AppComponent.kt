@@ -8,12 +8,13 @@ import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsComponent
 @Component
 interface AppComponent {
     @Component.Factory
-    interface Factory{
+    interface Factory {
         fun create(): AppComponent
     }
-    fun authComponentFactory() : AuthComponent.Factory
 
-    fun mainComponentFactory() : MainComponent.Factory
+    fun authComponentFactory(): AuthComponent.Factory
 
-    fun sharedPrefsComponentFactory() : SharedPrefsComponent.Factory
+    fun mainComponentFactory(): MainComponent.Factory
+
+    fun sharedPrefsComponentFactory(): SharedPrefsComponent.Factory
 }

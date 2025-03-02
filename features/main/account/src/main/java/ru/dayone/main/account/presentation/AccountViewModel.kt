@@ -10,8 +10,7 @@ import javax.inject.Inject
 
 class AccountViewModel @Inject constructor(
     accountStateMachine: AccountStateMachine
-) :
-    StatefulViewModel<AccountState, AccountEffect, AccountAction>(
-        stateMachine = accountStateMachine,
-        initialState = AccountState()
-    )
+) : StatefulViewModel<AccountState, AccountEffect, AccountAction>(
+    stateMachine = accountStateMachine,
+    initialState = AccountState()
+)

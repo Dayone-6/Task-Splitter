@@ -8,8 +8,8 @@ sealed class UIText {
 
     data class String(val text: kotlin.String) : UIText()
 
-    fun getValue(context: Context): kotlin.String{
-        return when(this){
+    fun getValue(context: Context): kotlin.String {
+        return when (this) {
             is StringResource -> context.getString(this.id)
             is String -> this.text
             else -> ""

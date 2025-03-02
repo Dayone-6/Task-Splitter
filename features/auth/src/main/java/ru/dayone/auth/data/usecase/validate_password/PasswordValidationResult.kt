@@ -1,7 +1,7 @@
 package ru.dayone.auth.data.usecase.validate_password
 
 sealed class PasswordValidationResult {
-    data object Success : PasswordValidationResult()
+    class Success : PasswordValidationResult()
 
-    data object TooShort : PasswordValidationResult()
+    class TooShort : PasswordValidationResult()
 }

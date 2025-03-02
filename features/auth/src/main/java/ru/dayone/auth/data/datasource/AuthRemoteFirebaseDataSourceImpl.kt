@@ -51,24 +51,27 @@ class AuthRemoteFirebaseDataSourceImpl(
 
     override suspend fun signUp(user: User): Result<User> {
         return try {
-            val findNicknameTask = db.collection(USERS_FIRESTORE_COLLECTION).whereEqualTo("nickname", user.nickname).get()
+            val findNicknameTask =
+                db.collection(USERS_FIRESTORE_COLLECTION).whereEqualTo("nickname", user.nickname)
+                    .get()
             val findNicknameResult = findNicknameTask.await()
-            if(findNicknameTask.isSuccessful){
-                if(!findNicknameResult.isEmpty){
+            if (findNicknameTask.isSuccessful) {
+                if (!findNicknameResult.isEmpty) {
                     Result.Error(NicknameIsAlreadyInUseException())
-                }else{
-                    val signUpTask = db.collection(USERS_FIRESTORE_COLLECTION).document(user.id).set(user)
+                } else {
+                    val signUpTask =
+                        db.collection(USERS_FIRESTORE_COLLECTION).document(user.id).set(user)
                     val signUpResult = signUpTask.await()
-                    if(signUpTask.isSuccessful){
+                    if (signUpTask.isSuccessful) {
                         Result.Success(user)
-                    }else{
+                    } else {
                         Result.Error(RequestCanceledException())
                     }
                 }
-            }else{
+            } else {
                 Result.Error(findNicknameTask.exception ?: Exception())
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.Error(e)
         }
     }

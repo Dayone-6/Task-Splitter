@@ -16,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -133,7 +132,6 @@ fun MainScreen(
                     AccountScreen(
                         outerNavController,
                         innerNavController,
-                        mainComponent.getEncryptedSharedPreferences(),
                         mainComponent.getAccountViewModel(),
                         snackbarHostState
                     )

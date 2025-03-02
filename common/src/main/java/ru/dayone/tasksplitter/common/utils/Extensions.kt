@@ -1,6 +1,9 @@
 package ru.dayone.tasksplitter.common.utils
 
 import android.content.SharedPreferences
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import ru.dayone.tasksplitter.common.models.User
 
 
@@ -18,4 +21,13 @@ fun SharedPreferences.getUser(): User? {
         userNickname,
         userColor
     )
+}
+
+@Composable
+fun Color.or(lightThemeColor: Color): Color{
+    return if(isSystemInDarkTheme()){
+        this
+    }else{
+        lightThemeColor
+    }
 }

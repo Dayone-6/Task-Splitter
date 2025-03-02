@@ -1,15 +1,13 @@
 package ru.dayone.taskssplitter
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,11 +26,11 @@ import ru.dayone.tasksplitter.common.navigation.AuthNavRoutes
 import ru.dayone.tasksplitter.common.navigation.MainNavRoutes
 import ru.dayone.tasksplitter.common.navigation.StartNavRoutes
 import ru.dayone.tasksplitter.common.theme.TasksSplitterTheme
-import ru.dayone.tasksplitter.common.utils.USER_ID_KEY
 import ru.dayone.tasksplitter.common.utils.USER_NICKNAME_KEY
 import ru.dayone.tasksplitter.features.start.presentation.StartScreen
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,22 +42,14 @@ class MainActivity : ComponentActivity() {
             TasksSplitterTheme(
                 dynamicColor = false
             ) {
-                val snackBarHostState = remember {
-                    SnackbarHostState()
-                }
                 if (isSystemInDarkTheme()) {
                     WindowCompat.getInsetsController(window, window.decorView)
                         .isAppearanceLightStatusBars = true
                 }
                 Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    snackbarHost = {
-                        SnackbarHost(snackBarHostState)
-                    }
+                    modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-                    Content(
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    Content()
                 }
             }
         }
@@ -67,9 +57,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Content(
-    modifier: Modifier
-) {
+fun Content() {
     val navController = rememberNavController()
 
     val application = LocalContext.current.applicationContext as TaskSplitterApplication
@@ -80,8 +68,6 @@ fun Content(
         remember { application.provideSharedPrefsComponent().getEncryptedSharedPrefs() }
 
     val mainComponent = remember { application.provideMainComponent() }
-
-    val userId = remember { encryptedSharedPrefs.getString(USER_ID_KEY, null) }
 
     val userNickname = remember { encryptedSharedPrefs.getString(USER_NICKNAME_KEY, null) }
 
@@ -99,7 +85,7 @@ fun Content(
         navController,
         startDestination = firstNavRoute
     ) {
-        composable(StartNavRoutes.Start){
+        composable(StartNavRoutes.Start) {
             StartScreen(
                 navController
             )
@@ -122,8 +108,7 @@ fun Content(
         composable(MainNavRoutes.Main) {
             MainScreen(
                 navController,
-                mainComponent,
-
+                mainComponent
             )
         }
     }
