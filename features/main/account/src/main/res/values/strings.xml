@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">account</string>
     <string name="text_friends">Friends</string>
-    <string name="text_done_tasks">Done Tasks</string>
+    <string name="text_completed_tasks">Done Tasks</string>
     <string name="text_earned_for_all_time_points">Earned for all time points</string>
     <string name="text_sign_out">Sign Out</string>
     <string name="error_something_went_wrong">Somethng went wrong</string>

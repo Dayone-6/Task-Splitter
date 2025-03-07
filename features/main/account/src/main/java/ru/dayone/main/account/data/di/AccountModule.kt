@@ -11,8 +11,8 @@ import ru.dayone.main.account.data.repository.AccountRepositoryImpl
 import ru.dayone.main.account.domain.datasource.AccountLocalDataSource
 import ru.dayone.main.account.domain.datasource.AccountRemoteDataSource
 import ru.dayone.main.account.domain.repository.AccountRepository
-import ru.dayone.main.account.presentation.AccountViewModel
-import ru.dayone.main.account.presentation.state_hosting.AccountStateMachine
+import ru.dayone.main.account.presentation.account.AccountViewModel
+import ru.dayone.main.account.presentation.account.state_hosting.AccountStateMachine
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.EncryptedSharedPrefsQualifier
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsModule
 import javax.inject.Singleton

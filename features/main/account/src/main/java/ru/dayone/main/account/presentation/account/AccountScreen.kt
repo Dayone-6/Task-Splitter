@@ -1,4 +1,4 @@
-package ru.dayone.main.account.presentation
+package ru.dayone.main.account.presentation.account
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import ru.dayone.main.account.presentation.state_hosting.AccountAction
-import ru.dayone.main.account.presentation.state_hosting.AccountEffect
+import ru.dayone.main.account.presentation.account.state_hosting.AccountAction
+import ru.dayone.main.account.presentation.account.state_hosting.AccountEffect
 import ru.dayone.tasksplitter.common.navigation.AuthNavRoutes
 import ru.dayone.tasksplitter.common.theme.currentDarkScheme
 import ru.dayone.tasksplitter.common.theme.currentLightScheme

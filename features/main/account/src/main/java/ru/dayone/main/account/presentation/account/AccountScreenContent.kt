@@ -1,4 +1,4 @@
-package ru.dayone.main.account.presentation
+package ru.dayone.main.account.presentation.account
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -33,10 +33,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import ru.dayone.main.account.R
-import ru.dayone.main.account.presentation.components.AccountMenuItem
-import ru.dayone.main.account.presentation.components.AccountMenuItemUiModel
-import ru.dayone.main.account.presentation.state_hosting.AccountAction
-import ru.dayone.main.account.presentation.state_hosting.AccountState
+import ru.dayone.main.account.presentation.account.components.AccountMenuItem
+import ru.dayone.main.account.presentation.account.components.AccountMenuItemUiModel
+import ru.dayone.main.account.presentation.account.state_hosting.AccountAction
+import ru.dayone.main.account.presentation.account.state_hosting.AccountState
 import ru.dayone.tasksplitter.common.navigation.AccountNavRoutes
 import ru.dayone.tasksplitter.common.theme.Typography
 import ru.dayone.tasksplitter.common.theme.backgroundDark
@@ -62,9 +62,9 @@ fun MainContent(
                 AccountNavRoutes.Friends
             ),
             AccountMenuItemUiModel(
-                context.getString(R.string.text_done_tasks),
+                context.getString(R.string.text_completed_tasks),
                 Icons.Filled.TaskAlt,
-                AccountNavRoutes.Friends
+                AccountNavRoutes.CompletedTasks
             )
         )
     }
@@ -172,7 +172,6 @@ fun ConfirmationDialog(viewModel: AccountViewModel, onCloseDialog: () -> Unit) {
                             viewModel.handleAction(AccountAction.SignOut())
                             onCloseDialog.invoke()
                         },
-//                        modifier = Modifier.padding(start = 6.dp, end = 6.dp)
                     ) {
                         Text(
                             text = context.getString(R.string.text_yes),

@@ -25,7 +25,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import ru.dayone.main.R
-import ru.dayone.main.account.presentation.AccountScreen
+import ru.dayone.main.account.presentation.account.AccountScreen
+import ru.dayone.main.account.presentation.completed_tasks.CompletedTasksScreen
+import ru.dayone.main.account.presentation.friends.FriendsScreen
 import ru.dayone.main.data.di.MainComponent
 import ru.dayone.main.my_groups.presentation.MyGroupsScreen
 import ru.dayone.main.my_tasks.presentation.MyTasksScreen
@@ -134,6 +136,19 @@ fun MainScreen(
                         innerNavController,
                         mainComponent.getAccountViewModel(),
                         snackbarHostState
+                    )
+                }
+
+                composable(AccountNavRoutes.Friends) {
+                    FriendsScreen(
+                        innerNavController,
+                        mainComponent.getFriendsViewModel()
+                    )
+                }
+
+                composable(AccountNavRoutes.CompletedTasks) {
+                    CompletedTasksScreen(
+                        innerNavController
                     )
                 }
             }

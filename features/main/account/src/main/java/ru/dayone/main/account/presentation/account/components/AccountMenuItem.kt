@@ -1,4 +1,4 @@
-package ru.dayone.main.account.presentation.components
+package ru.dayone.main.account.presentation.account.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

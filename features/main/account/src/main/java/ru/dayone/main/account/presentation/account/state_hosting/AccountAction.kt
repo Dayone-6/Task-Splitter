@@ -1,4 +1,4 @@
-package ru.dayone.main.account.presentation.state_hosting
+package ru.dayone.main.account.presentation.account.state_hosting
 
 sealed class AccountAction {
     class SignOut : AccountAction()
