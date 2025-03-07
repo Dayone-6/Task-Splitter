@@ -6,7 +6,8 @@ import androidx.navigation.NavController
 
 @Composable
 fun CompletedTasksScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: CompletedTasksViewModel
 ){
     Text("Completed Tasks")
 }

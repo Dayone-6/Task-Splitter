@@ -148,7 +148,8 @@ fun MainScreen(
 
                 composable(AccountNavRoutes.CompletedTasks) {
                     CompletedTasksScreen(
-                        innerNavController
+                        innerNavController,
+                        mainComponent.getCompletedTasksViewModel()
                     )
                 }
             }
