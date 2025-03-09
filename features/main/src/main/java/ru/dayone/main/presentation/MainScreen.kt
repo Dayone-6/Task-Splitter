@@ -28,6 +28,7 @@ import ru.dayone.main.R
 import ru.dayone.main.account.presentation.account.AccountScreen
 import ru.dayone.main.account.presentation.completed_tasks.CompletedTasksScreen
 import ru.dayone.main.account.presentation.friends.FriendsScreen
+import ru.dayone.main.account.presentation.settings.SettingsScreen
 import ru.dayone.main.data.di.MainComponent
 import ru.dayone.main.my_groups.presentation.MyGroupsScreen
 import ru.dayone.main.my_tasks.presentation.MyTasksScreen
@@ -49,17 +50,17 @@ fun MainScreen(
         arrayOf(
             BottomNavItem(
                 context.getString(R.string.title_account),
-                AccountNavRoutes.Route,
+                AccountNavRoutes.ROUTE,
                 Icons.Outlined.AccountCircle
             ),
             BottomNavItem(
                 context.getString(R.string.title_my_groups),
-                MyGroupsNavRoutes.Route,
+                MyGroupsNavRoutes.ROUTE,
                 Icons.Outlined.Face
             ),
             BottomNavItem(
                 context.getString(R.string.title_my_tasks),
-                MyTasksNavRoutes.Route,
+                MyTasksNavRoutes.ROUTE,
                 Icons.AutoMirrored.Outlined.List
             )
         )
@@ -105,32 +106,32 @@ fun MainScreen(
     ) { innerPadding ->
         NavHost(
             innerNavController,
-            startDestination = MyGroupsNavRoutes.Route,
+            startDestination = MyGroupsNavRoutes.ROUTE,
             modifier = Modifier.padding(innerPadding)
         ) {
             navigation(
-                route = MyGroupsNavRoutes.Route,
-                startDestination = MyGroupsNavRoutes.MyGroups
+                route = MyGroupsNavRoutes.ROUTE,
+                startDestination = MyGroupsNavRoutes.MY_GROUPS
             ) {
-                composable(MyGroupsNavRoutes.MyGroups) {
+                composable(MyGroupsNavRoutes.MY_GROUPS) {
                     MyGroupsScreen()
                 }
             }
 
             navigation(
-                route = MyTasksNavRoutes.Route,
-                startDestination = MyTasksNavRoutes.MyTasks
+                route = MyTasksNavRoutes.ROUTE,
+                startDestination = MyTasksNavRoutes.MY_TASKS
             ) {
-                composable(MyTasksNavRoutes.MyTasks) {
+                composable(MyTasksNavRoutes.MY_TASKS) {
                     MyTasksScreen()
                 }
             }
 
             navigation(
-                route = AccountNavRoutes.Route,
-                startDestination = AccountNavRoutes.Account
+                route = AccountNavRoutes.ROUTE,
+                startDestination = AccountNavRoutes.ACCOUNT
             ) {
-                composable(AccountNavRoutes.Account) {
+                composable(AccountNavRoutes.ACCOUNT) {
                     AccountScreen(
                         outerNavController,
                         innerNavController,
@@ -139,17 +140,24 @@ fun MainScreen(
                     )
                 }
 
-                composable(AccountNavRoutes.Friends) {
+                composable(AccountNavRoutes.FRIENDS) {
                     FriendsScreen(
                         innerNavController,
                         mainComponent.getFriendsViewModel()
                     )
                 }
 
-                composable(AccountNavRoutes.CompletedTasks) {
+                composable(AccountNavRoutes.COMPLETED_TASKS) {
                     CompletedTasksScreen(
                         innerNavController,
                         mainComponent.getCompletedTasksViewModel()
+                    )
+                }
+
+                composable(AccountNavRoutes.SETTINGS) {
+                    SettingsScreen(
+                        innerNavController,
+                        mainComponent.getSettingsPrefs()
                     )
                 }
             }

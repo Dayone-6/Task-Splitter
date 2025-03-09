@@ -63,13 +63,13 @@ fun AuthScreen(
                 }
 
                 is AuthEffect.ToMain -> {
-                    navController.navigate(MainNavRoutes.Main) {
+                    navController.navigate(MainNavRoutes.MAIN) {
                         popUpTo(0)
                     }
                 }
 
                 is AuthEffect.ToSignUp -> {
-                    navController.navigate(AuthNavRoutes.SignUp) {
+                    navController.navigate(AuthNavRoutes.SIGN_UP) {
                         popUpTo(0)
                     }
                 }
@@ -109,13 +109,6 @@ fun AuthScreen(
                 modifier = Modifier.padding(20.dp),
                 textAlign = TextAlign.Center
             )
-
-//            Text(
-//                text = context.getString(R.string.text_swipe_form_to_change_registration_type),
-//                modifier = Modifier.padding(10.dp),
-//                style = Typography.titleLarge.copy(fontSize = 22.sp),
-//                textAlign = TextAlign.Center
-//            )
 
             AuthMainContent(viewModel, state, snackBarHostState)
         }

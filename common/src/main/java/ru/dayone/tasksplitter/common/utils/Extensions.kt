@@ -5,6 +5,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import ru.dayone.tasksplitter.common.models.User
+import ru.dayone.tasksplitter.common.theme.currentDarkScheme
+import ru.dayone.tasksplitter.common.theme.currentLightScheme
+import ru.dayone.tasksplitter.common.theme.darkScheme
+import ru.dayone.tasksplitter.common.theme.lightScheme
 
 
 fun SharedPreferences.getUser(): User? {
@@ -25,7 +29,7 @@ fun SharedPreferences.getUser(): User? {
 
 @Composable
 fun Color.or(lightThemeColor: Color): Color{
-    return if(isSystemInDarkTheme()){
+    return if(isSystemInDarkTheme() && currentDarkScheme == darkScheme){
         this
     }else{
         lightThemeColor

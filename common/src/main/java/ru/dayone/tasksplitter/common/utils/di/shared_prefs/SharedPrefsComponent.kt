@@ -17,4 +17,7 @@ interface SharedPrefsComponent {
 
     @EncryptedSharedPrefsQualifier
     fun getEncryptedSharedPrefs(): SharedPreferences
+
+    @SettingsSharedPrefsQualifier
+    fun getSharedPrefs(): SharedPreferences
 }

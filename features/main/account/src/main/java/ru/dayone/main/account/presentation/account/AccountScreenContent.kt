@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.TaskAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
@@ -59,12 +60,17 @@ fun MainContent(
             AccountMenuItemUiModel(
                 context.getString(R.string.text_friends),
                 Icons.Filled.Group,
-                AccountNavRoutes.Friends
+                AccountNavRoutes.FRIENDS
             ),
             AccountMenuItemUiModel(
                 context.getString(R.string.text_completed_tasks),
                 Icons.Filled.TaskAlt,
-                AccountNavRoutes.CompletedTasks
+                AccountNavRoutes.COMPLETED_TASKS
+            ),
+            AccountMenuItemUiModel(
+                context.getString(R.string.title_settings),
+                Icons.Filled.Settings,
+                AccountNavRoutes.SETTINGS
             )
         )
     }

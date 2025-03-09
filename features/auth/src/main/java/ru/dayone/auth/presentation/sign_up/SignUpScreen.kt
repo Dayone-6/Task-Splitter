@@ -70,7 +70,7 @@ fun SignUpScreen(
         viewModel.effect.collect {
             when (it) {
                 is SignUpEffect.ToMain -> {
-                    navController.navigate(MainNavRoutes.Main) {
+                    navController.navigate(MainNavRoutes.MAIN) {
                         popUpTo(0)
                     }
                 }

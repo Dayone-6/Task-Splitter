@@ -7,6 +7,7 @@ import androidx.security.crypto.MasterKeys
 import dagger.Module
 import dagger.Provides
 import ru.dayone.tasksplitter.common.utils.ENCRYPTED_SHARED_PREFS_NAME
+import ru.dayone.tasksplitter.common.utils.SETTINGS_SHARED_PREFS_NAME
 import javax.inject.Singleton
 
 @Module
@@ -25,4 +26,11 @@ class SharedPrefsModule {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
+
+    @Provides
+    @SettingsSharedPrefsQualifier
+    @Singleton
+    fun provideSharedPrefs(context: Context): SharedPreferences = context.getSharedPreferences(
+        SETTINGS_SHARED_PREFS_NAME, Context.MODE_PRIVATE
+    )
 }

@@ -26,6 +26,13 @@ import ru.dayone.tasksplitter.common.navigation.AuthNavRoutes
 import ru.dayone.tasksplitter.common.navigation.MainNavRoutes
 import ru.dayone.tasksplitter.common.navigation.StartNavRoutes
 import ru.dayone.tasksplitter.common.theme.TasksSplitterTheme
+import ru.dayone.tasksplitter.common.theme.currentDarkScheme
+import ru.dayone.tasksplitter.common.theme.currentLightScheme
+import ru.dayone.tasksplitter.common.utils.AUTO_THEME_CODE
+import ru.dayone.tasksplitter.common.utils.DARK_THEME_CODE
+import ru.dayone.tasksplitter.common.utils.DYNAMIC_THEME_CODE
+import ru.dayone.tasksplitter.common.utils.LIGHT_THEME_CODE
+import ru.dayone.tasksplitter.common.utils.THEME_KEY
 import ru.dayone.tasksplitter.common.utils.USER_NICKNAME_KEY
 import ru.dayone.tasksplitter.features.start.presentation.StartScreen
 
@@ -38,17 +45,26 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
+        val settingsPrefs =
+            (application as TaskSplitterApplication).provideSharedPrefsComponent().getSharedPrefs()
+        val appThemeCode = settingsPrefs.getString(THEME_KEY, AUTO_THEME_CODE)
+        val appTheme = when(appThemeCode){
+            DARK_THEME_CODE -> currentDarkScheme
+            LIGHT_THEME_CODE -> currentLightScheme
+            else -> null
+        }
         setContent {
             TasksSplitterTheme(
-                dynamicColor = false
+                dynamicColor = appThemeCode == DYNAMIC_THEME_CODE,
+                forcedColorTheme = appTheme
             ) {
-                if (isSystemInDarkTheme()) {
+                if (appTheme == currentDarkScheme || (appTheme == null && isSystemInDarkTheme())) {
                     WindowCompat.getInsetsController(window, window.decorView)
                         .isAppearanceLightStatusBars = true
                 }
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
+                ) {
                     Content()
                 }
             }
@@ -73,11 +89,11 @@ fun Content() {
 
     val firstNavRoute = remember {
         if (Firebase.auth.currentUser == null) {
-            StartNavRoutes.Start
+            StartNavRoutes.START
         } else if (userNickname == null) {
-            AuthNavRoutes.SignUp
+            AuthNavRoutes.SIGN_UP
         } else {
-            MainNavRoutes.Main
+            MainNavRoutes.MAIN
         }
     }
 
@@ -85,27 +101,27 @@ fun Content() {
         navController,
         startDestination = firstNavRoute
     ) {
-        composable(StartNavRoutes.Start) {
+        composable(StartNavRoutes.START) {
             StartScreen(
                 navController
             )
         }
 
-        composable(AuthNavRoutes.SignIn) {
+        composable(AuthNavRoutes.SIGN_IN) {
             AuthScreen(
                 navController,
                 authComponent.getAuthViewModel()
             )
         }
 
-        composable(AuthNavRoutes.SignUp) {
+        composable(AuthNavRoutes.SIGN_UP) {
             SignUpScreen(
                 navController,
                 authComponent.getSignUpViewModel()
             )
         }
 
-        composable(MainNavRoutes.Main) {
+        composable(MainNavRoutes.MAIN) {
             MainScreen(
                 navController,
                 mainComponent

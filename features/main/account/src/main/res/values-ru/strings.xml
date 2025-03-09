@@ -8,4 +8,10 @@
     <string name="text_are_you_sure">Вы уверены?</string>
     <string name="text_yes">Да</string>
     <string name="text_confirmation">Подтверждение</string>
+    <string name="title_settings">Настройки</string>
+    <string name="text_auto">Авто</string>
+    <string name="text_dark">Темная</string>
+    <string name="text_light">Светлая</string>
+    <string name="text_dynamic">Динамическая</string>
+    <string name="text_theme">Тема</string>
 </resources>

@@ -1,32 +1,33 @@
 package ru.dayone.tasksplitter.common.navigation
 
 data object StartNavRoutes{
-    const val Start = "start"
+    const val START = "start"
 }
 
 data object AuthNavRoutes{
-    const val SignIn = "signIn"
-    const val SignUp = "signUp"
+    const val SIGN_IN = "signIn"
+    const val SIGN_UP = "signUp"
 }
 
 data object MainNavRoutes{
-    const val Main = "main"
+    const val MAIN = "main"
 }
 
 data object MyTasksNavRoutes{
-    const val Route = "myTasksNavRoute"
-    const val MyTasks = "myTasks"
+    const val ROUTE = "myTasksNavRoute"
+    const val MY_TASKS = "myTasks"
 }
 
 data object MyGroupsNavRoutes{
-    const val Route = "myGroupsNavRoute"
-    const val MyGroups = "myGroups"
+    const val ROUTE = "myGroupsNavRoute"
+    const val MY_GROUPS = "myGroups"
 }
 
 data object AccountNavRoutes{
-    const val Route = "accountNavRoute"
-    const val Account = "myAccount"
-    const val Friends = "friends"
-    const val CompletedTasks = "completedTasks"
+    const val ROUTE = "accountNavRoute"
+    const val ACCOUNT = "myAccount"
+    const val FRIENDS = "friends"
+    const val COMPLETED_TASKS = "completedTasks"
+    const val SETTINGS = "settings"
 }
 

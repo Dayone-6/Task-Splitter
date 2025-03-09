@@ -3,6 +3,7 @@ package ru.dayone.tasksplitter.common.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
@@ -17,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val lightScheme = lightColorScheme(
+val lightScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
     primaryContainer = primaryContainerLight,
@@ -55,7 +56,7 @@ private val lightScheme = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLight,
 )
 
-private val darkScheme = darkColorScheme(
+val darkScheme = darkColorScheme(
     primary = primaryDark,
     onPrimary = onPrimaryDark,
     primaryContainer = primaryContainerDark,
@@ -245,8 +246,8 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
 )
 
-val currentDarkScheme = darkScheme
-val currentLightScheme = lightScheme
+var currentDarkScheme = darkScheme
+var currentLightScheme = lightScheme
 
 @Immutable
 data class ColorFamily(
@@ -264,8 +265,16 @@ val unspecified_scheme = ColorFamily(
 fun TasksSplitterTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
+    forcedColorTheme: ColorScheme? = null,
     content: @Composable () -> Unit
 ) {
+    if(forcedColorTheme != null){
+        currentDarkScheme = forcedColorTheme
+        currentLightScheme = forcedColorTheme
+    }else{
+        currentLightScheme = lightScheme
+        currentDarkScheme = darkScheme
+    }
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current

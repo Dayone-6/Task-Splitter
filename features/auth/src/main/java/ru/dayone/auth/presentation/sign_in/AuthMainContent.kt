@@ -91,34 +91,55 @@ fun AuthMainContent(
             .fillMaxWidth()
             .padding(10.dp)
     ) {
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.fillMaxWidth(),
-            beyondViewportPageCount = 2
-        ) {
-            if (it == 0) {
-                EmailPasswordAuthScreen(
-                    snackBarHostState,
-                    passwordError = if ((state as AuthState.Content).passwordError != null) {
-                        state.passwordError!!.getValue(context)
-                    } else {
-                        null
-                    },
-                    onAuth = { email, password ->
-                        viewModel.handleAction(
-                            AuthAction.SignInUser(
-                                AuthType.EmailAndPassword(
-                                    email,
-                                    password
-                                )
-                            )
-                        )
-                    },
-                    onPasswordChanged = {
-                        viewModel.handleAction(AuthAction.OnPasswordChanged(it))
-                    }
-                )
+        EmailPasswordAuthScreen(
+            snackBarHostState,
+            passwordError = if ((state as AuthState.Content).passwordError != null) {
+                state.passwordError!!.getValue(context)
             } else {
+                null
+            },
+            onAuth = { email, password ->
+                viewModel.handleAction(
+                    AuthAction.SignInUser(
+                        AuthType.EmailAndPassword(
+                            email,
+                            password
+                        )
+                    )
+                )
+            },
+            onPasswordChanged = {
+                viewModel.handleAction(AuthAction.OnPasswordChanged(it))
+            }
+        )
+//        HorizontalPager(
+//            state = pagerState,
+//            modifier = Modifier.fillMaxWidth(),
+//            beyondViewportPageCount = 2
+//        ) {
+//            if (it == 0) {
+//                EmailPasswordAuthScreen(
+//                    snackBarHostState,
+//                    passwordError = if ((state as AuthState.Content).passwordError != null) {
+//                        state.passwordError!!.getValue(context)
+//                    } else {
+//                        null
+//                    },
+//                    onAuth = { email, password ->
+//                        viewModel.handleAction(
+//                            AuthAction.SignInUser(
+//                                AuthType.EmailAndPassword(
+//                                    email,
+//                                    password
+//                                )
+//                            )
+//                        )
+//                    },
+//                    onPasswordChanged = {
+//                        viewModel.handleAction(AuthAction.OnPasswordChanged(it))
+//                    }
+//                )
+//            } else {
 //                PhoneAuthScreen(
 //                    onSendCode = { phone ->
 //                        viewModel.changeEffect(AuthEffect.StartLoading)
@@ -148,8 +169,8 @@ fun AuthMainContent(
 //                    },
 //                    isVerificationCodeError = (state as AuthState.Content).isVerificationCodeError
 //                )
-            }
-        }
+//            }
+//        }
     }
 
     OutlinedButton(

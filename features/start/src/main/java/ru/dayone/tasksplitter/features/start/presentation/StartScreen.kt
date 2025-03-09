@@ -129,7 +129,7 @@ fun StartScreen(
 
             Button(
                 onClick = {
-                    navController.navigate(AuthNavRoutes.SignIn) {
+                    navController.navigate(AuthNavRoutes.SIGN_IN) {
                         popUpTo(0)
                     }
                 },

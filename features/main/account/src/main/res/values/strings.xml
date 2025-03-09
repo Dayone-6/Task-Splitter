@@ -8,4 +8,10 @@
     <string name="text_are_you_sure">Are you sure?</string>
     <string name="text_yes">Yes</string>
     <string name="text_confirmation">Confirmation</string>
+    <string name="title_settings">Settings</string>
+    <string name="text_auto">Auto</string>
+    <string name="text_dark">Dark</string>
+    <string name="text_light">Light</string>
+    <string name="text_dynamic">Dynamic</string>
+    <string name="text_theme">Theme</string>
 </resources>

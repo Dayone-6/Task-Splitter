@@ -73,7 +73,7 @@ fun AccountScreen(
         viewModel.effect.collect {
             when (it) {
                 is AccountEffect.NavigateToSignIn -> {
-                    outerNavController.navigate(AuthNavRoutes.SignIn) {
+                    outerNavController.navigate(AuthNavRoutes.SIGN_IN) {
                         popUpTo(0)
                     }
                 }
