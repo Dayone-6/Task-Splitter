@@ -1,5 +1,6 @@
 package ru.dayone.main.account.data.repository
 
+import ru.dayone.main.account.data.network.models.friends.UserFriend
 import ru.dayone.main.account.domain.datasource.AccountLocalDataSource
 import ru.dayone.main.account.domain.datasource.AccountRemoteDataSource
 import ru.dayone.main.account.domain.repository.AccountRepository
@@ -37,7 +38,20 @@ class AccountRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFriends(id: String): Result<List<User>> {
-        return Result.Error(Exception())
+        return try {
+            remoteDataSource.getFriends(id)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun addFriend(friendId: String): Result<UserFriend> {
+        try {
+            val userId = localDataSource.getUser()!!.id
+            return remoteDataSource.addFriend(userId, friendId)
+        } catch (e: Exception) {
+            return Result.Error(e)
+        }
     }
 
     override suspend fun getUser(): User? {

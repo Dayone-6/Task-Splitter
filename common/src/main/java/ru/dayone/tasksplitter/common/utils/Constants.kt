@@ -22,3 +22,5 @@ const val DARK_THEME_CODE = "dark"
 const val LIGHT_THEME_CODE = "light"
 const val AUTO_THEME_CODE = "auto"
 const val DYNAMIC_THEME_CODE = "dynamic"
+
+const val BACKEND_BASE_URL = "https://taskssplitterapi.onrender.com/"

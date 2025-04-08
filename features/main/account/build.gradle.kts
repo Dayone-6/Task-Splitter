@@ -82,6 +82,10 @@ dependencies {
     // Flow Redux
     implementation(libs.flow.redux)
 
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
     // Multi Module
     implementation(project(":common"))
 }
