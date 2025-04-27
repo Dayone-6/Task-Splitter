@@ -90,6 +90,12 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // Flow Redux
+    implementation(libs.flow.redux)
 }
 
 apply(plugin= "com.google.gms.google-services")

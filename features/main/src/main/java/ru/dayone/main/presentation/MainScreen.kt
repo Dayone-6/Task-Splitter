@@ -143,7 +143,8 @@ fun MainScreen(
                 composable(AccountNavRoutes.FRIENDS) {
                     FriendsScreen(
                         innerNavController,
-                        mainComponent.getFriendsViewModel()
+                        mainComponent.getFriendsViewModel(),
+                        snackbarHostState
                     )
                 }
 

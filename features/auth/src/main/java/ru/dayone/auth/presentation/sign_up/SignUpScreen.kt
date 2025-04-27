@@ -95,7 +95,7 @@ fun SignUpScreen(
             LoadingDialog()
         }
         if (state.error != null) {
-            LaunchedEffect(state) {
+            LaunchedEffect(System.currentTimeMillis()) {
                 scope.launch {
                     snackBarHostState.showSnackbar(
                         message = state.error!!.getValue(context)

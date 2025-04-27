@@ -9,4 +9,5 @@ interface AccountRemoteDataSource{
     suspend fun getPoints(id: String): Result<Int>
     suspend fun getFriends(id: String): Result<List<User>>
     suspend fun addFriend(userId: String, friendId: String): Result<UserFriend>
+    suspend fun getUsersByNickname(nickname: String): Result<List<User>>
 }

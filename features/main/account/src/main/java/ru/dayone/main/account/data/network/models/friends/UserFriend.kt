@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class UserFriend (
     @SerializedName("userId") val userId: String,
-    @SerializedName("friendId") val friendId: String
+    @SerializedName("friend") val friendId: String
 )

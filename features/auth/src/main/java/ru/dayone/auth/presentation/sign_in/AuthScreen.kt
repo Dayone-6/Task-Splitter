@@ -84,7 +84,7 @@ fun AuthScreen(
     ) { innerPadding ->
 
         if ((state as AuthState.Content).error != null) {
-            LaunchedEffect(state) {
+            LaunchedEffect(System.currentTimeMillis()) {
                 scope.launch {
                     snackBarHostState.showSnackbar(
                         message = (state as AuthState.Content).error!!.getValue(context)

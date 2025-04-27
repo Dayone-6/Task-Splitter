@@ -14,4 +14,9 @@
     <string name="text_light">Светлая</string>
     <string name="text_dynamic">Динамическая</string>
     <string name="text_theme">Тема</string>
+    <string name="title_friends">Друзья</string>
+    <string name="text_no_one_friend_added_yet">Вы еще не добавили ни одного друга</string>
+    <string name="text_search">Поиск</string>
+    <string name="text_add">Добавить</string>
+    <string name="error_request_canceled">Запрос прерван</string>
 </resources>

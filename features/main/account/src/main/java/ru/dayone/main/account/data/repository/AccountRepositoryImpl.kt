@@ -57,4 +57,8 @@ class AccountRepositoryImpl @Inject constructor(
     override suspend fun getUser(): User? {
         return localDataSource.getUser()
     }
+
+    override suspend fun getUsersByNickname(nickname: String): Result<List<User>> {
+        return remoteDataSource.getUsersByNickname(nickname)
+    }
 }

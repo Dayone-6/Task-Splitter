@@ -1,6 +1,8 @@
 package ru.dayone.main.account.data.datasource
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import ru.dayone.main.account.data.network.AccountRetrofitService
@@ -22,6 +24,7 @@ class AccountRemoteDataSourceImpl(
             auth.signOut()
             Result.Success(Unit)
         } catch (e: Exception) {
+            e.printStackTrace()
             Result.Error(e)
         }
     }
@@ -33,9 +36,10 @@ class AccountRemoteDataSourceImpl(
     override suspend fun getFriends(id: String): Result<List<User>> {
         return try {
             val friendIdsResult = accountService.getUserFriends(id).handle()
+            Log.d("AccountRemoteDataSource", friendIdsResult.toString())
             if (friendIdsResult is Result.Success) {
                 val task = db.collection(USERS_FIRESTORE_COLLECTION)
-                    .whereIn("userId", friendIdsResult.result.map { it.friendId }).get()
+                    .whereIn("id", friendIdsResult.result.map { it.friendId }).get()
                 val taskResult = task.await()
                 val result: Result<List<User>> = if (task.isSuccessful) {
                     Result.Success(taskResult.toObjects(User::class.java))
@@ -51,6 +55,7 @@ class AccountRemoteDataSourceImpl(
                 return Result.Error((friendIdsResult as Result.Error).exception)
             }
         } catch (e: Exception) {
+            e.printStackTrace()
             Result.Error(e)
         }
     }
@@ -59,6 +64,27 @@ class AccountRemoteDataSourceImpl(
         return try {
             return accountService.addFriend(userId, friendId).handle()
         } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getUsersByNickname(nickname: String): Result<List<User>> {
+        return try {
+            val task = db.collection(USERS_FIRESTORE_COLLECTION).get()
+            val result = task.await()
+            if (task.isSuccessful) {
+                Result.Success(
+                    result = result.toObjects<User>(User::class.java)
+                        .filter { it.nickname!!.startsWith(nickname) }
+                )
+            } else if (task.isCanceled) {
+                Result.Error(RequestCanceledException())
+            } else {
+                Result.Error(task.exception!!)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
             Result.Error(e)
         }
     }

@@ -10,4 +10,5 @@ interface AccountRepository {
     suspend fun getFriends(id: String): Result<List<User>>
     suspend fun addFriend(friendId: String): Result<UserFriend>
     suspend fun getUser(): User?
+    suspend fun getUsersByNickname(nickname: String): Result<List<User>>
 }

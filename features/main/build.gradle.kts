@@ -71,6 +71,10 @@ dependencies {
     implementation(project(":features:main:my_groups"))
     implementation(project(":features:main:my_tasks"))
 
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
     // Dagger 2
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)

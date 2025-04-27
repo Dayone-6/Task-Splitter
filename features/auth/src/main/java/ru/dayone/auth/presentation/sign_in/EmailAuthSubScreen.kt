@@ -106,10 +106,9 @@ fun EmailPasswordAuthScreen(
                     onAuth.invoke(email, password)
                 } else {
                     scope.launch {
-                        snackBarHost
-                            .showSnackbar(
-                                context.getString(R.string.error_incorrect_email)
-                            )
+                        snackBarHost.showSnackbar(
+                            context.getString(R.string.error_incorrect_email)
+                        )
                     }
                 }
             }

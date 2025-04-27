@@ -10,9 +10,7 @@ import ru.dayone.tasksplitter.common.exceptions.InternalServerErrorException
 import ru.dayone.tasksplitter.common.exceptions.UnprocessableEntityException
 import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.theme.currentDarkScheme
-import ru.dayone.tasksplitter.common.theme.currentLightScheme
 import ru.dayone.tasksplitter.common.theme.darkScheme
-import ru.dayone.tasksplitter.common.theme.lightScheme
 
 
 fun SharedPreferences.getUser(): User? {
@@ -50,6 +48,7 @@ suspend fun <T: Any> Call<T>.handle(): Result<T> {
         500 -> {
             Result.Error(InternalServerErrorException())
         }
+
         200 -> {
             Result.Success(result.body()!!)
         }
