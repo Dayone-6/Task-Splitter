@@ -1,25 +1,18 @@
 package ru.dayone.main.account.presentation.friends
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -93,49 +86,41 @@ fun FriendsScreen(
         }
     }
 
-    SideEffect {
+    LaunchedEffect(key1 = "Get User") {
         viewModel.handleAction(FriendsAction.GetUser())
     }
 
     if (state.user != null) {
-        SideEffect {
+        LaunchedEffect(key1 = "Get user friends") {
             viewModel.handleAction(FriendsAction.GetFriends(state.user!!.id))
         }
     }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        snackbarHost = {
-            SnackbarHost(snackbarHostState)
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    isAddFriendDialogShowing = true
-                }
-            ) {
-                Icon(Icons.Filled.Add, "Add")
-            }
-        },
-        floatingActionButtonPosition = FabPosition.End
-    ) { innerPadding ->
-        Column {
+    Box(
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
             DefaultTopAppBar(stringResource(R.string.title_friends), navController)
             if (isLoading) {
                 LoadingDialog()
             }
-            if (state.friends?.size == 0) {
-                Text(
-                    text = context.getString(R.string.text_no_one_friend_added_yet),
-                    style = titleTextStyle,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxSize()
-                )
-            } else if (state.friends != null) {
+            if ((state.friends ?: emptyList()).isEmpty() && !isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = context.getString(R.string.text_no_one_friend_added_yet),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+            } else if((state.friends ?: emptyList()).isNotEmpty()) {
                 LazyColumn(
                     modifier = Modifier
-                        .padding(innerPadding)
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -151,5 +136,29 @@ fun FriendsScreen(
                 }
             }
         }
+        FloatingActionButton(
+            onClick = {
+                isAddFriendDialogShowing = true
+            },
+            modifier = Modifier.padding(end = 20.dp, bottom = 20.dp)
+        ) {
+            Icon(Icons.Filled.Add, "Add")
+        }
     }
+
+//    Scaffold(
+//        modifier = Modifier.fillMaxSize(),
+//        floatingActionButton = {
+//            FloatingActionButton(
+//                onClick = {
+//                    isAddFriendDialogShowing = true
+//                }
+//            ) {
+//                Icon(Icons.Filled.Add, "Add")
+//            }
+//        },
+//        floatingActionButtonPosition = FabPosition.End
+//    ) { innerPadding ->
+//
+//    }
 }
