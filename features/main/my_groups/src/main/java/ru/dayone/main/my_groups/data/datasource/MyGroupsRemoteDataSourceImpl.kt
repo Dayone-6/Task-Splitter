@@ -6,12 +6,23 @@ import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.domain.datasource.MyGroupsRemoteDataSource
 import ru.dayone.tasksplitter.common.utils.Result
 import ru.dayone.tasksplitter.common.utils.handle
+import javax.inject.Inject
 
-class MyGroupsRemoteDataSourceImpl(
+class MyGroupsRemoteDataSourceImpl @Inject constructor(
     private val service: MyGroupsRetrofitService
 ) : MyGroupsRemoteDataSource {
-    override suspend fun getGroups(userId: String): Result<List<Group>> {
-        return service.getUserGroups(userId).handle()
+    private var cachedGroups: List<Group>? = null
+
+    override suspend fun getGroups(userId: String, requireNew: Boolean): Result<List<Group>> {
+        if(cachedGroups == null || requireNew) {
+            val result = service.getUserGroups(userId).handle()
+            if(result is Result.Success){
+                cachedGroups = result.result
+            }
+            return result
+        }else{
+            return Result.Success(cachedGroups!!)
+        }
     }
 
     override suspend fun createGroup(

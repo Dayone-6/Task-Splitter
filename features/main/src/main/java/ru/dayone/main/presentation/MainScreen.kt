@@ -114,7 +114,11 @@ fun MainScreen(
                 startDestination = MyGroupsNavRoutes.MY_GROUPS
             ) {
                 composable(MyGroupsNavRoutes.MY_GROUPS) {
-                    MyGroupsScreen()
+                    MyGroupsScreen(
+                        innerNavController,
+                        mainComponent.getMyGroupsViewModel(),
+                        snackbarHostState
+                    )
                 }
             }
 

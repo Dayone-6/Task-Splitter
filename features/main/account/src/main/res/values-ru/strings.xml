@@ -19,4 +19,5 @@
     <string name="text_search">Поиск</string>
     <string name="text_add">Добавить</string>
     <string name="error_request_canceled">Запрос прерван</string>
+    <string name="text_friend_added">Друг добавлен</string>
 </resources>

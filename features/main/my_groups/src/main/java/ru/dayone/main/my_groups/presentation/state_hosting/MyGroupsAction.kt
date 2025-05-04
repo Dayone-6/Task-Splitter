@@ -1,4 +1,6 @@
 package ru.dayone.main.my_groups.presentation.state_hosting
 
-class MyGroupsAction {
+sealed class MyGroupsAction {
+    class GetGroups(val requireNew: Boolean = false) : MyGroupsAction()
+    class CreateGroup(val name: String) : MyGroupsAction()
 }

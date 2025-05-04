@@ -14,6 +14,7 @@ import ru.dayone.main.my_groups.domain.repository.MyGroupsRepository
 import ru.dayone.main.my_groups.presentation.MyGroupsViewModel
 import ru.dayone.main.my_groups.presentation.state_hosting.MyGroupsStateMachine
 import ru.dayone.tasksplitter.common.utils.di.network.RetrofitModule
+import ru.dayone.tasksplitter.common.utils.di.network.TaskSplitterRetrofitQualifier
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.EncryptedSharedPrefsQualifier
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsModule
 import javax.inject.Singleton
@@ -54,6 +55,6 @@ class MyGroupsModule {
     @Provides
     @Singleton
     fun provideMyGroupsRetrofitService(
-        retrofit: Retrofit
+        @TaskSplitterRetrofitQualifier retrofit: Retrofit
     ): MyGroupsRetrofitService = retrofit.create(MyGroupsRetrofitService::class.java)
 }

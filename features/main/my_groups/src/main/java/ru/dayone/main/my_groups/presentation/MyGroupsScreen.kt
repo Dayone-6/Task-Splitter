@@ -1,12 +1,132 @@
 package ru.dayone.main.my_groups.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.GroupAdd
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import ru.dayone.main.my_groups.R
+import ru.dayone.main.my_groups.presentation.state_hosting.MyGroupsAction
+import ru.dayone.main.my_groups.presentation.state_hosting.MyGroupsEffect
+import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyGroupsScreen(){
-    Column {
-        Text("My Groups")
+fun MyGroupsScreen(
+    navController: NavController,
+    viewModel: MyGroupsViewModel,
+    snackbarHostState: SnackbarHostState
+) {
+    val context = LocalContext.current
+
+    val state by viewModel.state.collectAsState()
+
+    var isLoading by remember { mutableStateOf(false) }
+    var isCreateGroupDialogShowing by remember { mutableStateOf(false) }
+    var isRefreshing by remember { mutableStateOf(false) }
+
+    LaunchedEffect("effect") {
+        viewModel.effect.collect {
+            when (it) {
+                is MyGroupsEffect.StartLoading -> {
+                    isLoading = true
+                }
+
+                is MyGroupsEffect.StopLoading -> {
+                    isLoading = false
+                }
+
+                is MyGroupsEffect.GroupCreated -> {
+                    snackbarHostState.showSnackbar(message = context.getString(R.string.text_group_created))
+                }
+
+                is MyGroupsEffect.RequestedGroupsLoaded -> {
+                    isRefreshing = false
+                }
+            }
+        }
     }
+
+    LaunchedEffect("get groups") {
+        viewModel.handleAction(MyGroupsAction.GetGroups())
+    }
+
+    if (state.error != null) {
+        LaunchedEffect(state.hashCode()) {
+            snackbarHostState.showSnackbar(message = state.error!!.getValue(context))
+            viewModel.changeState(state.copy(error = null))
+        }
+    }
+
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            viewModel.handleAction(MyGroupsAction.GetGroups(requireNew = true))
+        },
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            if (isLoading) {
+                LoadingDialog()
+            } else if (state.groups != null) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(state.groups!!) {
+                        GroupItem(it)
+                    }
+                }
+            } else {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(text = stringResource(R.string.text_there_are_no_groups_you_consist_in))
+                }
+            }
+        }
+
+        if (isCreateGroupDialogShowing) {
+            CreateGroupDialog(
+                viewModel,
+                onDismiss = {
+                    isCreateGroupDialogShowing = false
+                }
+            )
+        }
+        FloatingActionButton(
+            onClick = { isCreateGroupDialogShowing = true },
+            modifier = Modifier.padding(end = 20.dp, bottom = 20.dp)
+        ) {
+            Icon(imageVector = Icons.Filled.GroupAdd, contentDescription = "Add group")
+        }
+    }
+
 }

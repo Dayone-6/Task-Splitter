@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">my_groups</string>
+    <string name="error_request_canceled">Request Canceled</string>
+    <string name="error_something_went_wrong">Something went wrong…</string>
+    <string name="text_there_are_no_groups_you_consist_in">There are no groups you consist in</string>
+    <string name="text_group_created">Group Created !</string>
+    <string name="hint_title">Title</string>
+    <string name="title_new_group">New Group</string>
+    <string name="text_create">Create</string>
 </resources>

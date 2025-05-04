@@ -80,6 +80,7 @@ dependencies {
     implementation(project(":features:start"))
     implementation(project(":features:main"))
     implementation(project(":features:main:account"))
+    implementation(project(":features:main:my_groups"))
 
     // Firebase
     implementation(platform(libs.firebase.bom))

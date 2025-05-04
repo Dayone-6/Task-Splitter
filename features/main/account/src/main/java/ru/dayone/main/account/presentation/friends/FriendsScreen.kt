@@ -74,7 +74,7 @@ fun FriendsScreen(
 
                 is FriendsEffect.FriendAdded -> {
                     isAddFriendDialogShowing = false
-                    snackbarHostState.showSnackbar(message = "Friend Added!")
+                    snackbarHostState.showSnackbar(message = context.getString(R.string.text_friend_added))
                 }
             }
         }
@@ -83,6 +83,7 @@ fun FriendsScreen(
     if (state.error != null) {
         LaunchedEffect(key1 = state.hashCode()) {
             snackbarHostState.showSnackbar(message = state.error!!.getValue(context))
+            viewModel.changeState(state.copy(error = null))
         }
     }
 
@@ -118,7 +119,7 @@ fun FriendsScreen(
                             .fillMaxSize()
                     )
                 }
-            } else if((state.friends ?: emptyList()).isNotEmpty()) {
+            } else if ((state.friends ?: emptyList()).isNotEmpty()) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -145,20 +146,4 @@ fun FriendsScreen(
             Icon(Icons.Filled.Add, "Add")
         }
     }
-
-//    Scaffold(
-//        modifier = Modifier.fillMaxSize(),
-//        floatingActionButton = {
-//            FloatingActionButton(
-//                onClick = {
-//                    isAddFriendDialogShowing = true
-//                }
-//            ) {
-//                Icon(Icons.Filled.Add, "Add")
-//            }
-//        },
-//        floatingActionButtonPosition = FabPosition.End
-//    ) { innerPadding ->
-//
-//    }
 }

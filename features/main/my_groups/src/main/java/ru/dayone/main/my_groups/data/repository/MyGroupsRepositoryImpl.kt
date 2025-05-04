@@ -6,18 +6,19 @@ import ru.dayone.main.my_groups.domain.datasource.MyGroupsRemoteDataSource
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.domain.repository.MyGroupsRepository
 import ru.dayone.tasksplitter.common.utils.Result
+import javax.inject.Inject
 
-class MyGroupsRepositoryImpl(
+class MyGroupsRepositoryImpl @Inject constructor(
     private val localDataSource: MyGroupsLocalDataSource,
     private val remoteDataSource: MyGroupsRemoteDataSource
 ) : MyGroupsRepository {
-    override suspend fun getMyGroups(): Result<List<Group>> {
+    override suspend fun getMyGroups(requireNew: Boolean): Result<List<Group>> {
         try {
             val user = localDataSource.getUser()
             if(user == null){
                 throw Exception()
             }
-            return remoteDataSource.getGroups(user.id)
+            return remoteDataSource.getGroups(user.id, requireNew)
         }catch (e: Exception){
             return Result.Error(e)
         }
