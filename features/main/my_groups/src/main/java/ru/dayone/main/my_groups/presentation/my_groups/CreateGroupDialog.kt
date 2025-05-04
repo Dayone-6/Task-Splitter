@@ -1,4 +1,4 @@
-package ru.dayone.main.my_groups.presentation
+package ru.dayone.main.my_groups.presentation.my_groups
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,19 +15,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import ru.dayone.main.my_groups.R
-import ru.dayone.main.my_groups.presentation.state_hosting.MyGroupsAction
+import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsAction
 import ru.dayone.tasksplitter.common.theme.backgroundDark
 import ru.dayone.tasksplitter.common.theme.backgroundLight
+import ru.dayone.tasksplitter.common.theme.titleTextStyle
 import ru.dayone.tasksplitter.common.utils.components.CustomTextField
+import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
 import ru.dayone.tasksplitter.common.utils.or
 
 @Composable
 fun CreateGroupDialog(
     viewModel: MyGroupsViewModel,
     onDismiss: () -> Unit
-){
+) {
     var name by remember {
         mutableStateOf("")
     }
@@ -42,13 +45,15 @@ fun CreateGroupDialog(
                 )
                 .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
+            DefaultTopAppBar(title = stringResource(R.string.title_new_group))
             CustomTextField(
                 text = name,
                 hint = stringResource(R.string.hint_title),
                 onTextChanged = {
                     name = it
-                }
+                },
+                textStyle = titleTextStyle.copy(fontSize = 20.sp)
             )
 
             Button(
@@ -58,7 +63,10 @@ fun CreateGroupDialog(
                 },
                 enabled = name.length > 3
             ) {
-                Text(stringResource(R.string.text_create))
+                Text(
+                    text = stringResource(R.string.text_create),
+                    style = titleTextStyle.copy(fontSize = 20.sp)
+                )
             }
         }
     }

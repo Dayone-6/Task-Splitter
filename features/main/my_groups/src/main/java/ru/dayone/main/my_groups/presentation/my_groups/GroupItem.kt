@@ -1,8 +1,8 @@
-package ru.dayone.main.my_groups.presentation
+package ru.dayone.main.my_groups.presentation.my_groups
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +17,7 @@ import ru.dayone.tasksplitter.common.theme.surfaceBrightLight
 import ru.dayone.tasksplitter.common.utils.or
 
 @Composable
-fun GroupItem(group: Group) {
+fun GroupItem(group: Group, onClick:() -> Unit) {
     Box(
         modifier = Modifier
             .padding(5.dp)
@@ -25,7 +25,8 @@ fun GroupItem(group: Group) {
                 shape = RoundedCornerShape(15.dp),
                 color = surfaceBrightDark.or(surfaceBrightLight)
             )
-            .fillMaxWidth(.9f),
+            .fillMaxWidth(.9f)
+            .clickable(enabled = true, onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Text(text = group.name, modifier = Modifier.padding(10.dp))

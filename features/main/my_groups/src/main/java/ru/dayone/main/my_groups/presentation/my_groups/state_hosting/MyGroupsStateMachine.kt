@@ -1,9 +1,9 @@
-package ru.dayone.main.my_groups.presentation.state_hosting
+package ru.dayone.main.my_groups.presentation.my_groups.state_hosting
 
 import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.dayone.main.my_groups.R
-import ru.dayone.main.my_groups.domain.repository.MyGroupsRepository
+import ru.dayone.main.my_groups.domain.repository.GroupsRepository
 import ru.dayone.tasksplitter.common.exceptions.RequestCanceledException
 import ru.dayone.tasksplitter.common.utils.BaseStateMachine
 import ru.dayone.tasksplitter.common.utils.Result
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MyGroupsStateMachine @Inject constructor(
-    private val repository: MyGroupsRepository
+    private val repository: GroupsRepository
 ) :
     BaseStateMachine<MyGroupsEffect, MyGroupsState, MyGroupsAction>(
         initialState = MyGroupsState()

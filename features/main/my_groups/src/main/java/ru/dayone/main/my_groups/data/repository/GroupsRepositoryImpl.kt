@@ -1,17 +1,16 @@
 package ru.dayone.main.my_groups.data.repository
 
-import androidx.compose.material3.ExposedDropdownMenuBox
-import ru.dayone.main.my_groups.domain.datasource.MyGroupsLocalDataSource
-import ru.dayone.main.my_groups.domain.datasource.MyGroupsRemoteDataSource
+import ru.dayone.main.my_groups.domain.datasource.GroupsLocalDataSource
+import ru.dayone.main.my_groups.domain.datasource.GroupsRemoteDataSource
 import ru.dayone.main.my_groups.data.network.models.Group
-import ru.dayone.main.my_groups.domain.repository.MyGroupsRepository
+import ru.dayone.main.my_groups.domain.repository.GroupsRepository
 import ru.dayone.tasksplitter.common.utils.Result
 import javax.inject.Inject
 
-class MyGroupsRepositoryImpl @Inject constructor(
-    private val localDataSource: MyGroupsLocalDataSource,
-    private val remoteDataSource: MyGroupsRemoteDataSource
-) : MyGroupsRepository {
+class GroupsRepositoryImpl @Inject constructor(
+    private val localDataSource: GroupsLocalDataSource,
+    private val remoteDataSource: GroupsRemoteDataSource
+) : GroupsRepository {
     override suspend fun getMyGroups(requireNew: Boolean): Result<List<Group>> {
         try {
             val user = localDataSource.getUser()

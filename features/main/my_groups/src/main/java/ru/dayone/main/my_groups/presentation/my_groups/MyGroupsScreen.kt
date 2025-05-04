@@ -1,4 +1,4 @@
-package ru.dayone.main.my_groups.presentation
+package ru.dayone.main.my_groups.presentation.my_groups
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,8 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ru.dayone.main.my_groups.R
-import ru.dayone.main.my_groups.presentation.state_hosting.MyGroupsAction
-import ru.dayone.main.my_groups.presentation.state_hosting.MyGroupsEffect
+import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsAction
+import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsEffect
+import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
 import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,6 +93,7 @@ fun MyGroupsScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
+            DefaultTopAppBar(title = stringResource(R.string.title_my_groups))
             if (isLoading) {
                 LoadingDialog()
             } else if (state.groups != null) {
@@ -100,7 +102,9 @@ fun MyGroupsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     items(state.groups!!) {
-                        GroupItem(it)
+                        GroupItem(it) {
+
+                        }
                     }
                 }
             } else {

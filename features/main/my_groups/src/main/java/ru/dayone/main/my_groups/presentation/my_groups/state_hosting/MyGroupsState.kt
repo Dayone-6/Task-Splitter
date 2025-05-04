@@ -1,4 +1,4 @@
-package ru.dayone.main.my_groups.presentation.state_hosting
+package ru.dayone.main.my_groups.presentation.my_groups.state_hosting
 
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.tasksplitter.common.utils.UIText

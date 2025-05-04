@@ -30,7 +30,7 @@ import ru.dayone.main.account.presentation.completed_tasks.CompletedTasksScreen
 import ru.dayone.main.account.presentation.friends.FriendsScreen
 import ru.dayone.main.account.presentation.settings.SettingsScreen
 import ru.dayone.main.data.di.MainComponent
-import ru.dayone.main.my_groups.presentation.MyGroupsScreen
+import ru.dayone.main.my_groups.presentation.my_groups.MyGroupsScreen
 import ru.dayone.main.my_tasks.presentation.MyTasksScreen
 import ru.dayone.tasksplitter.common.navigation.AccountNavRoutes
 import ru.dayone.tasksplitter.common.navigation.BottomNavItem

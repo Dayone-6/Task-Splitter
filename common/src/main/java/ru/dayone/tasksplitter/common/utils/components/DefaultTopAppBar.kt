@@ -19,7 +19,7 @@ import ru.dayone.tasksplitter.common.theme.titleTextStyle
 @Composable
 fun DefaultTopAppBar(
     title: String,
-    navController: NavController
+    navController: NavController? = null
 ){
     Box(
         modifier = Modifier.padding(top = 15.dp, start = 10.dp, end = 5.dp),
@@ -31,16 +31,18 @@ fun DefaultTopAppBar(
             textAlign = TextAlign.Center,
             style = titleTextStyle
         )
-        IconButton(
-            modifier = Modifier.padding(5.dp),
-            onClick = {
-                navController.popBackStack()
+        if(navController != null) {
+            IconButton(
+                modifier = Modifier.padding(5.dp),
+                onClick = {
+                    navController.popBackStack()
+                }
+            ) {
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Arrow back"
+                )
             }
-        ) {
-            Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Arrow back"
-            )
         }
     }
 }

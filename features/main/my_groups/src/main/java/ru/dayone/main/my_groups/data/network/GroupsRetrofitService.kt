@@ -8,7 +8,7 @@ import retrofit2.http.Path
 import ru.dayone.main.my_groups.data.network.models.CreateGroupRequestBody
 import ru.dayone.main.my_groups.data.network.models.Group
 
-interface MyGroupsRetrofitService {
+interface GroupsRetrofitService {
     @GET("groups/{userId}/")
     fun getUserGroups(
         @Path("userId") userId: String
