@@ -27,9 +27,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.toRoute
+import com.google.gson.GsonBuilder
 import ru.dayone.main.my_groups.R
+import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsAction
 import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsEffect
+import ru.dayone.tasksplitter.common.navigation.MyGroupsNavRoutes
 import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
 import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
 
@@ -103,7 +107,11 @@ fun MyGroupsScreen(
                 ) {
                     items(state.groups!!) {
                         GroupItem(it) {
-
+                            navController.navigate(
+                                MyGroupsNavRoutes.GROUP(
+                                    GsonBuilder().create().toJson(it)
+                                )
+                            )
                         }
                     }
                 }

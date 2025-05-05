@@ -24,12 +24,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import ru.dayone.main.R
 import ru.dayone.main.account.presentation.account.AccountScreen
 import ru.dayone.main.account.presentation.completed_tasks.CompletedTasksScreen
 import ru.dayone.main.account.presentation.friends.FriendsScreen
 import ru.dayone.main.account.presentation.settings.SettingsScreen
 import ru.dayone.main.data.di.MainComponent
+import ru.dayone.main.my_groups.data.network.models.Group
+import ru.dayone.main.my_groups.presentation.group.GroupScreen
 import ru.dayone.main.my_groups.presentation.my_groups.MyGroupsScreen
 import ru.dayone.main.my_tasks.presentation.MyTasksScreen
 import ru.dayone.tasksplitter.common.navigation.AccountNavRoutes
@@ -118,6 +123,20 @@ fun MainScreen(
                         innerNavController,
                         mainComponent.getMyGroupsViewModel(),
                         snackbarHostState
+                    )
+                }
+
+                composable<MyGroupsNavRoutes.GROUP> {
+                    val group =
+                        GsonBuilder().create().fromJson(
+                            it.toRoute<MyGroupsNavRoutes.GROUP>().groupJson,
+                            Group::class.java
+                        )
+                    GroupScreen(
+                        innerNavController,
+                        mainComponent.getGroupViewModel(),
+                        snackbarHostState,
+                        group
                     )
                 }
             }

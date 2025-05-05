@@ -9,6 +9,7 @@ import ru.dayone.main.account.presentation.account.AccountViewModel
 import ru.dayone.main.account.presentation.completed_tasks.CompletedTasksViewModel
 import ru.dayone.main.account.presentation.friends.FriendsViewModel
 import ru.dayone.main.my_groups.data.di.GroupsModule
+import ru.dayone.main.my_groups.presentation.group.GroupViewModel
 import ru.dayone.main.my_groups.presentation.my_groups.MyGroupsViewModel
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SettingsSharedPrefsQualifier
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsModule
@@ -29,6 +30,8 @@ interface MainComponent {
     fun getCompletedTasksViewModel(): CompletedTasksViewModel
 
     fun getMyGroupsViewModel(): MyGroupsViewModel
+
+    fun getGroupViewModel(): GroupViewModel
 
     @SettingsSharedPrefsQualifier
     fun getSettingsPrefs(): SharedPreferences

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GroupsLocalDataSourceImpl @Inject constructor(
     private val sharedPrefs: SharedPreferences
-) : GroupsLocalDataSource{
+) : GroupsLocalDataSource {
     override suspend fun getUser(): User? {
         return sharedPrefs.getUser()
     }

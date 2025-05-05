@@ -11,6 +11,8 @@ import ru.dayone.main.my_groups.data.repository.GroupsRepositoryImpl
 import ru.dayone.main.my_groups.domain.datasource.GroupsLocalDataSource
 import ru.dayone.main.my_groups.domain.datasource.GroupsRemoteDataSource
 import ru.dayone.main.my_groups.domain.repository.GroupsRepository
+import ru.dayone.main.my_groups.presentation.group.GroupViewModel
+import ru.dayone.main.my_groups.presentation.group.state_hosting.GroupStateMachine
 import ru.dayone.main.my_groups.presentation.my_groups.MyGroupsViewModel
 import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsStateMachine
 import ru.dayone.tasksplitter.common.utils.di.network.RetrofitModule
@@ -57,4 +59,17 @@ class GroupsModule {
     fun provideMyGroupsRetrofitService(
         @TaskSplitterRetrofitQualifier retrofit: Retrofit
     ): GroupsRetrofitService = retrofit.create(GroupsRetrofitService::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideGroupViewModel(
+        stateMachine: GroupStateMachine
+    ): GroupViewModel = GroupViewModel(stateMachine)
+
+    @Provides
+    @Singleton
+    fun provideGroupStateMachine(
+        repository: GroupsRepository
+    ): GroupStateMachine = GroupStateMachine(repository)
 }
