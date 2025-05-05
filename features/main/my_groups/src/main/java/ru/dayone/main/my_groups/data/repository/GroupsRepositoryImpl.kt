@@ -1,11 +1,12 @@
 package ru.dayone.main.my_groups.data.repository
 
-import ru.dayone.main.my_groups.domain.datasource.GroupsLocalDataSource
-import ru.dayone.main.my_groups.domain.datasource.GroupsRemoteDataSource
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.data.network.models.GroupMember
 import ru.dayone.main.my_groups.data.network.models.Task
+import ru.dayone.main.my_groups.domain.datasource.GroupsLocalDataSource
+import ru.dayone.main.my_groups.domain.datasource.GroupsRemoteDataSource
 import ru.dayone.main.my_groups.domain.repository.GroupsRepository
+import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
 import javax.inject.Inject
 
@@ -16,11 +17,11 @@ class GroupsRepositoryImpl @Inject constructor(
     override suspend fun getMyGroups(requireNew: Boolean): Result<List<Group>> {
         try {
             val user = localDataSource.getUser()
-            if(user == null){
+            if (user == null) {
                 throw Exception()
             }
             return remoteDataSource.getGroups(user.id, requireNew)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             return Result.Error(e)
         }
     }
@@ -28,23 +29,48 @@ class GroupsRepositoryImpl @Inject constructor(
     override suspend fun createGroup(name: String): Result<Group> {
         try {
             val user = localDataSource.getUser()
-            if(user == null){
+            if (user == null) {
                 throw Exception()
             }
             return remoteDataSource.createGroup(user.id, name)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             return Result.Error(e)
         }
     }
 
     override suspend fun getGroupTasks(groupId: String, requireNew: Boolean): Result<List<Task>> {
-        TODO("Not yet implemented")
+        return try {
+            remoteDataSource.getGroupTasks(groupId, requireNew)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
     }
 
     override suspend fun addMemberToGroup(
         groupId: String,
         memberId: String
     ): Result<GroupMember> {
-        TODO("Not yet implemented")
+        return try {
+            remoteDataSource.addMemberToGroup(groupId, memberId)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getUsersFromGroupMembers(groupMembers: List<GroupMember>): Result<List<User>> {
+        try {
+            val users = mutableListOf<User>()
+            for (groupMember in groupMembers) {
+                val result = remoteDataSource.getUserFromGroupMember(groupMember)
+                if (result is Result.Success) {
+                    users.add(result.result)
+                } else {
+                    throw (result as Result.Error).exception
+                }
+            }
+            return Result.Success(users)
+        } catch (e: Exception) {
+            return Result.Error(e)
+        }
     }
 }

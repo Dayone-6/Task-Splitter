@@ -7,4 +7,5 @@
     <string name="title_new_group">New Group</string>
     <string name="text_create">Create</string>
     <string name="title_my_groups">My Groups</string>
+    <string name="text_member_added">Member Added!</string>
 </resources>

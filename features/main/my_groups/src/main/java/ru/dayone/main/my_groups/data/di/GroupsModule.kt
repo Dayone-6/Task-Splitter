@@ -1,6 +1,8 @@
 package ru.dayone.main.my_groups.data.di
 
 import android.content.SharedPreferences
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -52,7 +54,7 @@ class GroupsModule {
     @Singleton
     fun provideRemoteDataSource(
         service: GroupsRetrofitService
-    ): GroupsRemoteDataSource = GroupsRemoteDataSourceImpl(service)
+    ): GroupsRemoteDataSource = GroupsRemoteDataSourceImpl(service, Firebase.firestore)
 
     @Provides
     @Singleton

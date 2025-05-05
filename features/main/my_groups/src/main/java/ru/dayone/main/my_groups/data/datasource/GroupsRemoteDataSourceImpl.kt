@@ -1,5 +1,7 @@
 package ru.dayone.main.my_groups.data.datasource
 
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 import ru.dayone.main.my_groups.data.network.GroupsRetrofitService
 import ru.dayone.main.my_groups.data.network.models.AddMemberToGroupRequestBody
 import ru.dayone.main.my_groups.data.network.models.CreateGroupRequestBody
@@ -7,12 +9,17 @@ import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.data.network.models.GroupMember
 import ru.dayone.main.my_groups.data.network.models.Task
 import ru.dayone.main.my_groups.domain.datasource.GroupsRemoteDataSource
+import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsEffect
+import ru.dayone.tasksplitter.common.exceptions.RequestCanceledException
+import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
+import ru.dayone.tasksplitter.common.utils.USERS_FIRESTORE_COLLECTION
 import ru.dayone.tasksplitter.common.utils.handle
 import javax.inject.Inject
 
 class GroupsRemoteDataSourceImpl @Inject constructor(
-    private val service: GroupsRetrofitService
+    private val service: GroupsRetrofitService,
+    private val db: FirebaseFirestore
 ) : GroupsRemoteDataSource {
     private var cachedGroups: List<Group>? = null
 
@@ -53,5 +60,17 @@ class GroupsRemoteDataSourceImpl @Inject constructor(
         memberId: String
     ): Result<GroupMember> {
         return service.addMemberToGroup(groupId, AddMemberToGroupRequestBody(memberId)).handle()
+    }
+
+    override suspend fun getUserFromGroupMember(groupMember: GroupMember): Result<User> {
+        val task = db.collection(USERS_FIRESTORE_COLLECTION).document(groupMember.memberId).get()
+        val result = task.await()
+        return if(task.isSuccessful){
+            Result.Success(result.toObject(User::class.java)!!)
+        }else if(task.isCanceled){
+            Result.Error(RequestCanceledException())
+        }else{
+            Result.Error(task.exception!!)
+        }
     }
 }
