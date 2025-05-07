@@ -1,9 +1,7 @@
 package ru.dayone.main.my_groups.presentation.group
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,18 +17,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import ru.dayone.main.my_groups.R
 import ru.dayone.main.my_groups.presentation.group.state_hosting.GroupAction
-import ru.dayone.main.my_groups.presentation.group.state_hosting.GroupState
-import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsAction
-import ru.dayone.tasksplitter.common.theme.backgroundDark
-import ru.dayone.tasksplitter.common.theme.backgroundLight
 import ru.dayone.tasksplitter.common.theme.buttonTextStyle
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
 import ru.dayone.tasksplitter.common.utils.components.CustomTextField
 import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
-import ru.dayone.tasksplitter.common.utils.or
+import ru.dayone.tasksplitter.common.utils.defaultDialog
 
 @Composable
-fun AddTaskDialog(viewModel: GroupViewModel, groupId: String, onDismiss: () -> Unit){
+fun AddTaskDialog(viewModel: GroupViewModel, groupId: String, onDismiss: () -> Unit) {
     var title by remember {
         mutableStateOf("")
     }
@@ -42,15 +36,10 @@ fun AddTaskDialog(viewModel: GroupViewModel, groupId: String, onDismiss: () -> U
         onDismissRequest = onDismiss
     ) {
         Column(
-            modifier = Modifier
-                .background(
-                    color = backgroundDark.or(backgroundLight),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(10.dp),
+            modifier = Modifier.defaultDialog(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DefaultTopAppBar(title = stringResource(R.string.title_new_group))
+            DefaultTopAppBar(title = stringResource(R.string.title_new_task))
             CustomTextField(
                 text = title,
                 hint = stringResource(R.string.hint_title),

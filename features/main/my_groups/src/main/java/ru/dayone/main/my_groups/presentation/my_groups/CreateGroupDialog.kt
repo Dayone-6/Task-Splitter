@@ -19,13 +19,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import ru.dayone.main.my_groups.R
 import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsAction
-import ru.dayone.tasksplitter.common.theme.backgroundDark
-import ru.dayone.tasksplitter.common.theme.backgroundLight
 import ru.dayone.tasksplitter.common.theme.buttonTextStyle
+import ru.dayone.tasksplitter.common.theme.currentScheme
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
 import ru.dayone.tasksplitter.common.utils.components.CustomTextField
 import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
-import ru.dayone.tasksplitter.common.utils.or
+import ru.dayone.tasksplitter.common.utils.defaultDialog
 
 @Composable
 fun CreateGroupDialog(
@@ -39,12 +38,7 @@ fun CreateGroupDialog(
         onDismissRequest = onDismiss
     ) {
         Column(
-            modifier = Modifier
-                .background(
-                    color = backgroundDark.or(backgroundLight),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(10.dp),
+            modifier = Modifier.defaultDialog(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             DefaultTopAppBar(title = stringResource(R.string.title_new_group))
@@ -54,7 +48,7 @@ fun CreateGroupDialog(
                 onTextChanged = {
                     name = it
                 },
-                textStyle = titleTextStyle.copy(fontSize = 18.sp),
+                textStyle = titleTextStyle.copy(fontSize = 20.sp),
                 modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
             )
 

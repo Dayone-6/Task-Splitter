@@ -16,4 +16,6 @@
     <string name="text_add">Добавить</string>
     <string name="hint_description">Описание</string>
     <string name="text_task_created">Задание создано!</string>
+    <string name="text_new_member">Новый участник</string>
+    <string name="title_new_task">Новое задание</string>
 </resources>

@@ -2,6 +2,7 @@ package ru.dayone.tasksplitter.common.theme
 
 import android.app.Activity
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
@@ -249,6 +250,8 @@ private val highContrastDarkColorScheme = darkColorScheme(
 var currentDarkScheme = darkScheme
 var currentLightScheme = lightScheme
 
+lateinit var currentScheme: ColorScheme
+
 val successColorLight = Color(0xff52d156)
 val successColorDark = Color(0xff078f0c)
 
@@ -264,6 +267,7 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun TasksSplitterTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -275,11 +279,11 @@ fun TasksSplitterTheme(
         currentDarkScheme = forcedColorTheme
         currentLightScheme = forcedColorTheme
     }else{
-        currentLightScheme = lightScheme
         currentDarkScheme = darkScheme
+        currentLightScheme = lightScheme
     }
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        dynamicColor -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
@@ -287,6 +291,7 @@ fun TasksSplitterTheme(
         darkTheme -> currentDarkScheme
         else -> currentLightScheme
     }
+    currentScheme = colorScheme
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {

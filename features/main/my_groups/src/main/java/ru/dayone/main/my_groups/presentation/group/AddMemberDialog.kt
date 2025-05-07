@@ -1,11 +1,9 @@
 package ru.dayone.main.my_groups.presentation.group
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SearchBar
@@ -24,14 +22,18 @@ import androidx.compose.ui.window.Dialog
 import ru.dayone.main.my_groups.R
 import ru.dayone.main.my_groups.presentation.group.state_hosting.GroupAction
 import ru.dayone.tasksplitter.common.models.User
-import ru.dayone.tasksplitter.common.theme.backgroundDark
-import ru.dayone.tasksplitter.common.theme.backgroundLight
+import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
 import ru.dayone.tasksplitter.common.utils.components.UserItem
-import ru.dayone.tasksplitter.common.utils.or
+import ru.dayone.tasksplitter.common.utils.defaultDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddMemberDialog(viewModel: GroupViewModel, groupId: String, foundFriends: List<User>?, onDismiss: () -> Unit){
+fun AddMemberDialog(
+    viewModel: GroupViewModel,
+    groupId: String,
+    foundFriends: List<User>?,
+    onDismiss: () -> Unit
+) {
     var userNickname by remember {
         mutableStateOf("")
     }
@@ -44,15 +46,12 @@ fun AddMemberDialog(viewModel: GroupViewModel, groupId: String, foundFriends: Li
         onDismissRequest = { onDismiss.invoke() },
     ) {
         Column(
-            modifier = Modifier
-                .background(
-                    color = backgroundDark.or(backgroundLight),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(10.dp),
+            modifier = Modifier.defaultDialog(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            DefaultTopAppBar(title = stringResource(R.string.text_new_member))
             SearchBar(
+                modifier = Modifier.padding(top = 15.dp),
                 inputField = {
                     SearchBarDefaults.InputField(
                         query = userNickname,
@@ -66,7 +65,7 @@ fun AddMemberDialog(viewModel: GroupViewModel, groupId: String, foundFriends: Li
                     )
                 },
                 expanded = false,
-                onExpandedChange = {  }
+                onExpandedChange = { }
             ) {
             }
 
@@ -75,7 +74,7 @@ fun AddMemberDialog(viewModel: GroupViewModel, groupId: String, foundFriends: Li
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     items(foundFriends) {
-                        UserItem(it) {
+                        UserItem(it, it == selectedUser) {
                             selectedUser = it
                         }
                     }
@@ -85,7 +84,12 @@ fun AddMemberDialog(viewModel: GroupViewModel, groupId: String, foundFriends: Li
             Button(
                 onClick = {
                     if (selectedUser != null) {
-                        viewModel.handleAction(GroupAction.AddUserToGroup(selectedUser!!.id, groupId))
+                        viewModel.handleAction(
+                            GroupAction.AddUserToGroup(
+                                selectedUser!!.id,
+                                groupId
+                            )
+                        )
                         onDismiss.invoke()
                     }
                 },

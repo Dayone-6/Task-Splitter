@@ -19,10 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.dayone.tasksplitter.common.models.User
-import ru.dayone.tasksplitter.common.theme.surfaceBrightDark
-import ru.dayone.tasksplitter.common.theme.surfaceBrightLight
+import ru.dayone.tasksplitter.common.theme.currentScheme
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
-import ru.dayone.tasksplitter.common.utils.or
 
 @Composable
 fun UserItemSmall(user: User, isLast: Boolean, onItemClick: () -> Unit) {
@@ -37,7 +35,7 @@ fun UserItemSmall(user: User, isLast: Boolean, onItemClick: () -> Unit) {
                 color = if (!isLast) {
                     Color(user.color!!)
                 } else {
-                    surfaceBrightDark.or(surfaceBrightLight)
+                    currentScheme.surfaceBright
                 }
             )
     ) {

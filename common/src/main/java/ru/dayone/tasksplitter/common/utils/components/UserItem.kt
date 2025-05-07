@@ -13,17 +13,24 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.dayone.tasksplitter.common.models.User
+import ru.dayone.tasksplitter.common.theme.currentDarkScheme
+import ru.dayone.tasksplitter.common.theme.currentLightScheme
+import ru.dayone.tasksplitter.common.theme.currentScheme
 import ru.dayone.tasksplitter.common.theme.primaryDark
 import ru.dayone.tasksplitter.common.theme.primaryLight
+import ru.dayone.tasksplitter.common.theme.secondaryDark
+import ru.dayone.tasksplitter.common.theme.secondaryLight
 import ru.dayone.tasksplitter.common.theme.surfaceBrightDark
 import ru.dayone.tasksplitter.common.theme.surfaceBrightLight
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
@@ -36,16 +43,18 @@ fun UserItem(
     isSelected: Boolean = false,
     onItemClick: (user: User) -> Unit
 ) {
+    val cornersRadius = remember { 50.dp }
+    val outlineWidth = remember { 3.dp }
     Box(
         modifier = Modifier
-            .padding(10.dp)
+            .padding(5.dp)
             .background(
                 color = if (!isSelected) {
-                    surfaceBrightDark.or(surfaceBrightLight)
+                    currentScheme!!.surfaceBright
                 }else{
-                    primaryDark.or(primaryLight)
+                    currentScheme!!.primary
                 },
-                shape = RoundedCornerShape(5.dp)
+                shape = RoundedCornerShape(cornersRadius)
             )
             .fillMaxWidth(.9f)
             .clickable(enabled = true, onClick = {
@@ -55,16 +64,16 @@ fun UserItem(
     ) {
         Box(
             modifier = Modifier
-                .padding(2.dp)
+                .padding(outlineWidth)
                 .background(
                     color = surfaceBrightDark.or(surfaceBrightLight),
-                    shape = RoundedCornerShape(5.dp)
+                    shape = RoundedCornerShape(cornersRadius)
                 ),
             contentAlignment = Alignment.Center
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.padding(0.dp)
             ) {
                 Icon(
                     painter = ColorPainter(Color.Transparent),
@@ -73,14 +82,14 @@ fun UserItem(
                         .size(65.dp)
                         .background(
                             color = Color(user.color!!),
-                            shape = RoundedCornerShape(50.dp)
+                            shape = RoundedCornerShape(cornersRadius)
                         ),
                     tint = Color.Green
                 )
                 Column(
                     modifier = Modifier
                         .weight(2f)
-                        .padding(end = 15.dp),
+                        .padding(end = 10.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
@@ -100,4 +109,10 @@ fun UserItem(
             }
         }
     }
+}
+
+@Composable
+@Preview
+fun UserItemPreview(){
+    UserItem(User("", "Leonid", "dayone", 1222222222), true) { }
 }

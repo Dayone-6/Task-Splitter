@@ -16,12 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.dayone.main.my_groups.data.network.models.Task
 import ru.dayone.tasksplitter.common.theme.Typography
-import ru.dayone.tasksplitter.common.theme.errorContainerDarkMediumContrast
-import ru.dayone.tasksplitter.common.theme.errorContainerLight
+import ru.dayone.tasksplitter.common.theme.currentScheme
 import ru.dayone.tasksplitter.common.theme.successColorDark
 import ru.dayone.tasksplitter.common.theme.successColorLight
-import ru.dayone.tasksplitter.common.theme.surfaceBrightDark
-import ru.dayone.tasksplitter.common.theme.surfaceBrightLight
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
 import ru.dayone.tasksplitter.common.utils.or
 
@@ -29,7 +26,7 @@ import ru.dayone.tasksplitter.common.utils.or
 fun TaskItem(task: Task, onItemClick: () -> Unit) {
     val backgroundColor = when (task.status) {
         0 -> {
-            errorContainerDarkMediumContrast.or(errorContainerLight)
+            currentScheme.errorContainer
         }
 
         1 -> {
@@ -37,7 +34,7 @@ fun TaskItem(task: Task, onItemClick: () -> Unit) {
         }
 
         else -> {
-            surfaceBrightDark.or(surfaceBrightLight)
+            currentScheme.surfaceBright
         }
     }
     Box(
@@ -46,7 +43,8 @@ fun TaskItem(task: Task, onItemClick: () -> Unit) {
             .background(
                 shape = RoundedCornerShape(5.dp),
                 color = backgroundColor
-            ).clickable(true, onClick = onItemClick)
+            )
+            .clickable(true, onClick = onItemClick)
             .fillMaxWidth()
     ) {
         Column(

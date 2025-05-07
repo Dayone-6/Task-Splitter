@@ -14,6 +14,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import ru.dayone.tasksplitter.common.theme.backgroundDark
 import ru.dayone.tasksplitter.common.theme.backgroundLight
+import ru.dayone.tasksplitter.common.theme.currentScheme
 import ru.dayone.tasksplitter.common.utils.or
 
 @Composable
@@ -30,7 +31,7 @@ fun LoadingDialog(){
                 .size(100.dp)
                 .background(
                     shape = RoundedCornerShape(10.dp),
-                    color = backgroundDark.or(backgroundLight)
+                    color = currentScheme!!.background
                 ),
             contentAlignment = Alignment.Center,
         ) {

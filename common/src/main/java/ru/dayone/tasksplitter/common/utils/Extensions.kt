@@ -1,15 +1,21 @@
 package ru.dayone.tasksplitter.common.utils
 
 import android.content.SharedPreferences
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import retrofit2.Call
 import retrofit2.awaitResponse
 import ru.dayone.tasksplitter.common.exceptions.InternalServerErrorException
 import ru.dayone.tasksplitter.common.exceptions.UnprocessableEntityException
 import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.theme.currentDarkScheme
+import ru.dayone.tasksplitter.common.theme.currentScheme
 import ru.dayone.tasksplitter.common.theme.darkScheme
 
 
@@ -30,15 +36,24 @@ fun SharedPreferences.getUser(): User? {
 }
 
 @Composable
-fun Color.or(lightThemeColor: Color): Color{
-    return if(isSystemInDarkTheme() && currentDarkScheme == darkScheme){
+fun Color.or(lightThemeColor: Color): Color {
+    return if (isSystemInDarkTheme() && currentDarkScheme == darkScheme) {
         this
-    }else{
+    } else {
         lightThemeColor
     }
 }
 
-suspend fun <T: Any> Call<T>.handle(): Result<T> {
+fun Modifier.defaultDialog(): Modifier {
+    return this
+        .background(
+            color = currentScheme.background,
+            shape = RoundedCornerShape(20.dp)
+        )
+        .padding(10.dp)
+}
+
+suspend fun <T : Any> Call<T>.handle(): Result<T> {
     val result = this.awaitResponse()
     return when (result.code()) {
         422 -> {
