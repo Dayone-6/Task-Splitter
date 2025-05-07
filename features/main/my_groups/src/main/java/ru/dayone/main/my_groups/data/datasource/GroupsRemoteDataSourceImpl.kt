@@ -1,10 +1,12 @@
 package ru.dayone.main.my_groups.data.datasource
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import ru.dayone.main.my_groups.data.network.GroupsRetrofitService
 import ru.dayone.main.my_groups.data.network.models.AddMemberToGroupRequestBody
 import ru.dayone.main.my_groups.data.network.models.CreateGroupRequestBody
+import ru.dayone.main.my_groups.data.network.models.CreateTaskRequestBody
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.data.network.models.GroupMember
 import ru.dayone.main.my_groups.data.network.models.Task
@@ -72,5 +74,40 @@ class GroupsRemoteDataSourceImpl @Inject constructor(
         }else{
             Result.Error(task.exception!!)
         }
+    }
+
+    override suspend fun getUserFriends(userId: String): Result<List<User>> {
+        return try {
+            val friendIdsResult = service.getUserFriends(userId).handle()
+            Log.d("AccountRemoteDataSource", friendIdsResult.toString())
+            if (friendIdsResult is Result.Success) {
+                val task = db.collection(USERS_FIRESTORE_COLLECTION)
+                    .whereIn("id", friendIdsResult.result.map { it.friendId }).get()
+                val taskResult = task.await()
+                val result: Result<List<User>> = if (task.isSuccessful) {
+                    Result.Success(taskResult.toObjects(User::class.java))
+                } else if (task.isCanceled) {
+                    Result.Error(RequestCanceledException())
+                } else if (task.exception != null) {
+                    Result.Error(task.exception!!)
+                } else {
+                    Result.Error(Exception())
+                }
+                return result
+            } else {
+                return Result.Error((friendIdsResult as Result.Error).exception)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun createTask(
+        groupId: String,
+        title: String,
+        description: String
+    ): Result<Task> {
+        return service.createTask(groupId, CreateTaskRequestBody(title, description)).handle()
     }
 }

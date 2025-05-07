@@ -7,5 +7,6 @@ import ru.dayone.tasksplitter.common.utils.UIText
 data class GroupState(
     var tasks: List<Task>? = null,
     var users: List<User>? = null,
+    var friends: List<User>? = null,
     var error: UIText? = null
 )

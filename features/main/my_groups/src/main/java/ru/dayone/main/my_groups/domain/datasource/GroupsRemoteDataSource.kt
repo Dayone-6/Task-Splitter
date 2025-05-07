@@ -16,4 +16,8 @@ interface GroupsRemoteDataSource {
     suspend fun addMemberToGroup(groupId: String, memberId: String): Result<GroupMember>
 
     suspend fun getUserFromGroupMember(groupMember: GroupMember): Result<User>
+
+    suspend fun getUserFriends(userId: String): Result<List<User>>
+
+    suspend fun createTask(groupId: String, title: String, description: String): Result<Task>
 }

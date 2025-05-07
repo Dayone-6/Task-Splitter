@@ -38,6 +38,7 @@ import ru.dayone.main.account.presentation.friends.state_hosting.FriendsEffect
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
 import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
 import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
+import ru.dayone.tasksplitter.common.utils.components.UserItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

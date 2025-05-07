@@ -1,4 +1,4 @@
-package ru.dayone.main.my_groups.presentation.my_groups
+package ru.dayone.main.my_groups.presentation.group
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import ru.dayone.main.my_groups.R
+import ru.dayone.main.my_groups.presentation.group.state_hosting.GroupAction
+import ru.dayone.main.my_groups.presentation.group.state_hosting.GroupState
 import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsAction
 import ru.dayone.tasksplitter.common.theme.backgroundDark
 import ru.dayone.tasksplitter.common.theme.backgroundLight
@@ -28,13 +30,14 @@ import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
 import ru.dayone.tasksplitter.common.utils.or
 
 @Composable
-fun CreateGroupDialog(
-    viewModel: MyGroupsViewModel,
-    onDismiss: () -> Unit
-) {
-    var name by remember {
+fun AddTaskDialog(viewModel: GroupViewModel, groupId: String, onDismiss: () -> Unit){
+    var title by remember {
         mutableStateOf("")
     }
+    var description by remember {
+        mutableStateOf("")
+    }
+
     Dialog(
         onDismissRequest = onDismiss
     ) {
@@ -49,21 +52,32 @@ fun CreateGroupDialog(
         ) {
             DefaultTopAppBar(title = stringResource(R.string.title_new_group))
             CustomTextField(
-                text = name,
+                text = title,
                 hint = stringResource(R.string.hint_title),
                 onTextChanged = {
-                    name = it
+                    title = it
                 },
                 textStyle = titleTextStyle.copy(fontSize = 18.sp),
-                modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
+                modifier = Modifier.padding(top = 15.dp)
             )
+
+            CustomTextField(
+                text = description,
+                hint = stringResource(R.string.hint_description),
+                onTextChanged = {
+                    description = it
+                },
+                textStyle = titleTextStyle.copy(fontSize = 18.sp),
+                modifier = Modifier.padding(top = 5.dp, bottom = 15.dp)
+            )
+
 
             Button(
                 onClick = {
-                    viewModel.handleAction(MyGroupsAction.CreateGroup(name))
+                    viewModel.handleAction(GroupAction.CreateTask(groupId, title, description))
                     onDismiss.invoke()
                 },
-                enabled = name.length > 3
+                enabled = title.length > 3 && description.length > 3
             ) {
                 Text(
                     text = stringResource(R.string.text_create),

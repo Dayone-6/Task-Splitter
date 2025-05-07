@@ -10,6 +10,8 @@ import ru.dayone.tasksplitter.common.utils.Result
 import ru.dayone.tasksplitter.common.utils.UIText
 import javax.inject.Inject
 
+private const val TAG = "GroupStateMachine"
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class GroupStateMachine @Inject constructor(
     private val repository: GroupsRepository
@@ -22,11 +24,19 @@ class GroupStateMachine @Inject constructor(
                 on<GroupAction.GetTasks> { action, state ->
                     updateEffect(GroupEffect.StartLoading)
                     val result = repository.getGroupTasks(action.groupId, action.requireNew)
-                    Log.d("GroupStateMachine", result.toString())
+                    Log.d(TAG, result.toString())
                     updateEffect(GroupEffect.StopLoading)
                     when (result) {
                         is Result.Success -> {
-                            return@on state.mutate { state.snapshot.copy(tasks = result.result) }
+                            if(action.requireNew){
+                                updateEffect(GroupEffect.RequiredTasksLoaded)
+                            }
+                            return@on state.override {
+                                state.snapshot.copy(
+                                    tasks = result.result,
+                                    users = users
+                                )
+                            }
                         }
 
                         is Result.Error -> {
@@ -52,11 +62,16 @@ class GroupStateMachine @Inject constructor(
                 on<GroupAction.GetUsersFromGroupMembers> { action, state ->
                     updateEffect(GroupEffect.StartLoading)
                     val result = repository.getUsersFromGroupMembers(action.groupMembers)
-                    Log.d("GroupStateMachine", result.toString())
+                    Log.d(TAG, result.toString())
                     updateEffect(GroupEffect.StopLoading)
                     when (result) {
                         is Result.Success -> {
-                            return@on state.mutate { state.snapshot.copy(users = result.result) }
+                            return@on state.override {
+                                state.snapshot.copy(
+                                    tasks = tasks,
+                                    users = result.result
+                                )
+                            }
                         }
 
                         is Result.Error -> {
@@ -81,8 +96,8 @@ class GroupStateMachine @Inject constructor(
                 }
                 on<GroupAction.AddUserToGroup> { action, state ->
                     updateEffect(GroupEffect.StartLoading)
-                    val result = repository.addMemberToGroup(action.userId, action.groupId)
-                    Log.d("GroupStateMachine", result.toString())
+                    val result = repository.addMemberToGroup(action.groupId, action.userId)
+                    Log.d(TAG, result.toString())
                     updateEffect(GroupEffect.StopLoading)
                     when (result) {
                         is Result.Success -> {
@@ -104,6 +119,50 @@ class GroupStateMachine @Inject constructor(
                                 state.snapshot.copy(
                                     error = UIText.StringResource(
                                         errorTextId
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+
+                on<GroupAction.GetUserFriends> { action, state ->
+                    updateEffect(GroupEffect.StartLoading)
+                    val result = repository.getUserFriends()
+                    updateEffect(GroupEffect.StopLoading)
+                    Log.d(TAG, result.toString())
+                    when (result) {
+                        is Result.Success -> {
+                            return@on state.override { state.snapshot.copy(friends = result.result) }
+                        }
+
+                        is Result.Error -> {
+                            return@on state.override {
+                                state.snapshot.copy(
+                                    error = UIText.StringResource(
+                                        R.string.error_something_went_wrong
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+
+                on<GroupAction.CreateTask>{action, state ->
+                    updateEffect(GroupEffect.StartLoading)
+                    val result = repository.createTask(action.groupId, action.title, action.description)
+                    updateEffect(GroupEffect.StopLoading)
+                    Log.d(TAG, result.toString())
+                    when(result){
+                        is Result.Success -> {
+                            updateEffect(GroupEffect.TaskCreated)
+                            return@on state.noChange()
+                        }
+                        is Result.Error -> {
+                            return@on state.override {
+                                state.snapshot.copy(
+                                    error = UIText.StringResource(
+                                        R.string.error_something_went_wrong
                                     )
                                 )
                             }

@@ -16,4 +16,8 @@ interface GroupsRepository {
     suspend fun addMemberToGroup(groupId: String, memberId: String): Result<GroupMember>
 
     suspend fun getUsersFromGroupMembers(groupMembers: List<GroupMember>): Result<List<User>>
+
+    suspend fun getUserFriends(): Result<List<User>>
+
+    suspend fun createTask(groupId: String, title: String, description: String): Result<Task>
 }

@@ -249,6 +249,9 @@ private val highContrastDarkColorScheme = darkColorScheme(
 var currentDarkScheme = darkScheme
 var currentLightScheme = lightScheme
 
+val successColorLight = Color(0xff52d156)
+val successColorDark = Color(0xff078f0c)
+
 @Immutable
 data class ColorFamily(
     val color: Color,

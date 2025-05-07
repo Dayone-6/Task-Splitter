@@ -6,7 +6,7 @@ import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import ru.dayone.main.account.data.network.AccountRetrofitService
-import ru.dayone.main.account.data.network.models.friends.UserFriend
+import ru.dayone.main.account.data.network.models.UserFriend
 import ru.dayone.main.account.domain.datasource.AccountRemoteDataSource
 import ru.dayone.tasksplitter.common.exceptions.RequestCanceledException
 import ru.dayone.tasksplitter.common.models.User

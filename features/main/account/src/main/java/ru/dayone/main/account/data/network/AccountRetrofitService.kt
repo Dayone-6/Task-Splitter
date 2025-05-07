@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import ru.dayone.main.account.data.network.models.friends.UserFriend
+import ru.dayone.main.account.data.network.models.UserFriend
 
 private const val FRIENDS_URL = "users/{userId}/friends/"
 

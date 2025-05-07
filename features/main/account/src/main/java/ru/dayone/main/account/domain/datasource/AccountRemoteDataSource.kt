@@ -1,6 +1,6 @@
 package ru.dayone.main.account.domain.datasource
 
-import ru.dayone.main.account.data.network.models.friends.UserFriend
+import ru.dayone.main.account.data.network.models.UserFriend
 import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
 

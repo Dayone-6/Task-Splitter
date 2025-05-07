@@ -1,6 +1,6 @@
 package ru.dayone.main.account.data.repository
 
-import ru.dayone.main.account.data.network.models.friends.UserFriend
+import ru.dayone.main.account.data.network.models.UserFriend
 import ru.dayone.main.account.domain.datasource.AccountLocalDataSource
 import ru.dayone.main.account.domain.datasource.AccountRemoteDataSource
 import ru.dayone.main.account.domain.repository.AccountRepository

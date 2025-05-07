@@ -9,4 +9,11 @@
     <string name="text_create">Создать</string>
     <string name="title_my_groups">Мои группы</string>
     <string name="text_member_added">Участник добавлен!</string>
+    <string name="text_members">Участники</string>
+    <string name="text_tasks">Задания</string>
+    <string name="text_no_one_task_created_yet">Ни одного задания не создано</string>
+    <string name="text_search">Найти</string>
+    <string name="text_add">Добавить</string>
+    <string name="hint_description">Описание</string>
+    <string name="text_task_created">Задание создано!</string>
 </resources>

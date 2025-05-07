@@ -1,4 +1,4 @@
-package ru.dayone.main.account.data.network.models.friends
+package ru.dayone.main.account.data.network.models
 
 import com.google.gson.annotations.SerializedName
 

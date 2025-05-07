@@ -8,4 +8,11 @@
     <string name="text_create">Create</string>
     <string name="title_my_groups">My Groups</string>
     <string name="text_member_added">Member Added!</string>
+    <string name="text_members">Members</string>
+    <string name="text_tasks">Tasks</string>
+    <string name="text_no_one_task_created_yet">No one task created yet</string>
+    <string name="text_search">Search</string>
+    <string name="text_add">Add</string>
+    <string name="hint_description">Description</string>
+    <string name="text_task_created">Task created!</string>
 </resources>

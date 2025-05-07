@@ -73,4 +73,29 @@ class GroupsRepositoryImpl @Inject constructor(
             return Result.Error(e)
         }
     }
+
+    override suspend fun getUserFriends(): Result<List<User>> {
+        return try {
+            val user = localDataSource.getUser()
+            if(user != null) {
+                remoteDataSource.getUserFriends(user.id)
+            }else{
+                Result.Error(Exception())
+            }
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun createTask(
+        groupId: String,
+        title: String,
+        description: String
+    ): Result<Task> {
+        return try {
+            remoteDataSource.createTask(groupId, title, description)
+        }catch (e: Exception){
+            Result.Error(e)
+        }
+    }
 }
