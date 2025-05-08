@@ -25,7 +25,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import ru.dayone.main.R
 import ru.dayone.main.account.presentation.account.AccountScreen
@@ -36,7 +35,7 @@ import ru.dayone.main.data.di.MainComponent
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.presentation.group.GroupScreen
 import ru.dayone.main.my_groups.presentation.my_groups.MyGroupsScreen
-import ru.dayone.main.my_tasks.presentation.MyTasksScreen
+import ru.dayone.main.my_tasks.presentation.my_tasks.MyTasksScreen
 import ru.dayone.tasksplitter.common.navigation.AccountNavRoutes
 import ru.dayone.tasksplitter.common.navigation.BottomNavItem
 import ru.dayone.tasksplitter.common.navigation.MyGroupsNavRoutes

@@ -16,12 +16,11 @@
             <option value="$PROJECT_DIR$/features/auth" />
             <option value="$PROJECT_DIR$/features/main" />
             <option value="$PROJECT_DIR$/features/main/account" />
-            <option value="$PROJECT_DIR$/features/main/my_groups" />
-            <option value="$PROJECT_DIR$/features/main/my_tasks" />
+            <option value="$PROJECT_DIR$/features/main/groups" />
+            <option value="$PROJECT_DIR$/features/main/tasks" />
             <option value="$PROJECT_DIR$/features/start" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

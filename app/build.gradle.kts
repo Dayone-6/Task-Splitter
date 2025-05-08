@@ -1,5 +1,3 @@
-import com.google.gms.googleservices.GoogleServicesPlugin
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -80,7 +78,7 @@ dependencies {
     implementation(project(":features:start"))
     implementation(project(":features:main"))
     implementation(project(":features:main:account"))
-    implementation(project(":features:main:my_groups"))
+    implementation(project(":features:main:groups"))
 
     // Firebase
     implementation(platform(libs.firebase.bom))
@@ -99,4 +97,4 @@ dependencies {
     implementation(libs.flow.redux)
 }
 
-apply(plugin= "com.google.gms.google-services")
+apply(plugin = "com.google.gms.google-services")
