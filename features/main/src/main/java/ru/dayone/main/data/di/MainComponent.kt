@@ -11,12 +11,14 @@ import ru.dayone.main.account.presentation.friends.FriendsViewModel
 import ru.dayone.main.my_groups.data.di.GroupsModule
 import ru.dayone.main.my_groups.presentation.group.GroupViewModel
 import ru.dayone.main.my_groups.presentation.my_groups.MyGroupsViewModel
+import ru.dayone.main.my_tasks.data.di.TasksModule
+import ru.dayone.main.my_tasks.presentation.task.TaskViewModel
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SettingsSharedPrefsQualifier
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsModule
 import javax.inject.Singleton
 
 @Singleton
-@Subcomponent(modules = [AccountModule::class, SharedPrefsModule::class, GroupsModule::class])
+@Subcomponent(modules = [AccountModule::class, SharedPrefsModule::class, GroupsModule::class, TasksModule::class])
 interface MainComponent {
     @Subcomponent.Factory
     interface Factory {
@@ -32,6 +34,8 @@ interface MainComponent {
     fun getMyGroupsViewModel(): MyGroupsViewModel
 
     fun getGroupViewModel(): GroupViewModel
+
+    fun getTaskViewModel(): TaskViewModel
 
     @SettingsSharedPrefsQualifier
     fun getSettingsPrefs(): SharedPreferences

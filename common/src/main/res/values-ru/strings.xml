@@ -2,4 +2,7 @@
 <resources>
     <string name="hint_email">Email</string>
     <string name="hint_phone">Телефон</string>
+    <string name="error_something_went_wrong">Что-то пошло не так…</string>
+    <string name="error_internal_server_error">Внутренняя ошибка на сервере</string>
+    <string name="error_request_canceled">Запрос был прерван</string>
 </resources>

@@ -1,6 +1,8 @@
 package ru.dayone.main.my_tasks.data.di
 
 import android.content.SharedPreferences
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -50,7 +52,7 @@ class TasksModule {
     @Singleton
     fun provideTasksRemoteDataSource(
         service: TasksService
-    ): TasksRemoteDataSource = TasksRemoteDataSourceImpl(service)
+    ): TasksRemoteDataSource = TasksRemoteDataSourceImpl(service, Firebase.firestore)
 
     @Provides
     @Singleton

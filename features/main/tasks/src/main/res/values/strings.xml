@@ -1,0 +1,17 @@
+<resources>
+    <string name="text_status">Status</string>
+    <string name="text_voting">Voting</string>
+    <string name="text_execution">Execution</string>
+    <string name="text_completed">Completed</string>
+    <string name="text_vote_done">Vote has been done</string>
+    <string name="text_has_been_ended">Task has been ended</string>
+    <string name="text_voted">Voted</string>
+    <string name="text_vote">Vote</string>
+    <string name="title_rate_difficult_of_this_task">Rate difficult of this task</string>
+    <string name="text_description">Description</string>
+    <string name="text_executor">Executor</string>
+    <string name="text_confirm_completing">Confirm completing</string>
+    <string name="text_confirmation">Confirmation</string>
+    <string name="text_confirm">Confirm</string>
+    <string name="text_about_confirmation">By pressing the button you confirm completing of the task by the executor</string>
+</resources>

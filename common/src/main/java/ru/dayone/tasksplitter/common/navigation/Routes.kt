@@ -15,9 +15,12 @@ data object MainNavRoutes {
     const val MAIN = "main"
 }
 
-data object MyTasksNavRoutes {
+data object TasksNavRoutes {
     const val ROUTE = "myTasksNavRoute"
     const val MY_TASKS = "myTasks"
+
+    @Serializable
+    data class TASK(val task: String)
 }
 
 data object MyGroupsNavRoutes {
@@ -28,6 +31,9 @@ data object MyGroupsNavRoutes {
     data class GROUP(
         val groupJson: String
     )
+
+    @Serializable
+    data class TASK(val task: String, val groupCreatorId: String)
 }
 
 data object AccountNavRoutes {

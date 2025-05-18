@@ -1,8 +1,6 @@
 package ru.dayone.main.account.presentation.friends
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,10 +14,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,7 +33,6 @@ import androidx.navigation.NavController
 import ru.dayone.main.account.R
 import ru.dayone.main.account.presentation.friends.state_hosting.FriendsAction
 import ru.dayone.main.account.presentation.friends.state_hosting.FriendsEffect
-import ru.dayone.tasksplitter.common.theme.titleTextStyle
 import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
 import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
 import ru.dayone.tasksplitter.common.utils.components.UserItem
@@ -47,7 +44,6 @@ fun FriendsScreen(
     viewModel: FriendsViewModel,
     snackbarHostState: SnackbarHostState
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val context = LocalContext.current
 
     val state by viewModel.state.collectAsState()
@@ -59,6 +55,8 @@ fun FriendsScreen(
     var isAddFriendDialogShowing by remember {
         mutableStateOf(false)
     }
+
+    var isRefreshing by remember { mutableStateOf(false) }
 
     LaunchedEffect(
         "effect"
@@ -98,7 +96,12 @@ fun FriendsScreen(
         }
     }
 
-    Box(
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            viewModel.handleAction(FriendsAction.GetFriends(state.user!!.id))
+        },
         contentAlignment = Alignment.BottomEnd
     ) {
         Column(
@@ -107,6 +110,11 @@ fun FriendsScreen(
             DefaultTopAppBar(stringResource(R.string.title_friends), navController)
             if (isLoading) {
                 LoadingDialog()
+            }
+            if (isAddFriendDialogShowing) {
+                AddFriendDialog(viewModel, state.foundUsers, state.user!!.id) {
+                    isAddFriendDialogShowing = false
+                }
             }
             if ((state.friends ?: emptyList()).isEmpty() && !isLoading) {
                 Box(
@@ -129,12 +137,6 @@ fun FriendsScreen(
                     items(state.friends!!) {
                         UserItem(it) { }
                     }
-                }
-            }
-
-            if (isAddFriendDialogShowing) {
-                AddFriendDialog(viewModel, state.foundUsers, state.user!!.id) {
-                    isAddFriendDialogShowing = false
                 }
             }
         }

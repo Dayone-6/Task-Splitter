@@ -1,5 +1,6 @@
 package ru.dayone.main.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.List
@@ -36,10 +37,13 @@ import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.presentation.group.GroupScreen
 import ru.dayone.main.my_groups.presentation.my_groups.MyGroupsScreen
 import ru.dayone.main.my_tasks.presentation.my_tasks.MyTasksScreen
+import ru.dayone.main.my_tasks.presentation.task.TaskScreen
+import ru.dayone.tasksplitter.common.models.Task
 import ru.dayone.tasksplitter.common.navigation.AccountNavRoutes
 import ru.dayone.tasksplitter.common.navigation.BottomNavItem
 import ru.dayone.tasksplitter.common.navigation.MyGroupsNavRoutes
-import ru.dayone.tasksplitter.common.navigation.MyTasksNavRoutes
+import ru.dayone.tasksplitter.common.navigation.TasksNavRoutes
+import ru.dayone.tasksplitter.common.theme.currentScheme
 
 @Composable
 fun MainScreen(
@@ -64,7 +68,7 @@ fun MainScreen(
             ),
             BottomNavItem(
                 context.getString(R.string.title_my_tasks),
-                MyTasksNavRoutes.ROUTE,
+                TasksNavRoutes.ROUTE,
                 Icons.AutoMirrored.Outlined.List
             )
         )
@@ -106,7 +110,8 @@ fun MainScreen(
                     )
                 }
             }
-        }
+        },
+        modifier = Modifier.background(color = currentScheme.background)
     ) { innerPadding ->
         NavHost(
             innerNavController,
@@ -138,13 +143,28 @@ fun MainScreen(
                         group
                     )
                 }
+
+                composable<MyGroupsNavRoutes.TASK> {
+                    val route = it.toRoute<MyGroupsNavRoutes.TASK>()
+                    val task = GsonBuilder().create().fromJson(
+                        route.task,
+                        Task::class.java
+                    )
+                    TaskScreen(
+                        mainComponent.getTaskViewModel(),
+                        innerNavController,
+                        task,
+                        route.groupCreatorId,
+                        snackbarHostState
+                    )
+                }
             }
 
             navigation(
-                route = MyTasksNavRoutes.ROUTE,
-                startDestination = MyTasksNavRoutes.MY_TASKS
+                route = TasksNavRoutes.ROUTE,
+                startDestination = TasksNavRoutes.MY_TASKS
             ) {
-                composable(MyTasksNavRoutes.MY_TASKS) {
+                composable(TasksNavRoutes.MY_TASKS) {
                     MyTasksScreen()
                 }
             }

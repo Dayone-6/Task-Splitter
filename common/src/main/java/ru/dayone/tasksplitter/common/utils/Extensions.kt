@@ -11,7 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import retrofit2.Call
 import retrofit2.awaitResponse
+import ru.dayone.tasksplitter.common.R
 import ru.dayone.tasksplitter.common.exceptions.InternalServerErrorException
+import ru.dayone.tasksplitter.common.exceptions.RequestCanceledException
 import ru.dayone.tasksplitter.common.exceptions.UnprocessableEntityException
 import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.theme.currentDarkScheme

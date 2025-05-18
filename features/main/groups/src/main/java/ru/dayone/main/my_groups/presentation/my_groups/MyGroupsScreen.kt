@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.toRoute
@@ -51,6 +55,7 @@ fun MyGroupsScreen(
     var isLoading by remember { mutableStateOf(false) }
     var isCreateGroupDialogShowing by remember { mutableStateOf(false) }
     var isRefreshing by remember { mutableStateOf(false) }
+    var pullToRefreshState = rememberPullToRefreshState()
 
     LaunchedEffect("effect") {
         viewModel.effect.collect {
@@ -87,40 +92,44 @@ fun MyGroupsScreen(
 
     PullToRefreshBox(
         isRefreshing = isRefreshing,
+        state = pullToRefreshState,
         onRefresh = {
             isRefreshing = true
             viewModel.handleAction(MyGroupsAction.GetGroups(requireNew = true))
         },
-        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomEnd
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DefaultTopAppBar(title = stringResource(R.string.title_my_groups))
+            item {
+                DefaultTopAppBar(title = stringResource(R.string.title_my_groups))
+            }
             if (isLoading) {
-                LoadingDialog()
-            } else if (state.groups != null) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    items(state.groups!!) {
-                        GroupItem(it) {
-                            navController.navigate(
-                                MyGroupsNavRoutes.GROUP(
-                                    GsonBuilder().create().toJson(it)
-                                )
+                item {
+                    LoadingDialog()
+                }
+            } else if (state.groups != null && state.groups!!.isNotEmpty()) {
+                items(state.groups!!) {
+                    GroupItem(it) {
+                        navController.navigate(
+                            MyGroupsNavRoutes.GROUP(
+                                GsonBuilder().create().toJson(it)
                             )
-                        }
+                        )
                     }
                 }
             } else {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Text(text = stringResource(R.string.text_there_are_no_groups_you_consist_in))
+                item {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Text(text = stringResource(R.string.text_there_are_no_groups_you_consist_in))
+                    }
                 }
             }
         }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_status">Статус</string>
+    <string name="text_voting">Голосование</string>
+    <string name="text_execution">Выполнение</string>
+    <string name="text_completed">Выполнено</string>
+    <string name="text_vote_done">Голос отдан</string>
+    <string name="text_has_been_ended">Задание закончено</string>
+    <string name="text_voted">Проголосовали</string>
+    <string name="text_vote">Проголосовать</string>
+    <string name="title_rate_difficult_of_this_task">Оцените сложность этого задания</string>
+    <string name="text_description">Описание</string>
+    <string name="text_executor">Исполнитель</string>
+    <string name="text_confirm_completing">Подтвердить выполнение</string>
+    <string name="text_confirmation">Подтверждение</string>
+    <string name="text_confirm">Подтвердить</string>
+    <string name="text_about_confirmation">Нажимая на кнопку, вы подтверждаете выполнение задания исполнителем</string>
+</resources>
