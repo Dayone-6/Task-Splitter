@@ -28,17 +28,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.toRoute
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import ru.dayone.main.my_groups.R
-import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsAction
 import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsEffect
 import ru.dayone.tasksplitter.common.navigation.MyGroupsNavRoutes
@@ -76,7 +72,9 @@ fun MyGroupsScreen(
 
                 is MyGroupsEffect.GroupCreated -> {
                     viewModel.handleAction(MyGroupsAction.GetGroups(true))
-                    snackbarHostState.showSnackbar(message = context.getString(R.string.text_group_created))
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(message = context.getString(R.string.text_group_created))
+                    }
                 }
 
                 is MyGroupsEffect.RequestedGroupsLoaded -> {

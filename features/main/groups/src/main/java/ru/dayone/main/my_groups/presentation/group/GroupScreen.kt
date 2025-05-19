@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
 import ru.dayone.main.my_groups.R
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.presentation.group.state_hosting.GroupAction
@@ -63,6 +65,8 @@ fun GroupScreen(
 
     var isAddMemberDialogOpened by remember { mutableStateOf(false) }
 
+    val coroutineScope = rememberCoroutineScope()
+
     LaunchedEffect("effect") {
         viewModel.effect.collect {
             when (it) {
@@ -79,8 +83,10 @@ fun GroupScreen(
                 }
 
                 is GroupEffect.TaskCreated -> {
-                    viewModel.handleAction(GroupAction.GetTasks(group.id))
-                    snackbarHostState.showSnackbar(message = context.getString(R.string.text_task_created))
+                    viewModel.handleAction(GroupAction.GetTasks(group.id, true))
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(message = context.getString(R.string.text_task_created))
+                    }
                 }
 
                 is GroupEffect.RequiredTasksLoaded -> {

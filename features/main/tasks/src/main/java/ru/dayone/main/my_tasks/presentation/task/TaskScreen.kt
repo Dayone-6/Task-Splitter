@@ -24,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import ru.dayone.main.my_tasks.R
 import ru.dayone.main.my_tasks.presentation.task.state_hosting.TaskAction
 import ru.dayone.main.my_tasks.presentation.task.state_hosting.TaskEffect
@@ -74,6 +77,8 @@ fun TaskScreen(
 
     var hasVoted by remember { mutableStateOf(false) }
 
+    val coroutineScope = rememberCoroutineScope()
+
     LaunchedEffect("load data") {
         viewModel.handleAction(TaskAction.LoadCurrentUser())
         if(task.status > 0) {
@@ -100,7 +105,9 @@ fun TaskScreen(
                 }
 
                 is TaskEffect.VoteSucceed -> {
-                    snackbarHostState.showSnackbar(context.getString(R.string.text_vote_done))
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(context.getString(R.string.text_vote_done))
+                    }
                     viewModel.handleAction(TaskAction.LoadVotes(task.id, true))
                 }
 

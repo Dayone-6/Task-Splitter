@@ -80,7 +80,9 @@ fun FriendsScreen(
                     if (state.user != null) {
                         viewModel.handleAction(FriendsAction.GetFriends(state.user!!.id))
                     }
-                    snackbarHostState.showSnackbar(message = context.getString(R.string.text_friend_added))
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(message = context.getString(R.string.text_friend_added))
+                    }
                 }
             }
         }
