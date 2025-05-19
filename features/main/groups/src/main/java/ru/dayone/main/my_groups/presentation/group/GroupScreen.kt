@@ -79,7 +79,7 @@ fun GroupScreen(
                 }
 
                 is GroupEffect.UserAdded -> {
-                    snackbarHostState.showSnackbar(message = context.getString(R.string.text_member_added))
+                    viewModel.handleAction(GroupAction.GetUsersFromGroup(group.id))
                 }
 
                 is GroupEffect.TaskCreated -> {
@@ -89,7 +89,7 @@ fun GroupScreen(
                     }
                 }
 
-                is GroupEffect.RequiredTasksLoaded -> {
+                is GroupEffect.RefreshCompleted -> {
                     isRefreshing = false
                 }
             }
@@ -97,8 +97,7 @@ fun GroupScreen(
     }
     LaunchedEffect("get data") {
         viewModel.handleAction(GroupAction.GetCurrentUser())
-        viewModel.handleAction(GroupAction.GetTasks(group.id))
-        viewModel.handleAction(GroupAction.GetUsersFromGroupMembers(group.members))
+        viewModel.handleAction(GroupAction.RefreshMembersAndTasks(group.id))
     }
 
     if (state.error != null) {
@@ -109,13 +108,11 @@ fun GroupScreen(
         }
     }
 
-    Log.d("GroupScreen", state.toString())
-
     PullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
             isRefreshing = true
-            viewModel.handleAction(GroupAction.GetTasks(group.id, true))
+            viewModel.handleAction(GroupAction.RefreshMembersAndTasks(group.id))
         },
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomEnd
@@ -143,7 +140,7 @@ fun GroupScreen(
             }
             DefaultTopAppBar(group.name, navController)
             if (state.users != null && state.tasks != null) {
-                if(state.currentUser != null) {
+                if (state.currentUser != null) {
                     Text(
                         text = stringResource(R.string.text_your_points) + ": " + group.members.find { it.memberId == state.currentUser!!.id }!!.score,
                         modifier = Modifier.padding(start = 15.dp, top = 10.dp),

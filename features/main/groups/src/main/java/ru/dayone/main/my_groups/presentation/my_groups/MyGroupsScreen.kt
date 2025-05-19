@@ -90,10 +90,11 @@ fun MyGroupsScreen(
 
     if (state.error != null) {
         SideEffect {
+            val error = state.error!!
+            viewModel.changeState(state.copy(error = null))
+            isRefreshing = false
             coroutineScope.launch {
-                isRefreshing = false
-                snackbarHostState.showSnackbar(message = state.error!!.getValue(context))
-                viewModel.changeState(state.copy(error = null))
+                snackbarHostState.showSnackbar(message = error.getValue(context))
             }
         }
     }

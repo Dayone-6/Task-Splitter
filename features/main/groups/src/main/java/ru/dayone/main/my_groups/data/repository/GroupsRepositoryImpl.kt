@@ -1,6 +1,5 @@
 package ru.dayone.main.my_groups.data.repository
 
-import androidx.annotation.Nullable
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.data.network.models.GroupMember
 import ru.dayone.tasksplitter.common.models.Task
@@ -58,18 +57,24 @@ class GroupsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUsersFromGroupMembers(groupMembers: List<GroupMember>): Result<List<User>> {
+    override suspend fun getGroupMembers(groupId: String): Result<List<User>> {
         try {
-            val users = mutableListOf<User>()
-            for (groupMember in groupMembers) {
-                val result = remoteDataSource.getUserFromGroupMember(groupMember)
-                if (result is Result.Success) {
-                    users.add(result.result)
-                } else {
-                    throw (result as Result.Error).exception
+            val groupMembersResult = remoteDataSource.getGroupMembers(groupId)
+            if (groupMembersResult is Result.Success) {
+                val groupMembers = groupMembersResult.result
+                val users = mutableListOf<User>()
+                for (groupMember in groupMembers) {
+                    val result = remoteDataSource.getUserFromGroupMember(groupMember)
+                    if (result is Result.Success) {
+                        users.add(result.result)
+                    } else {
+                        throw (result as Result.Error).exception
+                    }
                 }
+                return Result.Success(users)
+            } else {
+                return Result.Error((groupMembersResult as Result.Error).exception)
             }
-            return Result.Success(users)
         } catch (e: Exception) {
             return Result.Error(e)
         }
@@ -78,9 +83,9 @@ class GroupsRepositoryImpl @Inject constructor(
     override suspend fun getUserFriends(): Result<List<User>> {
         return try {
             val user = localDataSource.getUser()
-            if(user != null) {
+            if (user != null) {
                 remoteDataSource.getUserFriends(user.id)
-            }else{
+            } else {
                 Result.Error(Exception())
             }
         } catch (e: Exception) {
@@ -91,12 +96,12 @@ class GroupsRepositoryImpl @Inject constructor(
     override suspend fun getCurrentUser(): Result<User> {
         return try {
             val user = localDataSource.getUser()
-            return if(user != null){
+            return if (user != null) {
                 Result.Success(user)
-            }else {
+            } else {
                 Result.Error(NullPointerException())
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.Error(e)
         }
     }
@@ -108,7 +113,7 @@ class GroupsRepositoryImpl @Inject constructor(
     ): Result<Task> {
         return try {
             remoteDataSource.createTask(groupId, title, description)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.Error(e)
         }
     }

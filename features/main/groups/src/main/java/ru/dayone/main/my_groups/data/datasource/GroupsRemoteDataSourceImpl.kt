@@ -76,6 +76,10 @@ class GroupsRemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getGroupMembers(groupId: String): Result<List<GroupMember>> {
+        return service.getGroupMembers(groupId).handle()
+    }
+
     override suspend fun getUserFriends(userId: String): Result<List<User>> {
         return try {
             val friendIdsResult = service.getUserFriends(userId).handle()

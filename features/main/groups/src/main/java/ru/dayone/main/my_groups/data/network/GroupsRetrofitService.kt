@@ -35,6 +35,11 @@ interface GroupsRetrofitService {
         @Body body: AddMemberToGroupRequestBody
     ): Call<GroupMember>
 
+    @GET("/groups/{groupId}/members/")
+    fun getGroupMembers(
+        @Path("groupId") groupId: String
+    ): Call<List<GroupMember>>
+
     @GET("users/{userId}/friends/")
     fun getUserFriends(
         @Path("userId") userId: String

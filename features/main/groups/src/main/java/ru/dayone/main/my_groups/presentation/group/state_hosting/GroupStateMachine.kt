@@ -19,10 +19,53 @@ class GroupStateMachine @Inject constructor(
     init {
         spec {
             inState<GroupState> {
+                on<GroupAction.RefreshMembersAndTasks> { action, state ->
+                    updateEffect(GroupEffect.StartLoading)
+                    val membersResult = repository.getGroupMembers(action.groupId)
+                    val tasksResult = repository.getGroupTasks(action.groupId, true)
+                    Log.d(TAG, membersResult.toString())
+                    Log.d(TAG, tasksResult.toString())
+                    updateEffect(GroupEffect.StopLoading)
+                    when (membersResult) {
+                        is Result.Success -> {
+                            when (tasksResult) {
+                                is Result.Success -> {
+                                    updateEffect(GroupEffect.RefreshCompleted)
+                                    return@on state.mutate {
+                                        state.snapshot.copy(
+                                            tasks = tasksResult.result,
+                                            users = membersResult.result
+                                        )
+                                    }
+                                }
+
+                                is Result.Error -> {
+                                    return@on state.mutate {
+                                        state.snapshot.copy(
+                                            error = UIText.Exception(
+                                                tasksResult.exception
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        is Result.Error -> {
+                            return@on state.mutate {
+                                state.snapshot.copy(
+                                    error = UIText.Exception(
+                                        membersResult.exception
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    return@on state.noChange()
+                }
+
                 on<GroupAction.GetCurrentUser> { action, state ->
-                    Log.d(TAG, "Start")
                     val result = repository.getCurrentUser()
-                    Log.d(TAG, result.toString())
                     when (result) {
                         is Result.Success -> {
                             return@on state.override {
@@ -48,9 +91,6 @@ class GroupStateMachine @Inject constructor(
                     updateEffect(GroupEffect.StopLoading)
                     when (result) {
                         is Result.Success -> {
-                            if (action.requireNew) {
-                                updateEffect(GroupEffect.RequiredTasksLoaded)
-                            }
                             return@on state.override {
                                 state.snapshot.copy(
                                     tasks = result.result,
@@ -70,9 +110,9 @@ class GroupStateMachine @Inject constructor(
                         }
                     }
                 }
-                on<GroupAction.GetUsersFromGroupMembers> { action, state ->
+                on<GroupAction.GetUsersFromGroup> { action, state ->
                     updateEffect(GroupEffect.StartLoading)
-                    val result = repository.getUsersFromGroupMembers(action.groupMembers)
+                    val result = repository.getGroupMembers(action.groupId)
                     Log.d(TAG, result.toString())
                     updateEffect(GroupEffect.StopLoading)
                     when (result) {

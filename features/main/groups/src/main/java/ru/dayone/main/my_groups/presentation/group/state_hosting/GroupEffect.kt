@@ -5,6 +5,6 @@ sealed class GroupEffect {
     object StartLoading : GroupEffect()
     object StopLoading : GroupEffect()
     object TaskCreated : GroupEffect()
-    object RequiredTasksLoaded : GroupEffect()
+    object RefreshCompleted : GroupEffect()
     object UserAdded : GroupEffect()
 }

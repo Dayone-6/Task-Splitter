@@ -1,6 +1,7 @@
 package ru.dayone.tasksplitter.common.utils
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
@@ -57,6 +58,8 @@ fun Modifier.defaultDialog(): Modifier {
 
 suspend fun <T : Any> Call<T>.handle(): Result<T> {
     val result = this.awaitResponse()
+//    Log.d("Network Message", result.message())
+//    Log.d("Network Raw Response", result.raw().toString())
     return when (result.code()) {
         422 -> {
             Result.Error(UnprocessableEntityException(result.errorBody()!!.toString()))
