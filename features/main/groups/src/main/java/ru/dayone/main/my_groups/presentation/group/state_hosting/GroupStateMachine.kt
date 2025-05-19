@@ -2,9 +2,7 @@ package ru.dayone.main.my_groups.presentation.group.state_hosting
 
 import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import ru.dayone.main.my_groups.R
 import ru.dayone.main.my_groups.domain.repository.GroupsRepository
-import ru.dayone.tasksplitter.common.exceptions.RequestCanceledException
 import ru.dayone.tasksplitter.common.utils.BaseStateMachine
 import ru.dayone.tasksplitter.common.utils.Result
 import ru.dayone.tasksplitter.common.utils.UIText
@@ -21,6 +19,28 @@ class GroupStateMachine @Inject constructor(
     init {
         spec {
             inState<GroupState> {
+                on<GroupAction.GetCurrentUser> { action, state ->
+                    Log.d(TAG, "Start")
+                    val result = repository.getCurrentUser()
+                    Log.d(TAG, result.toString())
+                    when (result) {
+                        is Result.Success -> {
+                            return@on state.override {
+                                this.copy(currentUser = result.result)
+                            }
+                        }
+
+                        is Result.Error -> {
+                            return@on state.mutate {
+                                state.snapshot.copy(
+                                    error = UIText.Exception(
+                                        result.exception
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
                 on<GroupAction.GetTasks> { action, state ->
                     updateEffect(GroupEffect.StartLoading)
                     val result = repository.getGroupTasks(action.groupId, action.requireNew)
@@ -28,7 +48,7 @@ class GroupStateMachine @Inject constructor(
                     updateEffect(GroupEffect.StopLoading)
                     when (result) {
                         is Result.Success -> {
-                            if(action.requireNew){
+                            if (action.requireNew) {
                                 updateEffect(GroupEffect.RequiredTasksLoaded)
                             }
                             return@on state.override {
@@ -40,19 +60,10 @@ class GroupStateMachine @Inject constructor(
                         }
 
                         is Result.Error -> {
-                            val errorTextId: Int = when (result.exception) {
-                                is RequestCanceledException -> {
-                                    R.string.error_request_canceled
-                                }
-
-                                else -> {
-                                    R.string.error_something_went_wrong
-                                }
-                            }
                             return@on state.mutate {
                                 state.snapshot.copy(
-                                    error = UIText.StringResource(
-                                        errorTextId
+                                    error = UIText.Exception(
+                                        result.exception
                                     )
                                 )
                             }
@@ -75,19 +86,10 @@ class GroupStateMachine @Inject constructor(
                         }
 
                         is Result.Error -> {
-                            val errorTextId: Int = when (result.exception) {
-                                is RequestCanceledException -> {
-                                    R.string.error_request_canceled
-                                }
-
-                                else -> {
-                                    R.string.error_something_went_wrong
-                                }
-                            }
                             return@on state.mutate {
                                 state.snapshot.copy(
-                                    error = UIText.StringResource(
-                                        errorTextId
+                                    error = UIText.Exception(
+                                        result.exception
                                     )
                                 )
                             }
@@ -106,19 +108,10 @@ class GroupStateMachine @Inject constructor(
                         }
 
                         is Result.Error -> {
-                            val errorTextId: Int = when (result.exception) {
-                                is RequestCanceledException -> {
-                                    R.string.error_request_canceled
-                                }
-
-                                else -> {
-                                    R.string.error_something_went_wrong
-                                }
-                            }
                             return@on state.mutate {
                                 state.snapshot.copy(
-                                    error = UIText.StringResource(
-                                        errorTextId
+                                    error = UIText.Exception(
+                                        result.exception
                                     )
                                 )
                             }
@@ -137,10 +130,10 @@ class GroupStateMachine @Inject constructor(
                         }
 
                         is Result.Error -> {
-                            return@on state.override {
+                            return@on state.mutate {
                                 state.snapshot.copy(
-                                    error = UIText.StringResource(
-                                        R.string.error_something_went_wrong
+                                    error = UIText.Exception(
+                                        result.exception
                                     )
                                 )
                             }
@@ -148,21 +141,23 @@ class GroupStateMachine @Inject constructor(
                     }
                 }
 
-                on<GroupAction.CreateTask>{action, state ->
+                on<GroupAction.CreateTask> { action, state ->
                     updateEffect(GroupEffect.StartLoading)
-                    val result = repository.createTask(action.groupId, action.title, action.description)
+                    val result =
+                        repository.createTask(action.groupId, action.title, action.description)
                     updateEffect(GroupEffect.StopLoading)
                     Log.d(TAG, result.toString())
-                    when(result){
+                    when (result) {
                         is Result.Success -> {
                             updateEffect(GroupEffect.TaskCreated)
                             return@on state.noChange()
                         }
+
                         is Result.Error -> {
-                            return@on state.override {
+                            return@on state.mutate {
                                 state.snapshot.copy(
-                                    error = UIText.StringResource(
-                                        R.string.error_something_went_wrong
+                                    error = UIText.Exception(
+                                        result.exception
                                     )
                                 )
                             }

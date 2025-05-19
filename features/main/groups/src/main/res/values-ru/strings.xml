@@ -18,4 +18,5 @@
     <string name="text_task_created">Задание создано!</string>
     <string name="text_new_member">Новый участник</string>
     <string name="title_new_task">Новое задание</string>
+    <string name="text_your_points">Ваши очки</string>
 </resources>

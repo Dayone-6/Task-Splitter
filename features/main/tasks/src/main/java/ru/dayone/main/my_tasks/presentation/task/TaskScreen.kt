@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -74,10 +76,11 @@ fun TaskScreen(
 
     LaunchedEffect("load data") {
         viewModel.handleAction(TaskAction.LoadCurrentUser())
-        if (task.status == 0) {
-            viewModel.handleAction(TaskAction.LoadVotes(task.id))
-        } else {
+        if(task.status > 0) {
             viewModel.handleAction(TaskAction.LoadUser(task.winner))
+        }
+        if (task.status != 1) {
+            viewModel.handleAction(TaskAction.LoadVotes(task.id))
         }
     }
 
@@ -97,11 +100,12 @@ fun TaskScreen(
                 }
 
                 is TaskEffect.VoteSucceed -> {
-                    hasVoted = true
                     snackbarHostState.showSnackbar(context.getString(R.string.text_vote_done))
+                    viewModel.handleAction(TaskAction.LoadVotes(task.id, true))
                 }
 
                 is TaskEffect.EndTaskSucceed -> {
+                    navController.popBackStack()
                     snackbarHostState.showSnackbar(context.getString(R.string.text_has_been_ended))
                 }
             }
@@ -117,7 +121,11 @@ fun TaskScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            modifier = if (task.status != 2) {
+                Modifier.verticalScroll(rememberScrollState())
+            } else {
+                Modifier
+            }
         ) {
             if (isLoading) {
                 LoadingDialog()
@@ -179,7 +187,7 @@ fun TaskScreen(
                         color = when (task.status) {
                             0 -> currentScheme.errorContainer
                             1 -> successColorDark.or(successColorLight)
-                            else -> currentScheme.surfaceBright
+                            else -> Typography.bodyLarge.color
                         },
                         fontWeight = FontWeight.SemiBold
                     ),
@@ -201,6 +209,24 @@ fun TaskScreen(
                         start = 10.dp
                     )
                 )
+
+                if (task.status > 0 && state.executor != null && state.user != null) {
+                    Text(
+                        text = stringResource(R.string.text_executor),
+                        style = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        modifier = Modifier.padding(top = 15.dp, start = 10.dp)
+                    )
+                    Text(
+                        text = state.executor!!.name!!,
+                        style = Typography.bodyLarge,
+                        modifier = Modifier.padding(
+                            top = 5.dp,
+                            end = 10.dp,
+                            bottom = 10.dp,
+                            start = 10.dp
+                        )
+                    )
+                }
             }
             if (task.status == 0 && state.votes != null && state.user != null) {
                 Row(
@@ -218,7 +244,7 @@ fun TaskScreen(
                         onClick = {
                             isVoteDialogOpened = true
                         },
-                        enabled = !state.votes!!.any { it.userId == state.user!!.id } && !hasVoted
+                        enabled = !state.votes!!.any { it.user.id == state.user!!.id } && !hasVoted
                     ) {
                         Text(
                             text = stringResource(R.string.text_vote),
@@ -227,21 +253,6 @@ fun TaskScreen(
                     }
                 }
             } else if (task.status > 0 && state.executor != null && state.user != null) {
-                Text(
-                    text = stringResource(R.string.text_executor),
-                    style = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                    modifier = Modifier.padding(top = 15.dp, start = 10.dp)
-                )
-                Text(
-                    text = state.executor!!.name!!,
-                    style = Typography.bodyLarge,
-                    modifier = Modifier.padding(
-                        top = 5.dp,
-                        end = 10.dp,
-                        bottom = 10.dp,
-                        start = 10.dp
-                    )
-                )
                 if (task.status == 1 && state.user!!.id == groupCreatorId) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -257,6 +268,20 @@ fun TaskScreen(
                                 style = buttonTextStyle
                             )
                         }
+                    }
+                }
+            }
+            if (task.status == 2 && state.votes != null) {
+                Text(
+                    text = stringResource(R.string.text_votes),
+                    style = Typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(top = 15.dp, start = 30.dp)
+                )
+                LazyColumn(
+                    modifier = Modifier.padding(top = 10.dp)
+                ) {
+                    items(state.votes!!) {
+                        VoteItem(it)
                     }
                 }
             }

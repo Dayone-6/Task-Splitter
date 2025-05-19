@@ -1,5 +1,6 @@
 package ru.dayone.main.my_groups.data.repository
 
+import androidx.annotation.Nullable
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.data.network.models.GroupMember
 import ru.dayone.tasksplitter.common.models.Task
@@ -83,6 +84,19 @@ class GroupsRepositoryImpl @Inject constructor(
                 Result.Error(Exception())
             }
         } catch (e: Exception) {
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getCurrentUser(): Result<User> {
+        return try {
+            val user = localDataSource.getUser()
+            return if(user != null){
+                Result.Success(user)
+            }else {
+                Result.Error(NullPointerException())
+            }
+        }catch (e: Exception){
             Result.Error(e)
         }
     }

@@ -14,4 +14,5 @@
     <string name="text_confirmation">Confirmation</string>
     <string name="text_confirm">Confirm</string>
     <string name="text_about_confirmation">By pressing the button you confirm completing of the task by the executor</string>
+    <string name="text_votes">Votes</string>
 </resources>

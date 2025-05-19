@@ -19,5 +19,7 @@ interface GroupsRepository {
 
     suspend fun getUserFriends(): Result<List<User>>
 
+    suspend fun getCurrentUser() : Result<User>
+
     suspend fun createTask(groupId: String, title: String, description: String): Result<Task>
 }

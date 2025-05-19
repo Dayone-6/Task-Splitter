@@ -28,13 +28,13 @@ class GroupsRemoteDataSourceImpl @Inject constructor(
     private var cachedGroupTasks: HashMap<String, List<Task>> = hashMapOf<String, List<Task>>()
 
     override suspend fun getGroups(userId: String, requireNew: Boolean): Result<List<Group>> {
-        if(cachedGroups == null || requireNew) {
+        if (cachedGroups == null || requireNew) {
             val result = service.getUserGroups(userId).handle()
-            if(result is Result.Success){
+            if (result is Result.Success) {
                 cachedGroups = result.result
             }
             return result
-        }else{
+        } else {
             return Result.Success(cachedGroups!!)
         }
     }
@@ -47,11 +47,11 @@ class GroupsRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getGroupTasks(groupId: String, requireNew: Boolean): Result<List<Task>> {
-        if(groupId in cachedGroupTasks && !requireNew){
+        if (groupId in cachedGroupTasks && !requireNew) {
             return Result.Success(cachedGroupTasks[groupId]!!)
         }
         val result = service.getGroupTasks(groupId).handle()
-        if(result is Result.Success){
+        if (result is Result.Success) {
             cachedGroupTasks[groupId] = result.result
         }
         return result
@@ -67,11 +67,11 @@ class GroupsRemoteDataSourceImpl @Inject constructor(
     override suspend fun getUserFromGroupMember(groupMember: GroupMember): Result<User> {
         val task = db.collection(USERS_FIRESTORE_COLLECTION).document(groupMember.memberId).get()
         val result = task.await()
-        return if(task.isSuccessful){
+        return if (task.isSuccessful) {
             Result.Success(result.toObject(User::class.java)!!)
-        }else if(task.isCanceled){
+        } else if (task.isCanceled) {
             Result.Error(RequestCanceledException())
-        }else{
+        } else {
             Result.Error(task.exception!!)
         }
     }
@@ -81,9 +81,15 @@ class GroupsRemoteDataSourceImpl @Inject constructor(
             val friendIdsResult = service.getUserFriends(userId).handle()
             Log.d("AccountRemoteDataSource", friendIdsResult.toString())
             if (friendIdsResult is Result.Success) {
-                if(friendIdsResult.result.isNotEmpty()) {
+                if (friendIdsResult.result.isNotEmpty()) {
                     val task = db.collection(USERS_FIRESTORE_COLLECTION)
-                        .whereIn("id", friendIdsResult.result.map { it.friendId }).get()
+                        .whereIn("id", friendIdsResult.result.map {
+                            if (userId != it.friendId) {
+                                it.friendId
+                            } else {
+                                it.userId
+                            }
+                        }).get()
                     val taskResult = task.await()
                     val result: Result<List<User>> = if (task.isSuccessful) {
                         Result.Success(taskResult.toObjects(User::class.java))
@@ -95,7 +101,7 @@ class GroupsRemoteDataSourceImpl @Inject constructor(
                         Result.Error(Exception())
                     }
                     return result
-                }else{
+                } else {
                     return Result.Success(emptyList())
                 }
             } else {

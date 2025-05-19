@@ -3,6 +3,7 @@ package ru.dayone.main.my_tasks.presentation.task.state_hosting
 import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.dayone.main.my_tasks.domain.repository.TasksRepository
+import ru.dayone.tasksplitter.common.theme.currentScheme
 import ru.dayone.tasksplitter.common.utils.BaseStateMachine
 import ru.dayone.tasksplitter.common.utils.Result
 import ru.dayone.tasksplitter.common.utils.UIText
@@ -22,10 +23,8 @@ class TaskStateMachine @Inject constructor(
                     val result = repository.getUser(action.userId)
                     when (result) {
                         is Result.Success -> {
-                            return@on state.mutate {
-                                state.snapshot.copy(
-                                    executor = result.result
-                                )
+                            return@on state.override {
+                                this.copy(executor = result.result)
                             }
                         }
                         is Result.Error -> {
@@ -40,11 +39,8 @@ class TaskStateMachine @Inject constructor(
                     val result = repository.getCurrentUser()
                     when (result) {
                         is Result.Success -> {
-                            return@on state.mutate {
-                                state.snapshot.copy(
-                                    user = result.result,
-                                    votes = this.votes
-                                )
+                            return@on state.override {
+                                this.copy(user = result.result)
                             }
                         }
 
@@ -112,19 +108,16 @@ class TaskStateMachine @Inject constructor(
                     val result = repository.getVotes(action.taskId)
                     Log.d(TAG, result.toString())
                     updateEffect(TaskEffect.StopLoading)
+                    updateEffect(TaskEffect.VotesLoaded)
                     when (result) {
                         is Result.Success -> {
-                            return@on state.mutate {
-                                state.snapshot.copy(
-                                    error = null,
-                                    votes = result.result,
-                                    user = this.user
-                                )
+                            return@on state.override {
+                                this.copy(votes = result.result)
                             }
                         }
 
                         is Result.Error -> {
-                            return@on state.override {
+                            return@on state.mutate {
                                 state.snapshot.copy(
                                     error = UIText.Exception(
                                         result.exception

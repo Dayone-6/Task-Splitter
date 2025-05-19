@@ -38,9 +38,15 @@ class AccountRemoteDataSourceImpl(
             val friendIdsResult = accountService.getUserFriends(id).handle()
             Log.d("AccountRemoteDataSource", friendIdsResult.toString())
             if (friendIdsResult is Result.Success) {
-                if(friendIdsResult.result.isNotEmpty()) {
+                if (friendIdsResult.result.isNotEmpty()) {
                     val task = db.collection(USERS_FIRESTORE_COLLECTION)
-                        .whereIn("id", friendIdsResult.result.map { it.friendId }).get()
+                        .whereIn("id", friendIdsResult.result.map {
+                            if (it.friendId != id) {
+                                it.friendId
+                            } else {
+                                it.userId
+                            }
+                        }).get()
                     val taskResult = task.await()
                     val result: Result<List<User>> = if (task.isSuccessful) {
                         Result.Success(taskResult.toObjects(User::class.java))
@@ -52,7 +58,7 @@ class AccountRemoteDataSourceImpl(
                         Result.Error(Exception())
                     }
                     return result
-                }else{
+                } else {
                     return Result.Success(emptyList())
                 }
             } else {

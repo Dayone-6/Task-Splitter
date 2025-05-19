@@ -4,4 +4,5 @@
     <string name="error_something_went_wrong">Something went wrong…</string>
     <string name="error_internal_server_error">Internal server error</string>
     <string name="error_request_canceled">Request has been canceled</string>
+    <string name="error_time_limit_exceed">Time limit exceed</string>
 </resources>

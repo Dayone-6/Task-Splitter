@@ -1,5 +1,6 @@
 package ru.dayone.main.my_groups.presentation.group
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -78,6 +79,7 @@ fun GroupScreen(
                 }
 
                 is GroupEffect.TaskCreated -> {
+                    viewModel.handleAction(GroupAction.GetTasks(group.id))
                     snackbarHostState.showSnackbar(message = context.getString(R.string.text_task_created))
                 }
 
@@ -87,21 +89,21 @@ fun GroupScreen(
             }
         }
     }
-
-    LaunchedEffect("get users") {
-        viewModel.handleAction(GroupAction.GetUsersFromGroupMembers(group.members))
-    }
-
-    LaunchedEffect("get tasks") {
+    LaunchedEffect("get data") {
+        viewModel.handleAction(GroupAction.GetCurrentUser())
         viewModel.handleAction(GroupAction.GetTasks(group.id))
+        viewModel.handleAction(GroupAction.GetUsersFromGroupMembers(group.members))
     }
 
     if (state.error != null) {
         LaunchedEffect(state.hashCode()) {
+            isRefreshing = false
             snackbarHostState.showSnackbar(message = state.error!!.getValue(context))
             viewModel.changeState(state.copy(error = null))
         }
     }
+
+    Log.d("GroupScreen", state.toString())
 
     PullToRefreshBox(
         isRefreshing = isRefreshing,
@@ -135,6 +137,14 @@ fun GroupScreen(
             }
             DefaultTopAppBar(group.name, navController)
             if (state.users != null && state.tasks != null) {
+                if(state.currentUser != null) {
+                    Text(
+                        text = stringResource(R.string.text_your_points) + ": " + group.members.find { it.memberId == state.currentUser!!.id }!!.score,
+                        modifier = Modifier.padding(start = 15.dp, top = 10.dp),
+                        style = titleTextStyle.copy(fontSize = 17.sp)
+                    )
+                }
+
                 Text(
                     text = stringResource(R.string.text_members),
                     modifier = Modifier.padding(start = 15.dp, top = 10.dp),

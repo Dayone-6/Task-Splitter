@@ -7,5 +7,6 @@ sealed class GroupAction {
     class GetUsersFromGroupMembers(val groupMembers: List<GroupMember>) : GroupAction()
     class AddUserToGroup(val userId: String, val groupId: String) : GroupAction()
     class GetUserFriends() : GroupAction()
+    class GetCurrentUser() : GroupAction()
     class CreateTask(val groupId: String, val title: String, val description: String) : GroupAction()
 }

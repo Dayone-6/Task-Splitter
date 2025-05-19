@@ -43,16 +43,16 @@ fun UserItem(
     isSelected: Boolean = false,
     onItemClick: (user: User) -> Unit
 ) {
-    val cornersRadius = remember { 50.dp }
-    val outlineWidth = remember { 3.dp }
+    val cornersRadius = remember { 30.dp }
+    val outlineWidth = remember { 2.dp }
     Box(
         modifier = Modifier
             .padding(5.dp)
             .background(
                 color = if (!isSelected) {
-                    currentScheme!!.surfaceBright
+                    currentScheme.surfaceBright
                 }else{
-                    currentScheme!!.primary
+                    currentScheme.primary
                 },
                 shape = RoundedCornerShape(cornersRadius)
             )

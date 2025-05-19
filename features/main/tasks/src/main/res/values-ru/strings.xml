@@ -15,4 +15,5 @@
     <string name="text_confirmation">Подтверждение</string>
     <string name="text_confirm">Подтвердить</string>
     <string name="text_about_confirmation">Нажимая на кнопку, вы подтверждаете выполнение задания исполнителем</string>
+    <string name="text_votes">Голоса</string>
 </resources>

@@ -1,5 +1,6 @@
 package ru.dayone.main.my_tasks.data.repository
 
+import ru.dayone.main.my_tasks.data.models.VoteUI
 import ru.dayone.main.my_tasks.data.network.models.Vote
 import ru.dayone.main.my_tasks.domain.datasource.TasksLocalDataSource
 import ru.dayone.main.my_tasks.domain.datasource.TasksRemoteDataSource
@@ -37,9 +38,26 @@ class TasksRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getVotes(taskId: String): Result<List<Vote>> {
+    override suspend fun getVotes(taskId: String): Result<List<VoteUI>> {
         return try {
-            remoteDataSource.getVotes(taskId)
+            val result = remoteDataSource.getVotes(taskId)
+            when(result) {
+                is Result.Success -> {
+                    val votesUi = mutableListOf<VoteUI>()
+                    for (vote in result.result) {
+                        val userResult = remoteDataSource.getUser(vote.userId)
+                        if(userResult is Result.Success){
+                            votesUi.add(VoteUI(userResult.result, vote.vote))
+                        }else{
+                            return Result.Error((userResult as Result.Error).exception)
+                        }
+                    }
+                    return Result.Success(votesUi)
+                }
+                is Result.Error -> {
+                    return Result.Error(result.exception)
+                }
+            }
         }catch (e: Exception){
             Result.Error(e)
         }

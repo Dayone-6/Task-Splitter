@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import ru.dayone.tasksplitter.common.R
 import ru.dayone.tasksplitter.common.exceptions.InternalServerErrorException
 import ru.dayone.tasksplitter.common.exceptions.RequestCanceledException
+import java.net.SocketTimeoutException
 
 sealed class UIText {
     data class StringResource(@StringRes val id: Int) : UIText()
@@ -25,6 +26,10 @@ sealed class UIText {
 
                     is RequestCanceledException -> {
                         context.getString(R.string.error_request_canceled)
+                    }
+
+                    is SocketTimeoutException -> {
+                        context.getString(R.string.error_time_limit_exceed)
                     }
 
                     else -> {

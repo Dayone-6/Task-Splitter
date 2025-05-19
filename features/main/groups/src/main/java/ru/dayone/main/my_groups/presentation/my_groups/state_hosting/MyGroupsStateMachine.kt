@@ -20,53 +20,50 @@ class MyGroupsStateMachine @Inject constructor(
     init {
         spec {
             inState<MyGroupsState> {
-                on<MyGroupsAction.GetGroups>{action, state ->
+                on<MyGroupsAction.GetGroups> { action, state ->
                     updateEffect(MyGroupsEffect.StartLoading)
                     val result = repository.getMyGroups(action.requireNew)
                     updateEffect(MyGroupsEffect.StopLoading)
                     Log.d("MyGroupsStateMachine", result.toString())
-                    when(result){
+                    when (result) {
                         is Result.Success -> {
-                            if(action.requireNew){
+                            if (action.requireNew) {
                                 updateEffect(MyGroupsEffect.RequestedGroupsLoaded)
                             }
-                            return@on state.mutate{ state.snapshot.copy(groups = result.result )}
+                            return@on state.mutate { state.snapshot.copy(groups = result.result) }
                         }
-                        is Result.Error -> {
-                            val errorText: UIText = when(result.exception){
-                                is RequestCanceledException -> {
-                                    UIText.StringResource(R.string.error_request_canceled)
-                                }
 
-                                else -> {
-                                    UIText.StringResource(R.string.error_something_went_wrong)
-                                }
+                        is Result.Error -> {
+                            return@on state.mutate {
+                                state.snapshot.copy(
+                                    error = UIText.Exception(
+                                        result.exception
+                                    )
+                                )
                             }
-                            return@on state.mutate { state.snapshot.copy(error = errorText) }
                         }
                     }
                 }
 
-                on<MyGroupsAction.CreateGroup>{action, state ->
+                on<MyGroupsAction.CreateGroup> { action, state ->
                     updateEffect(MyGroupsEffect.StartLoading)
                     val result = repository.createGroup(action.name)
                     Log.d("MyGroupsStateMachine", result.toString())
                     updateEffect(MyGroupsEffect.StopLoading)
-                    when(result){
+                    when (result) {
                         is Result.Success -> {
                             updateEffect(MyGroupsEffect.GroupCreated)
                             return@on state.noChange()
                         }
+
                         is Result.Error -> {
-                            val errorText = when(result.exception){
-                                is RequestCanceledException -> {
-                                    UIText.StringResource(R.string.error_request_canceled)
-                                }
-                                else -> {
-                                    UIText.StringResource(R.string.error_something_went_wrong)
-                                }
+                            return@on state.mutate {
+                                state.snapshot.copy(
+                                    error = UIText.Exception(
+                                        result.exception
+                                    )
+                                )
                             }
-                            return@on state.mutate { state.snapshot.copy(error = errorText) }
                         }
                     }
                 }

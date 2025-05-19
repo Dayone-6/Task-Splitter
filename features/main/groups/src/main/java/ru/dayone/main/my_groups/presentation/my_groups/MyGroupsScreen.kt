@@ -19,13 +19,16 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -33,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.toRoute
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.launch
 import ru.dayone.main.my_groups.R
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.presentation.my_groups.state_hosting.MyGroupsAction
@@ -57,6 +61,8 @@ fun MyGroupsScreen(
     var isRefreshing by remember { mutableStateOf(false) }
     var pullToRefreshState = rememberPullToRefreshState()
 
+    val coroutineScope = rememberCoroutineScope()
+
     LaunchedEffect("effect") {
         viewModel.effect.collect {
             when (it) {
@@ -69,6 +75,7 @@ fun MyGroupsScreen(
                 }
 
                 is MyGroupsEffect.GroupCreated -> {
+                    viewModel.handleAction(MyGroupsAction.GetGroups(true))
                     snackbarHostState.showSnackbar(message = context.getString(R.string.text_group_created))
                 }
 
@@ -84,9 +91,12 @@ fun MyGroupsScreen(
     }
 
     if (state.error != null) {
-        LaunchedEffect(state.hashCode()) {
-            snackbarHostState.showSnackbar(message = state.error!!.getValue(context))
-            viewModel.changeState(state.copy(error = null))
+        SideEffect {
+            coroutineScope.launch {
+                isRefreshing = false
+                snackbarHostState.showSnackbar(message = state.error!!.getValue(context))
+                viewModel.changeState(state.copy(error = null))
+            }
         }
     }
 
@@ -97,38 +107,35 @@ fun MyGroupsScreen(
             isRefreshing = true
             viewModel.handleAction(MyGroupsAction.GetGroups(requireNew = true))
         },
-        contentAlignment = Alignment.BottomEnd
+        contentAlignment = Alignment.BottomEnd,
+        modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
+        Column(
+            modifier = if (state.groups == null || state.groups!!.isEmpty()) {
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            } else {
+                Modifier.fillMaxSize()
+            },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
-                DefaultTopAppBar(title = stringResource(R.string.title_my_groups))
-            }
+            DefaultTopAppBar(title = stringResource(R.string.title_my_groups))
             if (isLoading) {
-                item {
-                    LoadingDialog()
-                }
+                LoadingDialog()
             } else if (state.groups != null && state.groups!!.isNotEmpty()) {
-                items(state.groups!!) {
-                    GroupItem(it) {
-                        navController.navigate(
-                            MyGroupsNavRoutes.GROUP(
-                                GsonBuilder().create().toJson(it)
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(state.groups!!) {
+                        GroupItem(it) {
+                            navController.navigate(
+                                MyGroupsNavRoutes.GROUP(
+                                    GsonBuilder().create().toJson(it)
+                                )
                             )
-                        )
-                    }
-                }
-            } else {
-                item {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        Text(text = stringResource(R.string.text_there_are_no_groups_you_consist_in))
+                        }
                     }
                 }
             }
@@ -141,6 +148,14 @@ fun MyGroupsScreen(
                     isCreateGroupDialogShowing = false
                 }
             )
+        }
+        if ((state.groups ?: emptyList()).isEmpty()) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(text = stringResource(R.string.text_there_are_no_groups_you_consist_in))
+            }
         }
         FloatingActionButton(
             onClick = { isCreateGroupDialogShowing = true },
