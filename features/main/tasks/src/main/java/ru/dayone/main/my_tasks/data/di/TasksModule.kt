@@ -13,6 +13,8 @@ import ru.dayone.main.my_tasks.data.repository.TasksRepositoryImpl
 import ru.dayone.main.my_tasks.domain.datasource.TasksLocalDataSource
 import ru.dayone.main.my_tasks.domain.datasource.TasksRemoteDataSource
 import ru.dayone.main.my_tasks.domain.repository.TasksRepository
+import ru.dayone.main.my_tasks.presentation.my_tasks.MyTasksScreenViewModel
+import ru.dayone.main.my_tasks.presentation.my_tasks.state_hosting.MyTasksScreenStateMachine
 import ru.dayone.main.my_tasks.presentation.task.TaskViewModel
 import ru.dayone.main.my_tasks.presentation.task.state_hosting.TaskStateMachine
 import ru.dayone.tasksplitter.common.utils.di.network.RetrofitModule
@@ -59,4 +61,17 @@ class TasksModule {
     fun provideTasksService(
         @TaskSplitterRetrofitQualifier retrofit: Retrofit
     ): TasksService = retrofit.create(TasksService::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideMyTasksScreenViewModel(
+        stateMachine: MyTasksScreenStateMachine
+    ): MyTasksScreenViewModel = MyTasksScreenViewModel(stateMachine)
+
+    @Provides
+    @Singleton
+    fun provideMyTasksScreenStateMachine(
+        repository: TasksRepository
+    ): MyTasksScreenStateMachine = MyTasksScreenStateMachine(repository)
 }

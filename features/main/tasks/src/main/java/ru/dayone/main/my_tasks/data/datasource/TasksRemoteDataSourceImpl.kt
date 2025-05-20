@@ -3,6 +3,7 @@ package ru.dayone.main.my_tasks.data.datasource
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import ru.dayone.main.my_tasks.data.network.TasksService
+import ru.dayone.main.my_tasks.data.network.models.Group
 import ru.dayone.main.my_tasks.data.network.models.Vote
 import ru.dayone.main.my_tasks.data.network.models.VoteForTaskRequestBody
 import ru.dayone.main.my_tasks.domain.datasource.TasksRemoteDataSource
@@ -44,5 +45,13 @@ class TasksRemoteDataSourceImpl @Inject constructor(
         }else{
             Result.Error(task.exception!!)
         }
+    }
+
+    override suspend fun getUserTasks(userId: String): Result<List<Task>> {
+        return service.getUserTasks(userId).handle()
+    }
+
+    override suspend fun getGroupById(groupId: String): Result<Group> {
+        return service.getGroupById(groupId).handle()
     }
 }

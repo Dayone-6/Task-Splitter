@@ -165,7 +165,26 @@ fun MainScreen(
                 startDestination = TasksNavRoutes.MY_TASKS
             ) {
                 composable(TasksNavRoutes.MY_TASKS) {
-                    MyTasksScreen()
+                    MyTasksScreen(
+                        innerNavController,
+                        mainComponent.getMyTasksScreenViewModel(),
+                        snackbarHostState
+                    )
+                }
+
+                composable<TasksNavRoutes.TASK> {
+                    val route = it.toRoute<MyGroupsNavRoutes.TASK>()
+                    val task = GsonBuilder().create().fromJson(
+                        route.task,
+                        Task::class.java
+                    )
+                    TaskScreen(
+                        mainComponent.getTaskViewModel(),
+                        innerNavController,
+                        task,
+                        route.groupCreatorId,
+                        snackbarHostState
+                    )
                 }
             }
 

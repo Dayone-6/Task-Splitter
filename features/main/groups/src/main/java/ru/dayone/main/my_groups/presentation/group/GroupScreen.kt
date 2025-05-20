@@ -1,6 +1,5 @@
 package ru.dayone.main.my_groups.presentation.group
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,6 +43,7 @@ import ru.dayone.tasksplitter.common.navigation.MyGroupsNavRoutes
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
 import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
 import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
+import ru.dayone.tasksplitter.common.utils.components.TaskItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

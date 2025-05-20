@@ -14,7 +14,7 @@ import ru.dayone.tasksplitter.common.models.Task
 import ru.dayone.main.my_groups.data.network.models.UserFriend
 
 interface GroupsRetrofitService {
-    @GET("groups/{userId}/")
+    @GET("/user/{userId}/groups/")
     fun getUserGroups(
         @Path("userId") userId: String
     ): Call<List<Group>>

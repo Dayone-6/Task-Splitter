@@ -20,7 +20,7 @@ data object TasksNavRoutes {
     const val MY_TASKS = "myTasks"
 
     @Serializable
-    data class TASK(val task: String)
+    data class TASK(val task: String, val groupCreatorId: String)
 }
 
 data object MyGroupsNavRoutes {

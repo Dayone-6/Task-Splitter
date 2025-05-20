@@ -16,4 +16,6 @@
     <string name="text_confirm">Подтвердить</string>
     <string name="text_about_confirmation">Нажимая на кнопку, вы подтверждаете выполнение задания исполнителем</string>
     <string name="text_votes">Голоса</string>
+    <string name="title_my_tasks">Мои задания</string>
+    <string name="text_there_are_no_tasks_for_you">Нет задач для вас</string>
 </resources>

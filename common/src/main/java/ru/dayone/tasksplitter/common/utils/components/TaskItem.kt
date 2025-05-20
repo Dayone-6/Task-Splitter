@@ -1,4 +1,4 @@
-package ru.dayone.main.my_groups.presentation.group
+package ru.dayone.tasksplitter.common.utils.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

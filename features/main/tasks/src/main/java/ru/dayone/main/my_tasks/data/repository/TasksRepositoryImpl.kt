@@ -1,6 +1,7 @@
 package ru.dayone.main.my_tasks.data.repository
 
 import ru.dayone.main.my_tasks.data.models.VoteUI
+import ru.dayone.main.my_tasks.data.network.models.Group
 import ru.dayone.main.my_tasks.data.network.models.Vote
 import ru.dayone.main.my_tasks.domain.datasource.TasksLocalDataSource
 import ru.dayone.main.my_tasks.domain.datasource.TasksRemoteDataSource
@@ -79,6 +80,27 @@ class TasksRepositoryImpl @Inject constructor(
     override suspend fun getUser(userId: String): Result<User> {
         return try {
             return remoteDataSource.getUser(userId)
+        }catch (e: Exception){
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getUserTasks(): Result<List<Task>> {
+        return try {
+            val user = localDataSource.getCurrentUser()
+            if(user != null) {
+                remoteDataSource.getUserTasks(user.id)
+            }else{
+                Result.Error(NullPointerException())
+            }
+        }catch (e: Exception){
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getGroupById(groupId: String): Result<Group> {
+        return try {
+            remoteDataSource.getGroupById(groupId)
         }catch (e: Exception){
             Result.Error(e)
         }

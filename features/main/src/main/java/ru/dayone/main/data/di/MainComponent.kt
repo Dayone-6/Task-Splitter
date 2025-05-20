@@ -12,6 +12,7 @@ import ru.dayone.main.my_groups.data.di.GroupsModule
 import ru.dayone.main.my_groups.presentation.group.GroupViewModel
 import ru.dayone.main.my_groups.presentation.my_groups.MyGroupsViewModel
 import ru.dayone.main.my_tasks.data.di.TasksModule
+import ru.dayone.main.my_tasks.presentation.my_tasks.MyTasksScreenViewModel
 import ru.dayone.main.my_tasks.presentation.task.TaskViewModel
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SettingsSharedPrefsQualifier
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.SharedPrefsModule
@@ -36,6 +37,8 @@ interface MainComponent {
     fun getGroupViewModel(): GroupViewModel
 
     fun getTaskViewModel(): TaskViewModel
+
+    fun getMyTasksScreenViewModel(): MyTasksScreenViewModel
 
     @SettingsSharedPrefsQualifier
     fun getSettingsPrefs(): SharedPreferences

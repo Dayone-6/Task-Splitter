@@ -15,4 +15,6 @@
     <string name="text_confirm">Confirm</string>
     <string name="text_about_confirmation">By pressing the button you confirm completing of the task by the executor</string>
     <string name="text_votes">Votes</string>
+    <string name="title_my_tasks">My Tasks</string>
+    <string name="text_there_are_no_tasks_for_you">There are no tasks for you</string>
 </resources>

@@ -5,6 +5,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import ru.dayone.main.my_tasks.data.network.models.Group
 import ru.dayone.main.my_tasks.data.network.models.Vote
 import ru.dayone.main.my_tasks.data.network.models.VoteForTaskRequestBody
 import ru.dayone.tasksplitter.common.models.Task
@@ -25,4 +26,14 @@ interface TasksService {
     fun endTask(
         @Path("taskId") taskId: String
     ): Call<Task>
+
+    @GET("/users/{userId}/tasks/")
+    fun getUserTasks(
+        @Path("userId") userId: String
+    ): Call<List<Task>>
+
+    @GET("/groups/{groupId}/")
+    fun getGroupById(
+        @Path("groupId") groupId: String
+    ): Call<Group>
 }
