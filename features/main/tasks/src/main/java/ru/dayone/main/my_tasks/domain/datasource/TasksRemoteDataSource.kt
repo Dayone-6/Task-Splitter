@@ -11,6 +11,6 @@ interface TasksRemoteDataSource {
     suspend fun endTask(taskId: String) : Result<Task>
     suspend fun getVotes(taskId: String) : Result<List<Vote>>
     suspend fun getUser(userId: String) : Result<User>
-    suspend fun getUserTasks(userId: String) : Result<List<Task>>
+    suspend fun getUserTasks(userId: String, isCompleted: Boolean) : Result<List<Task>>
     suspend fun getGroupById(groupId: String) : Result<Group>
 }

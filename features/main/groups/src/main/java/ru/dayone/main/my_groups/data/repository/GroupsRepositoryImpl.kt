@@ -5,6 +5,8 @@ import ru.dayone.main.my_groups.data.network.models.GroupMember
 import ru.dayone.tasksplitter.common.models.Task
 import ru.dayone.main.my_groups.domain.datasource.GroupsLocalDataSource
 import ru.dayone.main.my_groups.domain.datasource.GroupsRemoteDataSource
+import ru.dayone.main.my_groups.domain.mappers.toUserWithScore
+import ru.dayone.main.my_groups.domain.models.UserWithScore
 import ru.dayone.main.my_groups.domain.repository.GroupsRepository
 import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
@@ -57,16 +59,18 @@ class GroupsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getGroupMembers(groupId: String): Result<List<User>> {
+    override suspend fun getGroupMembers(groupId: String): Result<List<UserWithScore>> {
         try {
             val groupMembersResult = remoteDataSource.getGroupMembers(groupId)
             if (groupMembersResult is Result.Success) {
                 val groupMembers = groupMembersResult.result
-                val users = mutableListOf<User>()
+                val users = mutableListOf<UserWithScore>()
                 for (groupMember in groupMembers) {
                     val result = remoteDataSource.getUserFromGroupMember(groupMember)
                     if (result is Result.Success) {
-                        users.add(result.result)
+                        users.add(
+                            result.result.toUserWithScore(groupMember.score)!!
+                        )
                     } else {
                         throw (result as Result.Error).exception
                     }

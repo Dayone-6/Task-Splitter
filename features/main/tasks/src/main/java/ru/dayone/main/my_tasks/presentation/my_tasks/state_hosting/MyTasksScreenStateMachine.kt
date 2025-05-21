@@ -32,7 +32,7 @@ class MyTasksScreenStateMachine @Inject constructor(
                 }
                 on<MyTasksScreenAction.LoadTasks> { action, state ->
                     updateEffect(MyTasksScreenEffect.StartLoading)
-                    val result = repository.getUserTasks()
+                    val result = repository.getUserTasks(action.isCompleted)
                     updateEffect(MyTasksScreenEffect.StopLoading)
                     updateEffect(MyTasksScreenEffect.TasksLoaded)
                     when (result) {

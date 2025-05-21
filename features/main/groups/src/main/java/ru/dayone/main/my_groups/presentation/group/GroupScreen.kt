@@ -37,6 +37,7 @@ import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import ru.dayone.main.my_groups.R
 import ru.dayone.main.my_groups.data.network.models.Group
+import ru.dayone.main.my_groups.domain.mappers.toUser
 import ru.dayone.main.my_groups.presentation.group.state_hosting.GroupAction
 import ru.dayone.main.my_groups.presentation.group.state_hosting.GroupEffect
 import ru.dayone.tasksplitter.common.navigation.MyGroupsNavRoutes
@@ -142,7 +143,7 @@ fun GroupScreen(
             if (state.users != null && state.tasks != null) {
                 if (state.currentUser != null) {
                     Text(
-                        text = stringResource(R.string.text_your_points) + ": " + group.members.find { it.memberId == state.currentUser!!.id }!!.score,
+                        text = stringResource(R.string.text_your_points) + ": " + state.users!!.find { it.id == state.currentUser!!.id }!!.score,
                         modifier = Modifier.padding(start = 15.dp, top = 10.dp),
                         style = titleTextStyle.copy(fontSize = 17.sp)
                     )
@@ -157,9 +158,9 @@ fun GroupScreen(
                     modifier = Modifier.padding(10.dp)
                 ) {
                     itemsIndexed(state.users!!) { index, user ->
-                        UserItemSmall(user, false) {}
+                        UserItemSmall(user.toUser(), false) {}
                         if (index == state.users!!.size - 1) {
-                            UserItemSmall(user, true) {
+                            UserItemSmall(user.toUser(), true) {
                                 isAddMemberDialogOpened = true
                             }
                         }

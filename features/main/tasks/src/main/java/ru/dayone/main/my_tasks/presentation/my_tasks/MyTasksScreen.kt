@@ -1,13 +1,10 @@
 package ru.dayone.main.my_tasks.presentation.my_tasks
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -16,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
-import androidx.navigation.NavController
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.launch
 import ru.dayone.main.my_tasks.R
@@ -43,7 +40,8 @@ import ru.dayone.tasksplitter.common.utils.components.TaskItem
 fun MyTasksScreen(
     navController: NavController,
     viewModel: MyTasksScreenViewModel,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    isCompletedTasks: Boolean = false
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -58,7 +56,7 @@ fun MyTasksScreen(
     var chosenTask by remember { mutableStateOf<Task?>(null) }
 
     LaunchedEffect(Unit) {
-        viewModel.handleAction(MyTasksScreenAction.LoadTasks())
+        viewModel.handleAction(MyTasksScreenAction.LoadTasks(isCompletedTasks))
     }
 
     LaunchedEffect(
@@ -105,7 +103,7 @@ fun MyTasksScreen(
         isRefreshing = isRefreshing,
         onRefresh = {
             isRefreshing = true
-            viewModel.handleAction(MyTasksScreenAction.LoadTasks())
+            viewModel.handleAction(MyTasksScreenAction.LoadTasks(isCompletedTasks))
         },
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -116,7 +114,20 @@ fun MyTasksScreen(
                 .padding(top = 20.dp, start = 15.dp, end = 15.dp)
         ) {
             item {
-                DefaultTopAppBar(title = stringResource(R.string.title_my_tasks))
+                DefaultTopAppBar(
+                    title = stringResource(
+                        if (!isCompletedTasks) {
+                            R.string.title_my_tasks
+                        } else {
+                            R.string.title_completed_task
+                        }
+                    ),
+                    navController = if (isCompletedTasks) {
+                        navController
+                    } else {
+                        null
+                    }
+                )
             }
             if (!state.tasks.isNullOrEmpty()) {
                 items(state.tasks!!) {
@@ -132,7 +143,15 @@ fun MyTasksScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = stringResource(R.string.text_there_are_no_tasks_for_you))
+                Text(
+                    text = stringResource(
+                        if (!isCompletedTasks) {
+                            R.string.text_there_are_no_tasks_for_you
+                        } else {
+                            R.string.text_you_didnt_complete_any_task
+                        }
+                    )
+                )
             }
         }
     }

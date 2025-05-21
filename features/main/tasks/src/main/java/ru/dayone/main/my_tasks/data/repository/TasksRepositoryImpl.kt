@@ -85,11 +85,11 @@ class TasksRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserTasks(): Result<List<Task>> {
+    override suspend fun getUserTasks(isCompleted: Boolean): Result<List<Task>> {
         return try {
             val user = localDataSource.getCurrentUser()
             if(user != null) {
-                remoteDataSource.getUserTasks(user.id)
+                remoteDataSource.getUserTasks(user.id, isCompleted)
             }else{
                 Result.Error(NullPointerException())
             }

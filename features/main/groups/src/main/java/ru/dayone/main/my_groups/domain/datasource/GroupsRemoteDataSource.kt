@@ -2,6 +2,7 @@ package ru.dayone.main.my_groups.domain.datasource
 
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.data.network.models.GroupMember
+import ru.dayone.main.my_groups.domain.models.UserWithScore
 import ru.dayone.tasksplitter.common.models.Task
 import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result

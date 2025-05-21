@@ -29,7 +29,6 @@ import androidx.navigation.toRoute
 import com.google.gson.GsonBuilder
 import ru.dayone.main.R
 import ru.dayone.main.account.presentation.account.AccountScreen
-import ru.dayone.main.account.presentation.completed_tasks.CompletedTasksScreen
 import ru.dayone.main.account.presentation.friends.FriendsScreen
 import ru.dayone.main.account.presentation.settings.SettingsScreen
 import ru.dayone.main.data.di.MainComponent
@@ -210,9 +209,11 @@ fun MainScreen(
                 }
 
                 composable(AccountNavRoutes.COMPLETED_TASKS) {
-                    CompletedTasksScreen(
+                    MyTasksScreen(
                         innerNavController,
-                        mainComponent.getCompletedTasksViewModel()
+                        mainComponent.getMyTasksScreenViewModel(),
+                        snackbarHostState,
+                        true
                     )
                 }
 

@@ -6,7 +6,6 @@ import dagger.BindsInstance
 import dagger.Subcomponent
 import ru.dayone.main.account.data.di.AccountModule
 import ru.dayone.main.account.presentation.account.AccountViewModel
-import ru.dayone.main.account.presentation.completed_tasks.CompletedTasksViewModel
 import ru.dayone.main.account.presentation.friends.FriendsViewModel
 import ru.dayone.main.my_groups.data.di.GroupsModule
 import ru.dayone.main.my_groups.presentation.group.GroupViewModel
@@ -29,8 +28,6 @@ interface MainComponent {
     fun getAccountViewModel(): AccountViewModel
 
     fun getFriendsViewModel(): FriendsViewModel
-
-    fun getCompletedTasksViewModel(): CompletedTasksViewModel
 
     fun getMyGroupsViewModel(): MyGroupsViewModel
 

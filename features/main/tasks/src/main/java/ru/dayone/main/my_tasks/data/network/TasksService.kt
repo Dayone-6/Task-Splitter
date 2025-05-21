@@ -32,6 +32,11 @@ interface TasksService {
         @Path("userId") userId: String
     ): Call<List<Task>>
 
+    @GET("/users/{userId}/tasks/completed/")
+    fun getUserCompletedTasks(
+        @Path("userId") userId: String
+    ): Call<List<Task>>
+
     @GET("/groups/{groupId}/")
     fun getGroupById(
         @Path("groupId") groupId: String

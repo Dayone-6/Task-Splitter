@@ -10,10 +10,10 @@ import ru.dayone.main.my_tasks.domain.datasource.TasksRemoteDataSource
 import ru.dayone.tasksplitter.common.exceptions.RequestCanceledException
 import ru.dayone.tasksplitter.common.models.Task
 import ru.dayone.tasksplitter.common.models.User
-import ru.dayone.tasksplitter.common.utils.handle
-import javax.inject.Inject
 import ru.dayone.tasksplitter.common.utils.Result
 import ru.dayone.tasksplitter.common.utils.USERS_FIRESTORE_COLLECTION
+import ru.dayone.tasksplitter.common.utils.handle
+import javax.inject.Inject
 
 class TasksRemoteDataSourceImpl @Inject constructor(
     private val service: TasksService,
@@ -38,17 +38,21 @@ class TasksRemoteDataSourceImpl @Inject constructor(
     override suspend fun getUser(userId: String): Result<User> {
         val task = db.collection(USERS_FIRESTORE_COLLECTION).document(userId).get()
         val result = task.await()
-        return if(task.isSuccessful){
+        return if (task.isSuccessful) {
             Result.Success(result.toObject(User::class.java)!!)
-        }else if(task.isCanceled){
+        } else if (task.isCanceled) {
             Result.Error(RequestCanceledException())
-        }else{
+        } else {
             Result.Error(task.exception!!)
         }
     }
 
-    override suspend fun getUserTasks(userId: String): Result<List<Task>> {
-        return service.getUserTasks(userId).handle()
+    override suspend fun getUserTasks(userId: String, isCompleted: Boolean): Result<List<Task>> {
+        return if (isCompleted) {
+            service.getUserCompletedTasks(userId)
+        } else {
+            service.getUserTasks(userId)
+        }.handle()
     }
 
     override suspend fun getGroupById(groupId: String): Result<Group> {

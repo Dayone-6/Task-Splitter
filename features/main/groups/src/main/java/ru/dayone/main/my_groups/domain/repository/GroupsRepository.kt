@@ -2,6 +2,7 @@ package ru.dayone.main.my_groups.domain.repository
 
 import ru.dayone.main.my_groups.data.network.models.Group
 import ru.dayone.main.my_groups.data.network.models.GroupMember
+import ru.dayone.main.my_groups.domain.models.UserWithScore
 import ru.dayone.tasksplitter.common.models.Task
 import ru.dayone.tasksplitter.common.models.User
 import ru.dayone.tasksplitter.common.utils.Result
@@ -15,7 +16,7 @@ interface GroupsRepository {
 
     suspend fun addMemberToGroup(groupId: String, memberId: String): Result<GroupMember>
 
-    suspend fun getGroupMembers(groupId: String): Result<List<User>>
+    suspend fun getGroupMembers(groupId: String): Result<List<UserWithScore>>
 
     suspend fun getUserFriends(): Result<List<User>>
 

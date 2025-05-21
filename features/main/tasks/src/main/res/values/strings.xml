@@ -17,4 +17,6 @@
     <string name="text_votes">Votes</string>
     <string name="title_my_tasks">My Tasks</string>
     <string name="text_there_are_no_tasks_for_you">There are no tasks for you</string>
+    <string name="title_completed_task">Completed Tasks</string>
+    <string name="text_you_didnt_complete_any_task">You didnt complete any task</string>
 </resources>
