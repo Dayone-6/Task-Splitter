@@ -42,6 +42,7 @@ import ru.dayone.tasksplitter.common.navigation.AccountNavRoutes
 import ru.dayone.tasksplitter.common.theme.Typography
 import ru.dayone.tasksplitter.common.theme.backgroundDark
 import ru.dayone.tasksplitter.common.theme.backgroundLight
+import ru.dayone.tasksplitter.common.theme.currentScheme
 import ru.dayone.tasksplitter.common.theme.errorDark
 import ru.dayone.tasksplitter.common.theme.errorLight
 import ru.dayone.tasksplitter.common.theme.titleTextStyle
@@ -90,7 +91,7 @@ fun MainContent(
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = (state.points ?: "Loading").toString(),
+            text = (state.user.points ?: "Loading").toString(),
             style = titleTextStyle,
             textAlign = TextAlign.End,
             modifier = Modifier.weight(2f)
@@ -116,7 +117,6 @@ fun MainContent(
         }
     }
 
-    val errorColor = errorDark.or(errorLight)
     Box(
         contentAlignment = Alignment.BottomCenter,
         modifier = Modifier
@@ -129,13 +129,13 @@ fun MainContent(
             },
             border = BorderStroke(
                 2.dp,
-                errorColor
+                currentScheme.error
             ),
             modifier = Modifier.fillMaxWidth(.7f)
         ) {
             Text(
                 text = context.getString(R.string.text_sign_out),
-                color = errorColor,
+                color = currentScheme.error,
                 style = Typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
             )
         }

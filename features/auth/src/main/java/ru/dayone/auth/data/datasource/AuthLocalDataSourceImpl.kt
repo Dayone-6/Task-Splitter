@@ -9,9 +9,11 @@ import ru.dayone.tasksplitter.common.utils.USER_COLOR_KEY
 import ru.dayone.tasksplitter.common.utils.USER_ID_KEY
 import ru.dayone.tasksplitter.common.utils.USER_NAME_KEY
 import ru.dayone.tasksplitter.common.utils.USER_NICKNAME_KEY
+import ru.dayone.tasksplitter.common.utils.USER_POINTS_KEY
 import ru.dayone.tasksplitter.common.utils.di.shared_prefs.EncryptedSharedPrefsQualifier
 import ru.dayone.tasksplitter.common.utils.getUser
 import javax.inject.Inject
+import androidx.core.content.edit
 
 class AuthLocalDataSourceImpl @Inject constructor(
     @EncryptedSharedPrefsQualifier private val sharedPrefs: SharedPreferences
@@ -19,12 +21,13 @@ class AuthLocalDataSourceImpl @Inject constructor(
 
     @SuppressLint("ApplySharedPref")
     override suspend fun saveCurrentUser(user: User) {
-        sharedPrefs.edit()
-            .putString(USER_ID_KEY, user.id)
-            .putString(USER_NAME_KEY, user.name)
-            .putString(USER_NICKNAME_KEY, user.nickname)
-            .putInt(USER_COLOR_KEY, user.color ?: 0)
-            .commit()
+        sharedPrefs.edit(commit = true) {
+            putString(USER_ID_KEY, user.id)
+                .putString(USER_NAME_KEY, user.name)
+                .putString(USER_NICKNAME_KEY, user.nickname)
+                .putInt(USER_COLOR_KEY, user.color ?: 0)
+                .putInt(USER_POINTS_KEY, user.points ?: 0)
+        }
     }
 
     override suspend fun loadCurrentUser(): Result<User> {

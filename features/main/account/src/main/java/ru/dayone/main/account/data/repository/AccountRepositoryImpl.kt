@@ -25,18 +25,6 @@ class AccountRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPoints(id: String): Result<Int> {
-        return when (val result = remoteDataSource.getPoints(id)) {
-            is Result.Success -> {
-                result
-            }
-
-            is Result.Error -> {
-                result
-            }
-        }
-    }
-
     override suspend fun getFriends(id: String): Result<List<User>> {
         return try {
             remoteDataSource.getFriends(id)

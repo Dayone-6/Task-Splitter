@@ -5,4 +5,5 @@ data class User(
     val name: String? = null,
     val nickname: String? = null,
     val color: Int? = null,
+    val points: Int? = null
 )

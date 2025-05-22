@@ -27,6 +27,7 @@ import ru.dayone.main.account.presentation.account.state_hosting.AccountEffect
 import ru.dayone.tasksplitter.common.navigation.AuthNavRoutes
 import ru.dayone.tasksplitter.common.theme.currentDarkScheme
 import ru.dayone.tasksplitter.common.theme.currentLightScheme
+import ru.dayone.tasksplitter.common.theme.currentScheme
 import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
 import ru.dayone.tasksplitter.common.utils.or
 
@@ -43,14 +44,6 @@ fun AccountScreen(
 
     var isLoading by remember {
         mutableStateOf(false)
-    }
-
-    if (state.user != null) {
-        LaunchedEffect(
-            key1 = "getPoints"
-        ) {
-            viewModel.handleAction(AccountAction.RequestPoints(state.user!!.id))
-        }
     }
 
     LaunchedEffect(
@@ -104,7 +97,7 @@ fun AccountScreen(
                     .fillMaxWidth()
                     .fillMaxHeight(.6f)
                     .background(
-                        color = currentDarkScheme.background.or(currentLightScheme.background),
+                        color = currentScheme.background,
                         shape = RoundedCornerShape(20.dp, 20.dp)
                     )
                     .padding(20.dp)

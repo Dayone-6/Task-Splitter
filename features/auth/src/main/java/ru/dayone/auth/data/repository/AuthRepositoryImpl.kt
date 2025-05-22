@@ -35,7 +35,7 @@ class AuthRepositoryImpl(
         }
         val currentUserId = (currentUserResult as Result.Success).result.id
         return when (val signUpResult =
-            remoteDataSource.signUp(User(currentUserId, name, nickname, color))) {
+            remoteDataSource.signUp(User(currentUserId, name, nickname, color, 0))) {
             is Result.Success -> {
                 saveCurrentUser(signUpResult.result)
                 Result.Success(signUpResult.result)

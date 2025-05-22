@@ -27,6 +27,7 @@ fun SharedPreferences.getUser(): User? {
     val userName = this.getString(USER_NAME_KEY, "")
     val userNickname = this.getString(USER_NICKNAME_KEY, "")
     val userColor = this.getInt(USER_COLOR_KEY, 0)
+    val userPoints = this.getInt(USER_POINTS_KEY, 0)
     if (userId == null) {
         return null
     }
@@ -34,7 +35,8 @@ fun SharedPreferences.getUser(): User? {
         userId,
         userName,
         userNickname,
-        userColor
+        userColor,
+        userPoints
     )
 }
 

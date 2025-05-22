@@ -9,6 +9,7 @@ import ru.dayone.tasksplitter.common.utils.Result
 interface TasksRemoteDataSource {
     suspend fun voteForTask(taskId: String, vote: Int, userId: String) : Result<Vote>
     suspend fun endTask(taskId: String) : Result<Task>
+    suspend fun updateUserPoints(points: Int, user: User) : Result<Unit>
     suspend fun getVotes(taskId: String) : Result<List<Vote>>
     suspend fun getUser(userId: String) : Result<User>
     suspend fun getUserTasks(userId: String, isCompleted: Boolean) : Result<List<Task>>

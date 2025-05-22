@@ -1,5 +1,6 @@
 package ru.dayone.main.account.presentation.account.state_hosting
 
+import android.util.Log
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.dayone.main.account.R
 import ru.dayone.main.account.domain.repository.AccountRepository
@@ -27,26 +28,7 @@ class AccountStateMachine @Inject constructor(
 
                         is Result.Error -> {
                             return@on state.override {
-                                state.snapshot.copy(error = UIText.StringResource(R.string.error_something_went_wrong))
-                            }
-                        }
-                    }
-                }
-
-                on<AccountAction.RequestPoints> { action, state ->
-                    updateEffect(AccountEffect.StartLoading())
-                    val result = repository.getPoints(action.userId)
-                    updateEffect(AccountEffect.StopLoading())
-                    when (result) {
-                        is Result.Success -> {
-                            return@on state.override {
-                                state.snapshot.copy(points = result.result)
-                            }
-                        }
-
-                        is Result.Error -> {
-                            return@on state.override {
-                                state.snapshot.copy(error = UIText.StringResource(R.string.error_something_went_wrong))
+                                state.snapshot.copy(error = UIText.Exception(result.exception))
                             }
                         }
                     }

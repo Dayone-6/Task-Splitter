@@ -31,6 +31,19 @@ class TasksRemoteDataSourceImpl @Inject constructor(
         return service.endTask(taskId).handle()
     }
 
+    override suspend fun updateUserPoints(points: Int, user: User): Result<Unit> {
+        val task = db.collection(USERS_FIRESTORE_COLLECTION).document(user.id)
+            .update("points", user.points!! + points)
+        val result = task.await()
+        return if (task.isSuccessful) {
+            Result.Success(Unit)
+        } else if (task.exception != null) {
+            Result.Error(task.exception!!)
+        } else {
+            Result.Error(RequestCanceledException())
+        }
+    }
+
     override suspend fun getVotes(taskId: String): Result<List<Vote>> {
         return service.getTaskVotes(taskId).handle()
     }

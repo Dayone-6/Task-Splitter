@@ -7,6 +7,7 @@ const val USER_NAME_KEY = "user_name"
 const val USER_ID_KEY = "user_id"
 const val USER_NICKNAME_KEY = "user_nickname"
 const val USER_COLOR_KEY = "user_color"
+const val USER_POINTS_KEY = "user_points"
 
 const val THEME_KEY = "themeType"
 
