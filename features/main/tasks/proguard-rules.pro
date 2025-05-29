@@ -19,7 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
 -keep class ru.dayone.main.my_tasks.domain.models.** {
+    *;
+}
+
+-keep class ru.dayone.main.my_tasks.data.network.models.** {
     *;
 }
