@@ -15,4 +15,5 @@ interface TasksRepository {
     suspend fun getUser(userId: String) : Result<User>
     suspend fun getUserTasks(isCompleted: Boolean) : Result<List<Task>>
     suspend fun getGroupById(groupId: String) : Result<Group>
+    suspend fun payForTask(taskId: String) : Result<Task>
 }

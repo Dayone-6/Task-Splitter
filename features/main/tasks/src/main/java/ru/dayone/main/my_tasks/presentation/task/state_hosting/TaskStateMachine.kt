@@ -19,6 +19,28 @@ class TaskStateMachine @Inject constructor(
     init {
         spec {
             inState<TaskState> {
+                on<TaskAction.PayForTask> { action, state ->
+                    updateEffect(TaskEffect.StartLoading)
+                    val result = repository.payForTask(action.taskId)
+                    Log.d(TAG, result.toString())
+                    updateEffect(TaskEffect.StopLoading)
+                    when (result) {
+                        is Result.Success -> {
+                            return@on state.noChange()
+                        }
+
+                        is Result.Error -> {
+                            return@on state.mutate {
+                                state.snapshot.copy(
+                                    error = UIText.Exception(
+                                        result.exception
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+
                 on<TaskAction.LoadUser> { action, state ->
                     val result = repository.getUser(action.userId)
                     when (result) {
@@ -27,6 +49,7 @@ class TaskStateMachine @Inject constructor(
                                 this.copy(executor = result.result)
                             }
                         }
+
                         is Result.Error -> {
                             return@on state.mutate {
                                 state.snapshot.copy(error = UIText.Exception(result.exception))

@@ -41,4 +41,9 @@ interface TasksService {
     fun getGroupById(
         @Path("groupId") groupId: String
     ): Call<Group>
+
+    @POST("/tasks/{taskId}/pay/")
+    fun payForTask(
+        @Path("taskId") taskId: String
+    ): Call<Task>
 }

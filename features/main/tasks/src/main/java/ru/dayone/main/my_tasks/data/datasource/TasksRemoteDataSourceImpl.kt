@@ -71,4 +71,8 @@ class TasksRemoteDataSourceImpl @Inject constructor(
     override suspend fun getGroupById(groupId: String): Result<Group> {
         return service.getGroupById(groupId).handle()
     }
+
+    override suspend fun payForTask(taskId: String): Result<Task> {
+        return service.payForTask(taskId).handle()
+    }
 }

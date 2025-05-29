@@ -129,4 +129,12 @@ class TasksRepositoryImpl @Inject constructor(
             Result.Error(e)
         }
     }
+
+    override suspend fun payForTask(taskId: String): Result<Task> {
+        return try {
+            remoteDataSource.payForTask(taskId)
+        }catch (e: Exception){
+            Result.Error(e)
+        }
+    }
 }

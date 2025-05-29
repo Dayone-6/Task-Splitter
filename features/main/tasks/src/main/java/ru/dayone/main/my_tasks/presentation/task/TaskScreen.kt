@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import ru.dayone.main.my_tasks.R
 import ru.dayone.main.my_tasks.presentation.task.state_hosting.TaskAction
@@ -52,7 +51,6 @@ import ru.dayone.tasksplitter.common.utils.components.DefaultTopAppBar
 import ru.dayone.tasksplitter.common.utils.components.LoadingDialog
 import ru.dayone.tasksplitter.common.utils.defaultDialog
 import ru.dayone.tasksplitter.common.utils.or
-import java.nio.file.WatchEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,17 +73,17 @@ fun TaskScreen(
 
     var isConfirmationDialogOpened by remember { mutableStateOf(false) }
 
+    var isPayOffConfirmationDialogOpened by remember { mutableStateOf(false) }
+
     var hasVoted by remember { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect("load data") {
         viewModel.handleAction(TaskAction.LoadCurrentUser())
-        if(task.status > 0) {
+        viewModel.handleAction(TaskAction.LoadVotes(task.id))
+        if (task.status > 0) {
             viewModel.handleAction(TaskAction.LoadUser(task.winner))
-        }
-        if (task.status != 1) {
-            viewModel.handleAction(TaskAction.LoadVotes(task.id))
         }
     }
 
@@ -138,8 +136,22 @@ fun TaskScreen(
                 LoadingDialog()
             }
 
+            if (isPayOffConfirmationDialogOpened) {
+                ConfirmationDialog(
+                    stringResource(R.string.text_pay_off_confirmation),
+                    onDismiss = {
+                        isPayOffConfirmationDialogOpened = false
+                    },
+                    onConfirm = {
+                        isPayOffConfirmationDialogOpened = false
+                        viewModel.handleAction(TaskAction.PayForTask(task.id))
+                    }
+                )
+            }
+
             if (isConfirmationDialogOpened) {
                 ConfirmationDialog(
+                    stringResource(R.string.text_about_confirmation),
                     onConfirm = {
                         viewModel.handleAction(TaskAction.EndTask(task.id))
                         isConfirmationDialogOpened = false
@@ -184,7 +196,7 @@ fun TaskScreen(
                     text = "${stringResource(R.string.text_status)}: " + stringResource(
                         if (task.status == 0) {
                             R.string.text_voting
-                        } else if (task.status == 1) {
+                        } else if (task.status == 1 || task.status == 3) {
                             R.string.text_execution
                         } else {
                             R.string.text_completed
@@ -194,6 +206,7 @@ fun TaskScreen(
                         color = when (task.status) {
                             0 -> currentScheme.errorContainer
                             1 -> successColorDark.or(successColorLight)
+                            3 -> successColorDark.or(successColorLight)
                             else -> Typography.bodyLarge.color
                         },
                         fontWeight = FontWeight.SemiBold
@@ -260,7 +273,7 @@ fun TaskScreen(
                     }
                 }
             } else if (task.status > 0 && state.executor != null && state.user != null) {
-                if (task.status == 1 && state.user!!.id == groupCreatorId) {
+                if (task.status != 2 && state.user!!.id == groupCreatorId) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
@@ -275,6 +288,26 @@ fun TaskScreen(
                                 style = buttonTextStyle
                             )
                         }
+                    }
+                }
+            }
+            if ((task.status == 1 || task.status == 3) && state.votes != null && state.user != null && task.winner == state.user!!.id) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        onClick = {
+                            isPayOffConfirmationDialogOpened = true
+                        },
+                        enabled = task.status != 3
+                    ) {
+                        Text(
+                            text = stringResource(R.string.text_pay_off_the_task),
+                            style = buttonTextStyle
+                        )
                     }
                 }
             }
@@ -297,7 +330,11 @@ fun TaskScreen(
 }
 
 @Composable
-fun ConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+fun ConfirmationDialog(
+    description: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
     Dialog(
         onDismissRequest = onDismiss
     ) {
@@ -312,7 +349,7 @@ fun ConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             )
             Text(
-                text = stringResource(R.string.text_about_confirmation),
+                text = description,
                 style = Typography.bodyLarge,
                 modifier = Modifier.padding(top = 10.dp)
             )

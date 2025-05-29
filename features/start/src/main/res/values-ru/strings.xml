@@ -3,8 +3,8 @@
     <string name="text_about_app">Вам когда-нибудь приходилось распределять задачи между участниками группы (семья, команда на работе)?\nTasks Splitter поможет вам в решении этой проблемы!</string>
     <string name="text_about_app_slide1">Войдите в аккаунт</string>
     <string name="text_about_app_slide2">Создайте группу</string>
-    <string name="text_about_app_slide3">Создайте таску</string>
-    <string name="text_about_app_slide4">Сделайте ставку на эту таску</string>
-    <string name="text_about_app_slide5">Человек, поставивший меньше всего, будет выполнять эту таску</string>
+    <string name="text_about_app_slide3">Создайте задание</string>
+    <string name="text_about_app_slide4">Оцените сложность этого задания для вас</string>
+    <string name="text_about_app_slide5">Человек, которому проще всего сделать это задание, будет выполнять его</string>
     <string name="text_to_login">К Входу</string>
 </resources>

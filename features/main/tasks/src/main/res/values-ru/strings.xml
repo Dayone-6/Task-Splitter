@@ -20,4 +20,6 @@
     <string name="text_there_are_no_tasks_for_you">Нет задач для вас</string>
     <string name="title_completed_task">Выполненные задания</string>
     <string name="text_you_didnt_complete_any_task">Вы не выполнили ни одного задания</string>
+    <string name="text_pay_off_the_task">Откупиться от задания</string>
+    <string name="text_pay_off_confirmation">Вы можете откупиться от задания за ваши очки. Это будет стоить столько очков:</string>
 </resources>

@@ -33,6 +33,10 @@ fun TaskItem(task: Task, onItemClick: () -> Unit) {
             successColorDark.or(successColorLight)
         }
 
+        3 -> {
+            successColorDark.or(successColorLight)
+        }
+
         else -> {
             currentScheme.surfaceBright
         }
